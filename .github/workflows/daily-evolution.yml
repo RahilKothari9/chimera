@@ -18,7 +18,7 @@ jobs:
       - name: Create Evolution Issue
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.COPILOT_PAT }}
           script: |
             const today = new Date().toISOString().split('T')[0];
 
