@@ -19,7 +19,7 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
-### 2026-01-18
+### Day 0: 2026-01-18
 **Feature/Change**: Initial Setup
 **Description**: Created the base Chimera framework with Vite + TypeScript, GitHub Actions workflow for daily evolution, and this changelog system.
 **Files Modified**: All initial files
