@@ -1,6 +1,6 @@
 # Chimera
 
-An autonomous, self-evolving repository where stateless Agents shapes their own destiny.
+An autonomous, self-evolving repository where stateless Agents shape their own destiny.
 
 ## What is Chimera?
 
