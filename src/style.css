@@ -83,6 +83,125 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+/* Dashboard Styles */
+.dashboard-section {
+  margin: 3rem 0;
+}
+
+.dashboard-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  border-color: rgba(102, 126, 234, 0.6);
+}
+
+.stat-icon {
+  font-size: 2.5em;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #667eea;
+  margin: 0.3rem 0;
+}
+
+.stat-label {
+  font-size: 1em;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.stat-description {
+  font-size: 0.85em;
+  color: #aaa;
+  line-height: 1.4;
+  margin-top: 0.5rem;
+}
+
+/* Categories Section */
+.categories-section {
+  margin-top: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.categories-title {
+  font-size: 1.5em;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.categories-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.category-item {
+  margin-bottom: 1.5rem;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.category-name {
+  font-size: 1em;
+  font-weight: 600;
+  color: #fff;
+}
+
+.category-count {
+  font-size: 1em;
+  color: #667eea;
+  font-weight: bold;
+}
+
+.category-bar-container {
+  background: rgba(255, 255, 255, 0.1);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.category-bar {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  height: 100%;
+  transition: width 0.5s ease-in-out;
+  border-radius: 4px;
+}
+
+/* Timeline Styles */
+
 .timeline-container {
   max-width: 800px;
   margin: 0 auto;
@@ -191,6 +310,39 @@ h1 {
   
   .section-title {
     color: #213547;
+  }
+  
+  .stat-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border-color: rgba(102, 126, 234, 0.25);
+  }
+  
+  .stat-card:hover {
+    border-color: rgba(102, 126, 234, 0.5);
+  }
+  
+  .stat-label {
+    color: #213547;
+  }
+  
+  .stat-description {
+    color: #666;
+  }
+  
+  .categories-section {
+    background: rgba(0, 0, 0, 0.02);
+  }
+  
+  .categories-title {
+    color: #213547;
+  }
+  
+  .category-name {
+    color: #213547;
+  }
+  
+  .category-bar-container {
+    background: rgba(0, 0, 0, 0.1);
   }
   
   .timeline-entry {
