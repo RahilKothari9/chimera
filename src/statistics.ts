@@ -27,9 +27,10 @@ export function calculateStatistics(entries: ChangelogEntry[]): EvolutionStats {
     new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
+  const MS_PER_DAY = 1000 * 60 * 60 * 24;
   const firstDate = new Date(sortedEntries[0].date);
   const lastDate = new Date(sortedEntries[sortedEntries.length - 1].date);
-  const daysSinceStart = Math.ceil((lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const daysSinceStart = Math.ceil((lastDate.getTime() - firstDate.getTime()) / MS_PER_DAY) + 1;
 
   // Calculate recent activity (last 7 days from the most recent entry)
   const sevenDaysAgo = new Date(lastDate);

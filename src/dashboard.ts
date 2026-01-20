@@ -149,7 +149,8 @@ function createCategoryItem(name: string, count: number, maxCount: number): HTML
 
   const bar = document.createElement('div');
   bar.className = 'category-bar';
-  const percentage = (count / maxCount) * 100;
+  // Safety check to prevent division by zero
+  const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
   bar.style.width = `${percentage}%`;
 
   barContainer.appendChild(bar);
