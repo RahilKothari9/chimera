@@ -21,6 +21,23 @@ jobs:
           github-token: ${{ secrets.COPILOT_PAT }}
           script: |
             const today = new Date().toISOString().split('T')[0];
+            const expectedTitle = "Chimera Evolution - " + today;
+
+            // Check if an issue for today already exists
+            const { data: existingIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: "chimera-evolution",
+              state: "all",
+              per_page: 10
+            });
+
+            const alreadyExists = existingIssues.some(issue => issue.title === expectedTitle);
+
+            if (alreadyExists) {
+              console.log("Issue for today already exists, skipping");
+              return;
+            }
 
             const issueBody = [
               "# Chimera Daily Evolution - " + today,
