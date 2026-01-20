@@ -7,6 +7,8 @@ export interface EvolutionStatistics {
   evolutionsByDate: Array<{ date: string; day: string; feature: string }>;
 }
 
+const INITIAL_FILES_MARKER = 'All initial files';
+
 /**
  * Analyzes changelog entries and extracts statistics
  */
@@ -20,6 +22,10 @@ export function calculateStatistics(entries: ChangelogEntry[]): EvolutionStatist
     };
   }
 
+  // Count unique days
+  const uniqueDates = new Set(entries.map(entry => entry.date));
+  const daysActive = uniqueDates.size;
+
   // Count file modifications
   const fileModificationMap = new Map<string, number>();
   
@@ -28,7 +34,7 @@ export function calculateStatistics(entries: ChangelogEntry[]): EvolutionStatist
     const files = entry.filesModified
       .split(',')
       .map(f => f.trim())
-      .filter(f => f && f !== 'All initial files');
+      .filter(f => f && f !== INITIAL_FILES_MARKER);
     
     files.forEach(file => {
       const count = fileModificationMap.get(file) || 0;
@@ -51,7 +57,7 @@ export function calculateStatistics(entries: ChangelogEntry[]): EvolutionStatist
 
   return {
     totalEvolutions: entries.length,
-    daysActive: entries.length,
+    daysActive,
     mostModifiedFiles,
     evolutionsByDate
   };

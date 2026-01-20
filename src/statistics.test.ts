@@ -120,6 +120,37 @@ describe('calculateStatistics', () => {
     expect(stats.mostModifiedFiles).toHaveLength(0);
   });
 
+  it('should count unique days correctly', () => {
+    const entries: ChangelogEntry[] = [
+      {
+        day: '0',
+        date: '2026-01-18',
+        feature: 'Feature A',
+        description: 'Desc',
+        filesModified: 'file.ts'
+      },
+      {
+        day: '1',
+        date: '2026-01-18', // Same date as day 0
+        feature: 'Feature B',
+        description: 'Desc',
+        filesModified: 'file.ts'
+      },
+      {
+        day: '2',
+        date: '2026-01-19', // Different date
+        feature: 'Feature C',
+        description: 'Desc',
+        filesModified: 'file.ts'
+      }
+    ];
+
+    const stats = calculateStatistics(entries);
+    
+    expect(stats.totalEvolutions).toBe(3); // Total entries
+    expect(stats.daysActive).toBe(2); // Only 2 unique dates
+  });
+
   it('should create evolutionsByDate array', () => {
     const entries: ChangelogEntry[] = [
       {

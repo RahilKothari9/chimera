@@ -59,7 +59,7 @@ function createDashboardHeader(): HTMLElement {
   
   const subtitle = document.createElement('p');
   subtitle.className = 'stats-subtitle';
-  subtitle.textContent = 'Insights into Chimera\'s autonomous development';
+  subtitle.textContent = "Insights into Chimera's autonomous development";
   
   header.appendChild(title);
   header.appendChild(subtitle);
@@ -128,7 +128,7 @@ function createTopFilesSection(topFiles: Array<{ file: string; count: number }>)
     
     const bar = document.createElement('div');
     bar.className = 'file-bar';
-    const maxCount = topFiles[0].count;
+    const maxCount = Math.max(topFiles[0].count, 1); // Avoid division by zero
     const percentage = (item.count / maxCount) * 100;
     bar.style.width = `${percentage}%`;
     
