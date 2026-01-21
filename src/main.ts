@@ -3,6 +3,8 @@ import { fetchChangelog } from './changelogParser.ts'
 import { setupTimeline } from './timeline.ts'
 import { setupDashboard } from './dashboard.ts'
 import { calculateStatistics } from './statistics.ts'
+import { filterEntries, type SearchFilters } from './search.ts'
+import { createSearchUI, updateResultsCounter } from './searchUI.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -23,6 +25,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div class="evolution-section">
       <h2 class="section-title">Evolution Timeline</h2>
+      <div id="search-ui"></div>
       <div id="timeline" class="timeline-container">
         <p class="loading">Loading evolution history...</p>
       </div>
@@ -38,16 +41,36 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 async function initializeApp() {
   const dashboardContainer = document.querySelector<HTMLDivElement>('#dashboard')!
   const timelineContainer = document.querySelector<HTMLDivElement>('#timeline')!
+  const searchContainer = document.querySelector<HTMLDivElement>('#search-ui')!
   
   try {
-    const entries = await fetchChangelog()
+    const allEntries = await fetchChangelog()
+    let filteredEntries = allEntries
     
     // Setup statistics dashboard
-    const stats = calculateStatistics(entries)
+    const stats = calculateStatistics(allEntries)
     setupDashboard(dashboardContainer, stats)
     
-    // Setup timeline
-    setupTimeline(timelineContainer, entries)
+    // Setup search UI
+    const searchUI = createSearchUI({
+      onSearchChange: (filters: SearchFilters) => {
+        // Filter entries based on search criteria
+        filteredEntries = filterEntries(allEntries, filters)
+        
+        // Update timeline with filtered results
+        setupTimeline(timelineContainer, filteredEntries)
+        
+        // Update results counter
+        updateResultsCounter(searchUI, filteredEntries.length, allEntries.length)
+      }
+    })
+    searchContainer.appendChild(searchUI)
+    
+    // Setup initial timeline with all entries
+    setupTimeline(timelineContainer, filteredEntries)
+    
+    // Initialize results counter
+    updateResultsCounter(searchUI, filteredEntries.length, allEntries.length)
   } catch (error) {
     dashboardContainer.innerHTML = '<p class="error">Failed to load statistics</p>'
     timelineContainer.innerHTML = '<p class="error">Failed to load evolution history</p>'
