@@ -18,12 +18,12 @@ export function filterEntries(
   if (filters.searchTerm.trim()) {
     const searchLower = filters.searchTerm.trim().toLowerCase();
     filtered = filtered.filter(entry => {
-      const searchableText = `
-        ${entry.feature}
-        ${entry.description}
-        ${entry.filesModified}
-        ${entry.date}
-      `.toLowerCase();
+      const searchableText = [
+        entry.feature,
+        entry.description,
+        entry.filesModified,
+        entry.date
+      ].join(' ').toLowerCase();
       return searchableText.includes(searchLower);
     });
   }
@@ -40,19 +40,22 @@ export function filterEntries(
 }
 
 /**
+ * Category keywords mapping for filtering
+ */
+const CATEGORY_KEYWORDS: Record<string, string[]> = {
+  'ui-ux': ['ui', 'ux', 'design', 'visual', 'interface', 'styling', 'css'],
+  'feature': ['feature', 'add', 'new', 'implement'],
+  'refactor': ['refactor', 'improve', 'optimize', 'clean'],
+  'testing': ['test', 'testing', 'coverage'],
+  'documentation': ['doc', 'documentation', 'readme', 'changelog'],
+  'build-deploy': ['build', 'deploy', 'ci', 'action', 'workflow']
+};
+
+/**
  * Checks if text matches a category based on keywords
  */
 function matchesCategory(text: string, category: string): boolean {
-  const categoryKeywords: Record<string, string[]> = {
-    'ui-ux': ['ui', 'ux', 'design', 'visual', 'interface', 'styling', 'css'],
-    'feature': ['feature', 'add', 'new', 'implement'],
-    'refactor': ['refactor', 'improve', 'optimize', 'clean'],
-    'testing': ['test', 'testing', 'coverage'],
-    'documentation': ['doc', 'documentation', 'readme', 'changelog'],
-    'build-deploy': ['build', 'deploy', 'ci', 'action', 'workflow']
-  };
-
-  const keywords = categoryKeywords[category];
+  const keywords = CATEGORY_KEYWORDS[category];
   if (!keywords) return false;
 
   return keywords.some(keyword => text.includes(keyword));
