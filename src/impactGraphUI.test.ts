@@ -186,16 +186,16 @@ describe('setupImpactGraph', () => {
     expect(graphContainers.length).toBe(1);
   });
 
-  it('should insert after dashboard if it exists', () => {
+  it('should insert after dashboard section if it exists', () => {
     const app = document.querySelector('#app')!;
-    const dashboard = document.createElement('div');
-    dashboard.className = 'dashboard-container';
-    app.appendChild(dashboard);
+    const dashboardSection = document.createElement('div');
+    dashboardSection.className = 'dashboard-section';
+    app.appendChild(dashboardSection);
     
     setupImpactGraph(mockEntries);
     
     const graphContainer = document.querySelector('.impact-graph-container');
-    expect(graphContainer?.previousElementSibling).toBe(dashboard);
+    expect(graphContainer?.previousElementSibling).toBe(dashboardSection);
   });
 
   it('should append to app if no dashboard exists', () => {
