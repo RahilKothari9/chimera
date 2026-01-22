@@ -111,10 +111,10 @@ export function setupImpactGraph(entries: ChangelogEntry[]): void {
 
   const graphUI = renderImpactGraphUI(entries);
   
-  // Insert after the dashboard
-  const dashboard = document.querySelector('.dashboard-container');
-  if (dashboard && dashboard.nextSibling) {
-    app.insertBefore(graphUI, dashboard.nextSibling);
+  // Insert after the dashboard section
+  const dashboardSection = document.querySelector('.dashboard-section');
+  if (dashboardSection) {
+    dashboardSection.insertAdjacentElement('afterend', graphUI);
   } else {
     app.appendChild(graphUI);
   }
