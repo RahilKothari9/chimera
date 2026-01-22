@@ -5,6 +5,7 @@ import { setupDashboard } from './dashboard.ts'
 import { calculateStatistics } from './statistics.ts'
 import { filterEntries, type SearchFilters } from './search.ts'
 import { createSearchUI, updateResultsCounter } from './searchUI.ts'
+import { setupImpactGraph } from './impactGraphUI.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -50,6 +51,9 @@ async function initializeApp() {
     // Setup statistics dashboard
     const stats = calculateStatistics(allEntries)
     setupDashboard(dashboardContainer, stats)
+    
+    // Setup impact graph
+    setupImpactGraph(allEntries)
     
     // Setup search UI
     const searchUI = createSearchUI({
