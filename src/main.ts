@@ -6,6 +6,8 @@ import { calculateStatistics } from './statistics.ts'
 import { filterEntries, type SearchFilters } from './search.ts'
 import { createSearchUI, updateResultsCounter } from './searchUI.ts'
 import { setupImpactGraph } from './impactGraphUI.ts'
+import { generatePredictions } from './predictionEngine.ts'
+import { setupPredictionUI } from './predictionUI.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -22,6 +24,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <div id="dashboard" class="dashboard-container">
         <p class="loading">Loading statistics...</p>
       </div>
+    </div>
+    
+    <div id="prediction-section">
+      <p class="loading">Analyzing patterns and generating predictions...</p>
     </div>
     
     <div class="evolution-section">
@@ -43,6 +49,7 @@ async function initializeApp() {
   const dashboardContainer = document.querySelector<HTMLDivElement>('#dashboard')!
   const timelineContainer = document.querySelector<HTMLDivElement>('#timeline')!
   const searchContainer = document.querySelector<HTMLDivElement>('#search-ui')!
+  const predictionContainer = document.querySelector<HTMLDivElement>('#prediction-section')!
   
   try {
     const allEntries = await fetchChangelog()
@@ -54,6 +61,10 @@ async function initializeApp() {
     
     // Setup impact graph
     setupImpactGraph(allEntries)
+    
+    // Setup predictions
+    const predictions = generatePredictions(allEntries)
+    setupPredictionUI(predictionContainer, predictions)
     
     // Setup search UI
     const searchUI = createSearchUI({
@@ -78,6 +89,7 @@ async function initializeApp() {
   } catch (error) {
     dashboardContainer.innerHTML = '<p class="error">Failed to load statistics</p>'
     timelineContainer.innerHTML = '<p class="error">Failed to load evolution history</p>'
+    predictionContainer.innerHTML = '<p class="error">Failed to generate predictions</p>'
     console.error('Error loading evolution data:', error)
   }
 }
