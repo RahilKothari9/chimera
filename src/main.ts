@@ -8,6 +8,7 @@ import { createSearchUI, updateResultsCounter } from './searchUI.ts'
 import { setupImpactGraph } from './impactGraphUI.ts'
 import { generatePredictions } from './predictionEngine.ts'
 import { setupPredictionUI } from './predictionUI.ts'
+import { createExportUI } from './exportUI.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -30,6 +31,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <p class="loading">Analyzing patterns and generating predictions...</p>
     </div>
     
+    <div id="export-section"></div>
+    
     <div class="evolution-section">
       <h2 class="section-title">Evolution Timeline</h2>
       <div id="search-ui"></div>
@@ -50,6 +53,7 @@ async function initializeApp() {
   const timelineContainer = document.querySelector<HTMLDivElement>('#timeline')!
   const searchContainer = document.querySelector<HTMLDivElement>('#search-ui')!
   const predictionContainer = document.querySelector<HTMLDivElement>('#prediction-section')!
+  const exportContainer = document.querySelector<HTMLDivElement>('#export-section')!
   
   try {
     const allEntries = await fetchChangelog()
@@ -65,6 +69,10 @@ async function initializeApp() {
     // Setup predictions
     const predictions = generatePredictions(allEntries)
     setupPredictionUI(predictionContainer, predictions)
+    
+    // Setup export UI
+    const exportUI = createExportUI(allEntries)
+    exportContainer.appendChild(exportUI)
     
     // Setup search UI
     const searchUI = createSearchUI({
