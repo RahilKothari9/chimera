@@ -134,7 +134,7 @@ export function downloadExport(result: ExportResult): void {
  * Helper function to escape CSV values
  */
 function escapeCSV(value: string): string {
-  if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+  if (value.includes(',') || value.includes('"') || value.includes('\n') || value.includes('\r')) {
     return `"${value.replace(/"/g, '""')}"`;
   }
   return value;

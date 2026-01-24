@@ -27,18 +27,35 @@ export function createExportUI(entries: ChangelogEntry[]): HTMLElement {
 
   const formatSelect = document.createElement('select');
   formatSelect.className = 'export-format-select';
-  formatSelect.innerHTML = `
-    <option value="json">JSON - Machine-readable data</option>
-    <option value="csv">CSV - Spreadsheet compatible</option>
-    <option value="markdown">Markdown - Human-readable docs</option>
-  `;
+  
+  const jsonOption = document.createElement('option');
+  jsonOption.value = 'json';
+  jsonOption.textContent = 'JSON - Machine-readable data';
+  
+  const csvOption = document.createElement('option');
+  csvOption.value = 'csv';
+  csvOption.textContent = 'CSV - Spreadsheet compatible';
+  
+  const markdownOption = document.createElement('option');
+  markdownOption.value = 'markdown';
+  markdownOption.textContent = 'Markdown - Human-readable docs';
+  
+  formatSelect.appendChild(jsonOption);
+  formatSelect.appendChild(csvOption);
+  formatSelect.appendChild(markdownOption);
 
   const metadataCheckbox = document.createElement('label');
   metadataCheckbox.className = 'export-metadata-label';
-  metadataCheckbox.innerHTML = `
-    <input type="checkbox" class="export-metadata-checkbox" checked>
-    Include metadata (date range, totals)
-  `;
+  
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.className = 'export-metadata-checkbox';
+  checkbox.checked = true;
+  
+  const labelText = document.createTextNode('Include metadata (date range, totals)');
+  
+  metadataCheckbox.appendChild(checkbox);
+  metadataCheckbox.appendChild(labelText);
 
   const exportButton = document.createElement('button');
   exportButton.className = 'export-button';
