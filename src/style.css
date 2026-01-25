@@ -1,16 +1,53 @@
+/* Theme Variables - Dark Mode (Default) */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Color variables for dark theme */
+  --color-text: rgba(255, 255, 255, 0.87);
+  --color-text-secondary: #aaa;
+  --color-text-tertiary: #888;
+  --color-background: #242424;
+  --color-background-secondary: rgba(255, 255, 255, 0.03);
+  --color-background-hover: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-accent: #667eea;
+  --color-accent-secondary: #764ba2;
+  --color-subtitle: #888;
+  --color-description: #aaa;
+  --color-white: #fff;
+  --color-error: #ff6b6b;
+  
+  color-scheme: dark;
+  color: var(--color-text);
+  background-color: var(--color-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Theme Variables - Light Mode */
+[data-theme="light"] {
+  --color-text: #213547;
+  --color-text-secondary: #555;
+  --color-text-tertiary: #666;
+  --color-background: #ffffff;
+  --color-background-secondary: rgba(102, 126, 234, 0.05);
+  --color-background-hover: rgba(102, 126, 234, 0.08);
+  --color-border: rgba(102, 126, 234, 0.2);
+  --color-accent: #667eea;
+  --color-accent-secondary: #764ba2;
+  --color-subtitle: #555;
+  --color-description: #666;
+  --color-white: #213547;
+  --color-error: #d32f2f;
+  
+  color-scheme: light;
+  color: var(--color-text);
+  background-color: var(--color-background);
 }
 
 a {
@@ -58,18 +95,64 @@ h1 {
 
 .chimera-subtitle {
   font-size: 1.3em;
-  color: #888;
+  color: var(--color-subtitle);
   margin: 0.5em 0;
   font-weight: 300;
   letter-spacing: 0.05em;
 }
 
 .chimera-description {
-  color: #aaa;
+  color: var(--color-description);
   max-width: 600px;
   margin: 1em auto;
   font-size: 1.05em;
   line-height: 1.6;
+}
+
+/* Theme Toggle Styles */
+.theme-toggle-container {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+.theme-toggle-button {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.theme-toggle-button:hover {
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+}
+
+.theme-toggle-button:active {
+  transform: scale(0.95) rotate(-15deg);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle-container {
+    top: 1rem;
+    right: 1rem;
+  }
+  
+  .theme-toggle-button {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3em;
+  }
 }
 
 /* Evolution Timeline Styles */
@@ -79,7 +162,7 @@ h1 {
 
 .section-title {
   font-size: 2em;
-  color: #fff;
+  color: var(--color-white);
   margin-bottom: 1.5rem;
 }
 
@@ -123,14 +206,14 @@ h1 {
 .stat-value {
   font-size: 2.5em;
   font-weight: bold;
-  color: #667eea;
+  color: var(--color-accent);
   margin: 0.3rem 0;
 }
 
 .stat-label {
   font-size: 1em;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-white);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
@@ -138,7 +221,7 @@ h1 {
 
 .stat-description {
   font-size: 0.85em;
-  color: #aaa;
+  color: var(--color-text-secondary);
   line-height: 1.4;
   margin-top: 0.5rem;
 }
@@ -146,14 +229,14 @@ h1 {
 /* Categories Section */
 .categories-section {
   margin-top: 2rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-background-secondary);
   border-radius: 12px;
   padding: 2rem;
 }
 
 .categories-title {
   font-size: 1.5em;
-  color: #fff;
+  color: var(--color-white);
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -177,12 +260,12 @@ h1 {
 .category-name {
   font-size: 1em;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-white);
 }
 
 .category-count {
   font-size: 1em;
-  color: #667eea;
+  color: var(--color-accent);
   font-weight: bold;
 }
 
@@ -210,7 +293,7 @@ h1 {
 
 .timeline-header {
   text-align: center;
-  color: #667eea;
+  color: var(--color-accent);
   font-size: 1.2em;
   margin-bottom: 2rem;
   text-transform: uppercase;
@@ -218,8 +301,8 @@ h1 {
 }
 
 .timeline-entry {
-  background: rgba(255, 255, 255, 0.05);
-  border-left: 4px solid #667eea;
+  background: var(--color-background-hover);
+  border-left: 4px solid var(--color-accent);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   border-radius: 8px;
@@ -232,7 +315,7 @@ h1 {
 }
 
 .timeline-date {
-  color: #667eea;
+  color: var(--color-accent);
   font-size: 0.9em;
   font-weight: 600;
   text-transform: uppercase;
@@ -241,49 +324,49 @@ h1 {
 }
 
 .timeline-feature {
-  color: #fff;
+  color: var(--color-white);
   font-size: 1.4em;
   margin: 0.5rem 0;
 }
 
 .timeline-description {
-  color: #ccc;
+  color: var(--color-text-secondary);
   line-height: 1.6;
   margin: 0.8rem 0;
 }
 
 .timeline-files {
-  color: #888;
+  color: var(--color-text-tertiary);
   font-size: 0.85em;
   font-style: italic;
   margin-top: 1rem;
   padding-top: 0.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--color-border);
 }
 
 .timeline-empty {
   text-align: center;
-  color: #888;
+  color: var(--color-text-tertiary);
   font-style: italic;
   padding: 2rem;
 }
 
 .loading, .error {
   text-align: center;
-  color: #888;
+  color: var(--color-text-tertiary);
   padding: 2rem;
 }
 
 .error {
-  color: #ff6b6b;
+  color: var(--color-error);
 }
 
 /* Footer Styles */
 .chimera-footer {
   margin-top: 4rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: #666;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-tertiary);
   font-size: 0.9em;
 }
 
