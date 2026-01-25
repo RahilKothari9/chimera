@@ -9,6 +9,11 @@ import { setupImpactGraph } from './impactGraphUI.ts'
 import { generatePredictions } from './predictionEngine.ts'
 import { setupPredictionUI } from './predictionUI.ts'
 import { createExportUI } from './exportUI.ts'
+import { initializeTheme } from './themeSystem.ts'
+import { createThemeToggle } from './themeToggle.ts'
+
+// Initialize theme before rendering
+initializeTheme()
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -46,6 +51,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </footer>
   </div>
 `
+
+// Add theme toggle to the page
+const themeToggle = createThemeToggle()
+document.body.appendChild(themeToggle)
 
 // Load and display the evolution data
 async function initializeApp() {
