@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { createThemeToggle, getThemeIcon } from './themeToggle'
+import { createThemeToggle } from './themeToggle'
 import * as themeSystem from './themeSystem'
 
 describe('Theme Toggle UI', () => {
@@ -122,16 +122,6 @@ describe('Theme Toggle UI', () => {
       button.click()
       
       expect(eventFired).toBe(true)
-    })
-  })
-
-  describe('getThemeIcon', () => {
-    it('should return sun icon for dark theme', () => {
-      expect(getThemeIcon('dark')).toBe('☀️')
-    })
-
-    it('should return moon icon for light theme', () => {
-      expect(getThemeIcon('light')).toBe('🌙')
     })
   })
 })

@@ -9,9 +9,14 @@ const THEME_STORAGE_KEY = 'chimera-theme'
  * Gets the currently active theme from localStorage or defaults to 'auto'
  */
 export function getCurrentTheme(): Theme {
-  const stored = localStorage.getItem(THEME_STORAGE_KEY)
-  if (stored === 'light' || stored === 'dark' || stored === 'auto') {
-    return stored
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY)
+    if (stored === 'light' || stored === 'dark' || stored === 'auto') {
+      return stored
+    }
+  } catch (error) {
+    // localStorage might not be available in private browsing or other restricted environments
+    console.warn('Unable to access localStorage for theme preference:', error)
   }
   return 'auto'
 }
@@ -37,7 +42,12 @@ export function applyTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', effectiveTheme)
   
   // Store the preference
-  localStorage.setItem(THEME_STORAGE_KEY, theme)
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme)
+  } catch (error) {
+    // localStorage might not be available in private browsing or other restricted environments
+    console.warn('Unable to save theme preference to localStorage:', error)
+  }
 }
 
 /**

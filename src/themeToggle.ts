@@ -44,10 +44,3 @@ export function createThemeToggle(): HTMLElement {
   container.appendChild(button)
   return container
 }
-
-/**
- * Gets the current theme icon for display
- */
-export function getThemeIcon(theme: 'light' | 'dark'): string {
-  return theme === 'dark' ? '☀️' : '🌙'
-}
