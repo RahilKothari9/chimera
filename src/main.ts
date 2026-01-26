@@ -11,6 +11,8 @@ import { setupPredictionUI } from './predictionUI.ts'
 import { createExportUI } from './exportUI.ts'
 import { initializeTheme } from './themeSystem.ts'
 import { createThemeToggle } from './themeToggle.ts'
+import { calculateAchievements } from './achievementSystem.ts'
+import { createAchievementUI } from './achievementUI.ts'
 
 // Initialize theme before rendering
 initializeTheme()
@@ -30,6 +32,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <div id="dashboard" class="dashboard-container">
         <p class="loading">Loading statistics...</p>
       </div>
+    </div>
+    
+    <div id="achievement-section">
+      <p class="loading">Loading achievements...</p>
     </div>
     
     <div id="prediction-section">
@@ -63,6 +69,7 @@ async function initializeApp() {
   const searchContainer = document.querySelector<HTMLDivElement>('#search-ui')!
   const predictionContainer = document.querySelector<HTMLDivElement>('#prediction-section')!
   const exportContainer = document.querySelector<HTMLDivElement>('#export-section')!
+  const achievementContainer = document.querySelector<HTMLDivElement>('#achievement-section')!
   
   try {
     const allEntries = await fetchChangelog()
@@ -74,6 +81,12 @@ async function initializeApp() {
     
     // Setup impact graph
     setupImpactGraph(allEntries)
+    
+    // Setup achievements
+    const achievementData = calculateAchievements(allEntries)
+    const achievementUI = createAchievementUI(achievementData)
+    achievementContainer.innerHTML = ''
+    achievementContainer.appendChild(achievementUI)
     
     // Setup predictions
     const predictions = generatePredictions(allEntries)
@@ -107,6 +120,7 @@ async function initializeApp() {
     dashboardContainer.innerHTML = '<p class="error">Failed to load statistics</p>'
     timelineContainer.innerHTML = '<p class="error">Failed to load evolution history</p>'
     predictionContainer.innerHTML = '<p class="error">Failed to generate predictions</p>'
+    achievementContainer.innerHTML = '<p class="error">Failed to load achievements</p>'
     console.error('Error loading evolution data:', error)
   }
 }
