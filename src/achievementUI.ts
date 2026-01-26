@@ -98,6 +98,7 @@ function createAchievementsGrid(achievements: AchievementData['achievements']): 
 function createAchievementCard(achievement: AchievementData['achievements'][0]): HTMLElement {
   const card = document.createElement('div')
   card.className = `achievement-card ${achievement.unlocked ? 'unlocked' : 'locked'}`
+  card.setAttribute('data-achievement-id', achievement.id)
   
   const iconElement = document.createElement('div')
   iconElement.className = 'achievement-icon'
