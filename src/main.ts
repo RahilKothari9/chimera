@@ -13,6 +13,8 @@ import { initializeTheme } from './themeSystem.ts'
 import { createThemeToggle } from './themeToggle.ts'
 import { calculateAchievements } from './achievementSystem.ts'
 import { createAchievementUI } from './achievementUI.ts'
+import { getMetricsSummary, calculateHistoricalMetrics, getMetricsInsights } from './codeMetrics.ts'
+import { setupMetricsUI } from './metricsUI.ts'
 
 // Initialize theme before rendering
 initializeTheme()
@@ -32,6 +34,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <div id="dashboard" class="dashboard-container">
         <p class="loading">Loading statistics...</p>
       </div>
+    </div>
+    
+    <div id="metrics-section">
+      <p class="loading">Analyzing codebase metrics...</p>
     </div>
     
     <div id="achievement-section">
@@ -70,6 +76,7 @@ async function initializeApp() {
   const predictionContainer = document.querySelector<HTMLDivElement>('#prediction-section')!
   const exportContainer = document.querySelector<HTMLDivElement>('#export-section')!
   const achievementContainer = document.querySelector<HTMLDivElement>('#achievement-section')!
+  const metricsContainer = document.querySelector<HTMLDivElement>('#metrics-section')!
   
   try {
     const allEntries = await fetchChangelog()
@@ -78,6 +85,12 @@ async function initializeApp() {
     // Setup statistics dashboard
     const stats = calculateStatistics(allEntries)
     setupDashboard(dashboardContainer, stats)
+    
+    // Setup code metrics
+    const metricsSummary = getMetricsSummary(allEntries.length)
+    const metricsHistory = calculateHistoricalMetrics(allEntries.length)
+    const metricsInsights = getMetricsInsights(metricsSummary)
+    setupMetricsUI(metricsContainer, metricsSummary, metricsHistory, metricsInsights)
     
     // Setup impact graph
     setupImpactGraph(allEntries)
@@ -121,6 +134,7 @@ async function initializeApp() {
     timelineContainer.innerHTML = '<p class="error">Failed to load evolution history</p>'
     predictionContainer.innerHTML = '<p class="error">Failed to generate predictions</p>'
     achievementContainer.innerHTML = '<p class="error">Failed to load achievements</p>'
+    metricsContainer.innerHTML = '<p class="error">Failed to load metrics</p>'
     console.error('Error loading evolution data:', error)
   }
 }
