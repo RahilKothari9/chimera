@@ -182,7 +182,7 @@ function createMetricsChart(
   const yAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text')
   yAxisLabel.setAttribute('x', '10')
   yAxisLabel.setAttribute('y', '20')
-  yAxisLabel.setAttribute('fill', 'var(--text-color)')
+  yAxisLabel.setAttribute('fill', 'var(--color-text)')
   yAxisLabel.setAttribute('font-size', '12')
   yAxisLabel.textContent = metric === 'totalLines' ? 'Lines of Code' : 'Test Coverage %'
   svg.appendChild(yAxisLabel)
