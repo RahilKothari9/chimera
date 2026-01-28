@@ -23,6 +23,8 @@ export interface DependencyGraph {
 
 /**
  * Maps feature names to their categories based on keywords and patterns
+ * Note: Categories are checked in precedence order - first match wins.
+ * Visual/Graph keywords take precedence, followed by UI, then domain-specific categories.
  */
 export function categorizeFeature(name: string, description: string): string {
   const combined = `${name} ${description}`.toLowerCase()

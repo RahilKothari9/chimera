@@ -1567,7 +1567,6 @@ h1 {
 }
 
 .node-circle {
-  cursor: pointer;
   transition: all 0.2s ease;
 }
 

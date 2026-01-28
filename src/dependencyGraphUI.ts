@@ -161,6 +161,8 @@ export function setupDependencyGraphUI(container: HTMLElement, graph: Dependency
   svg.setAttribute('height', '600')
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`)
   svg.setAttribute('class', 'dependency-graph-svg')
+  svg.setAttribute('role', 'img')
+  svg.setAttribute('aria-label', 'Feature dependency graph showing relationships between Chimera features')
   
   // Calculate positions
   const positions = calculateNodePositions(graph, width, height)
@@ -177,7 +179,7 @@ export function setupDependencyGraphUI(container: HTMLElement, graph: Dependency
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
       path.setAttribute('d', generateDependencyPath(fromNode, toNode))
       path.setAttribute('stroke', getDependencyColor(dep.type))
-      path.setAttribute('stroke-width', String(dep.strength * 2))
+      path.setAttribute('stroke-width', String(Math.max(2, dep.strength * 3))) // Min 2px for visibility
       path.setAttribute('fill', 'none')
       path.setAttribute('opacity', '0.6')
       path.setAttribute('class', 'dependency-line')
@@ -229,17 +231,6 @@ export function setupDependencyGraphUI(container: HTMLElement, graph: Dependency
     const title = document.createElementNS('http://www.w3.org/2000/svg', 'title')
     title.textContent = `Day ${node.day}: ${node.name}\n${node.category}\n${node.date}`
     group.appendChild(title)
-    
-    // Hover effect
-    group.addEventListener('mouseenter', () => {
-      circle.setAttribute('r', '35')
-      circle.style.filter = 'brightness(1.2)'
-    })
-    
-    group.addEventListener('mouseleave', () => {
-      circle.setAttribute('r', '30')
-      circle.style.filter = 'brightness(1)'
-    })
     
     nodesGroup.appendChild(group)
   })
