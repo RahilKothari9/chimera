@@ -15,6 +15,8 @@ import { calculateAchievements } from './achievementSystem.ts'
 import { createAchievementUI } from './achievementUI.ts'
 import { getMetricsSummary, calculateHistoricalMetrics, getMetricsInsights } from './codeMetrics.ts'
 import { setupMetricsUI } from './metricsUI.ts'
+import { createDependencyGraph } from './dependencyGraph.ts'
+import { setupDependencyGraphUI } from './dependencyGraphUI.ts'
 
 // Initialize theme before rendering
 initializeTheme()
@@ -50,6 +52,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="export-section"></div>
     
+    <div id="dependency-graph-section">
+      <p class="loading">Building dependency graph...</p>
+    </div>
+    
     <div class="evolution-section">
       <h2 class="section-title">Evolution Timeline</h2>
       <div id="search-ui"></div>
@@ -77,6 +83,7 @@ async function initializeApp() {
   const exportContainer = document.querySelector<HTMLDivElement>('#export-section')!
   const achievementContainer = document.querySelector<HTMLDivElement>('#achievement-section')!
   const metricsContainer = document.querySelector<HTMLDivElement>('#metrics-section')!
+  const dependencyGraphContainer = document.querySelector<HTMLDivElement>('#dependency-graph-section')!
   
   try {
     const allEntries = await fetchChangelog()
@@ -109,6 +116,10 @@ async function initializeApp() {
     const exportUI = createExportUI(allEntries)
     exportContainer.appendChild(exportUI)
     
+    // Setup dependency graph
+    const dependencyGraph = createDependencyGraph(allEntries)
+    setupDependencyGraphUI(dependencyGraphContainer, dependencyGraph)
+    
     // Setup search UI
     const searchUI = createSearchUI({
       onSearchChange: (filters: SearchFilters) => {
@@ -135,6 +146,7 @@ async function initializeApp() {
     predictionContainer.innerHTML = '<p class="error">Failed to generate predictions</p>'
     achievementContainer.innerHTML = '<p class="error">Failed to load achievements</p>'
     metricsContainer.innerHTML = '<p class="error">Failed to load metrics</p>'
+    dependencyGraphContainer.innerHTML = '<p class="error">Failed to build dependency graph</p>'
     console.error('Error loading evolution data:', error)
   }
 }
