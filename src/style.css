@@ -1490,3 +1490,195 @@ h1 {
     padding: 1rem;
   }
 }
+
+/* Dependency Graph Styles */
+#dependency-graph-section {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: var(--color-background-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.dependency-graph-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.dependency-graph-header h2 {
+  font-size: 2.5em;
+  margin: 0.5em 0 0.3em;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dependency-graph-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.dependency-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.dependency-stats .stat-card {
+  background: var(--color-background-hover);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dependency-stats .stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.dependency-stats .stat-value {
+  font-size: 2em;
+  font-weight: bold;
+  color: var(--color-accent);
+  margin: 0;
+}
+
+.dependency-stats .stat-label {
+  color: var(--color-text-secondary);
+  font-size: 0.9em;
+  margin-top: 0.5rem;
+}
+
+.dependency-graph-container {
+  margin: 2rem 0;
+  background: var(--color-background-hover);
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+}
+
+.dependency-graph-svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.node-circle {
+  transition: all 0.2s ease;
+}
+
+.node-circle:hover {
+  filter: brightness(1.2);
+}
+
+.node-text {
+  pointer-events: none;
+  user-select: none;
+}
+
+.dependency-line {
+  transition: opacity 0.2s ease;
+}
+
+.dependency-line:hover {
+  opacity: 1 !important;
+  stroke-width: 3;
+}
+
+.dependency-legend {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--color-background-hover);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.dependency-legend h3 {
+  margin: 0 0 1rem 0;
+  color: var(--color-text);
+  font-size: 1.3em;
+}
+
+.dependency-legend h4 {
+  margin: 1rem 0 0.5rem 0;
+  color: var(--color-text-secondary);
+  font-size: 1em;
+}
+
+.legend-section {
+  margin-bottom: 1.5rem;
+}
+
+.legend-section:last-child {
+  margin-bottom: 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.5rem 0;
+  color: var(--color-text-secondary);
+}
+
+.legend-line {
+  width: 30px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.legend-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dependency-insights {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.dependency-insights h3 {
+  margin: 0 0 1rem 0;
+  color: var(--color-text);
+  font-size: 1.3em;
+}
+
+.dependency-insights p {
+  margin: 0.8rem 0;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.dependency-insights strong {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .dependency-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dependency-graph-container svg {
+    height: 400px;
+  }
+  
+  .dependency-legend {
+    padding: 1rem;
+  }
+  
+  .legend-item {
+    font-size: 0.9em;
+  }
+}
