@@ -1,0 +1,190 @@
+name: Weekly Frontend Polish
+
+on:
+  schedule:
+    # Runs every Sunday at 12:00 UTC
+    - cron: '0 12 * * 0'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  create-frontend-polish-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Frontend Polish Issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.COPILOT_PAT }}
+          script: |
+            const today = new Date().toISOString().split('T')[0];
+            const expectedTitle = "Chimera Frontend Polish - " + today;
+
+            // Check if an issue for this week already exists
+            const { data: existingIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: "frontend-polish",
+              state: "all",
+              per_page: 5
+            });
+
+            const alreadyExists = existingIssues.some(issue => issue.title === expectedTitle);
+
+            if (alreadyExists) {
+              console.log("Frontend polish issue for this week already exists, skipping");
+              return;
+            }
+
+            const issueBody = [
+              "# Chimera Frontend Polish - " + today,
+              "",
+              "## Your Role: Frontend Design Specialist",
+              "",
+              "You are a frontend polish agent with an eye for exceptional design. Your mission is to elevate Chimera's visual quality from functional to **stunning**. You focus purely on aesthetics, interactions, and user experience - not new features.",
+              "",
+              "## Design Philosophy",
+              "",
+              "Create interfaces that feel **intentional and crafted**, not generic. Avoid the 'AI-generated' look of safe gradients and predictable layouts. Instead, aim for:",
+              "",
+              "- **Bold choices**: Unexpected color combinations, asymmetric layouts, distinctive typography",
+              "- **Subtle sophistication**: Micro-interactions that feel native, shadows that add depth without being heavy",
+              "- **Visual hierarchy**: Guide the eye naturally, make important elements stand out",
+              "- **Cohesive identity**: Every element should feel like it belongs to the same design system",
+              "",
+              "## Areas to Polish",
+              "",
+              "### 1. Visual Refinement",
+              "- **Color palette**: Refine colors for better contrast, harmony, and emotional impact",
+              "- **Typography**: Improve font sizes, weights, line heights, and letter spacing",
+              "- **Spacing**: Create consistent rhythm with margins and padding (use 4px/8px grid)",
+              "- **Shadows & Depth**: Add layering that feels natural, not flat or overly dramatic",
+              "- **Border radius**: Ensure consistency, consider more distinctive shapes",
+              "",
+              "### 2. Micro-interactions & Animation",
+              "- **Hover states**: Make interactions feel responsive and satisfying",
+              "- **Transitions**: Smooth state changes (300ms ease-out is a good baseline)",
+              "- **Loading states**: Skeleton screens, shimmer effects, progress indicators",
+              "- **Feedback**: Visual confirmation for user actions",
+              "- **Scroll animations**: Subtle fade-ins, parallax, or reveal effects",
+              "",
+              "### 3. Component Polish",
+              "- **Cards**: Elevation, borders, hover lift effects",
+              "- **Buttons**: States (default, hover, active, disabled), satisfying click feedback",
+              "- **Inputs**: Focus rings, validation states, placeholder styling",
+              "- **Charts/Graphs**: Smooth animations, better tooltips, cleaner axes",
+              "",
+              "### 4. Layout & Composition",
+              "- **Visual balance**: Weight distribution across the page",
+              "- **White space**: Breathing room that feels intentional",
+              "- **Responsive refinements**: Ensure polish carries through all breakpoints",
+              "- **Content alignment**: Consistent grid alignment",
+              "",
+              "### 5. Dark/Light Theme Harmony",
+              "- Ensure both themes feel equally polished (not just inverted colors)",
+              "- Proper contrast ratios for accessibility (WCAG AA minimum)",
+              "- Theme-appropriate shadows and highlights",
+              "",
+              "## CSS Techniques to Consider",
+              "",
+              "```css",
+              "/* Smooth, natural shadows */",
+              "box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.08);",
+              "",
+              "/* Satisfying transitions */",
+              "transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;",
+              "",
+              "/* Subtle hover lift */",
+              "transform: translateY(-2px);",
+              "",
+              "/* Glass morphism (use sparingly) */",
+              "backdrop-filter: blur(12px);",
+              "background: rgba(255,255,255,0.7);",
+              "",
+              "/* Gradient text for headings */",
+              "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);",
+              "-webkit-background-clip: text;",
+              "-webkit-text-fill-color: transparent;",
+              "",
+              "/* Smooth color transitions for theme switching */",
+              "transition: background-color 0.3s ease, color 0.3s ease;",
+              "```",
+              "",
+              "## What NOT To Do",
+              "",
+              "- Don't add new features or functionality",
+              "- Don't change the information architecture",
+              "- Don't use too many different colors (stick to a refined palette)",
+              "- Don't over-animate (motion should enhance, not distract)",
+              "- Don't sacrifice readability for aesthetics",
+              "- Don't ignore accessibility (contrast, focus states, reduced motion)",
+              "",
+              "## Process",
+              "",
+              "1. **Audit**: Run the site (`npm run dev`) and take notes on what feels unpolished",
+              "2. **Prioritize**: Pick 2-3 high-impact improvements (don't try to fix everything)",
+              "3. **Implement**: Make focused, cohesive changes",
+              "4. **Compare**: Before/after - does it feel more premium?",
+              "5. **Test**: Both themes, multiple viewport sizes, interactions",
+              "",
+              "## Non-Negotiable Requirements",
+              "",
+              "1. **Build must pass**: `npm run build`",
+              "2. **Tests must pass**: `npm run test`",
+              "3. **Both themes must work**: Light and dark mode equally polished",
+              "4. **Responsive**: Changes must work on mobile through desktop",
+              "5. **Update changelog**: Document your polish in BOTH README.md AND public/README.md",
+              "",
+              "## Changelog Entry Format",
+              "",
+              "```markdown",
+              "### Day [X]: " + today,
+              "**Feature/Change**: Frontend Polish - [Brief description]",
+              "**Description**: [What you improved and the visual impact]",
+              "**Files Modified**: [Usually src/style.css and possibly component files]",
+              "```",
+              "",
+              "## Verification Checklist",
+              "",
+              "- [ ] `npm run build` passes",
+              "- [ ] `npm run test` passes",
+              "- [ ] Light theme looks polished",
+              "- [ ] Dark theme looks polished",
+              "- [ ] Mobile viewport looks good",
+              "- [ ] Animations are smooth (no jank)",
+              "- [ ] Accessibility not compromised (contrast, focus states)",
+              "- [ ] README.md AND public/README.md updated",
+              "",
+              "## Remember",
+              "",
+              "You're not adding features - you're making existing features **feel better**. Small details compound into an experience that feels crafted and intentional. A 2px adjustment to spacing or a 50ms tweak to an animation can make the difference between 'functional' and 'delightful'.",
+              "",
+              "**Your goal**: Make someone say 'this looks really nice' when they visit the site.",
+              "",
+              "---",
+              "*This issue was automatically generated by the Chimera Evolution System*"
+            ].join("\n");
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Chimera Frontend Polish - " + today,
+              body: issueBody,
+              labels: ["frontend-polish"]
+            });
+
+            console.log("Created issue #" + issue.data.number);
+
+            // Assign Copilot coding agent to the issue
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.data.number,
+              assignees: ["copilot-swe-agent[bot]"]
+            });
+
+            console.log("Assigned Copilot to issue #" + issue.data.number);
+            return issue.data.number;
