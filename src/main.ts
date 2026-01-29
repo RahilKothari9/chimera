@@ -17,6 +17,7 @@ import { getMetricsSummary, calculateHistoricalMetrics, getMetricsInsights } fro
 import { setupMetricsUI } from './metricsUI.ts'
 import { createDependencyGraph } from './dependencyGraph.ts'
 import { setupDependencyGraphUI } from './dependencyGraphUI.ts'
+import { createComparisonUI } from './comparisonUI.ts'
 
 // Initialize theme before rendering
 initializeTheme()
@@ -56,6 +57,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <p class="loading">Building dependency graph...</p>
     </div>
     
+    <div id="comparison-section">
+      <p class="loading">Preparing comparison tools...</p>
+    </div>
+    
     <div class="evolution-section">
       <h2 class="section-title">Evolution Timeline</h2>
       <div id="search-ui"></div>
@@ -84,6 +89,7 @@ async function initializeApp() {
   const achievementContainer = document.querySelector<HTMLDivElement>('#achievement-section')!
   const metricsContainer = document.querySelector<HTMLDivElement>('#metrics-section')!
   const dependencyGraphContainer = document.querySelector<HTMLDivElement>('#dependency-graph-section')!
+  const comparisonContainer = document.querySelector<HTMLDivElement>('#comparison-section')!
   
   try {
     const allEntries = await fetchChangelog()
@@ -120,6 +126,11 @@ async function initializeApp() {
     const dependencyGraph = createDependencyGraph(allEntries)
     setupDependencyGraphUI(dependencyGraphContainer, dependencyGraph)
     
+    // Setup comparison UI
+    const comparisonUI = createComparisonUI(allEntries)
+    comparisonContainer.innerHTML = ''
+    comparisonContainer.appendChild(comparisonUI)
+    
     // Setup search UI
     const searchUI = createSearchUI({
       onSearchChange: (filters: SearchFilters) => {
@@ -147,6 +158,7 @@ async function initializeApp() {
     achievementContainer.innerHTML = '<p class="error">Failed to load achievements</p>'
     metricsContainer.innerHTML = '<p class="error">Failed to load metrics</p>'
     dependencyGraphContainer.innerHTML = '<p class="error">Failed to build dependency graph</p>'
+    comparisonContainer.innerHTML = '<p class="error">Failed to load comparison tools</p>'
     console.error('Error loading evolution data:', error)
   }
 }

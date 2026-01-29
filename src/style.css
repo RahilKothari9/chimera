@@ -1682,3 +1682,336 @@ h1 {
     font-size: 0.9em;
   }
 }
+
+/* ===== Comparison Tool Styles ===== */
+.comparison-container {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: var(--color-background);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+
+.comparison-description {
+  color: var(--color-text-secondary);
+  margin: 0.5rem 0 1.5rem 0;
+  line-height: 1.6;
+}
+
+.comparison-mode-selector {
+  margin: 1rem 0 2rem 0;
+}
+
+.comparison-mode-selector label {
+  color: var(--color-text);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.comparison-mode-select {
+  padding: 0.6rem 1rem;
+  background: var(--color-background-hover);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.comparison-mode-select:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent);
+}
+
+.comparison-mode-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.period-selectors,
+.entry-selectors {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.period-selector,
+.entry-selector {
+  padding: 1rem;
+  background: var(--color-background-hover);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.period-selector label,
+.entry-selector label {
+  color: var(--color-text);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.period-select,
+.entry-select {
+  width: 100%;
+  padding: 0.6rem;
+  background: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.period-select:hover,
+.entry-select:hover {
+  border-color: var(--color-accent);
+}
+
+.period-select:focus,
+.entry-select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.comparison-button {
+  width: 100%;
+  margin: 1.5rem 0;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.comparison-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.comparison-button:active {
+  transform: translateY(0);
+}
+
+.comparison-results {
+  margin-top: 2rem;
+  min-height: 100px;
+}
+
+.metrics-grid,
+.entry-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.period-card,
+.entry-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.period-card h3,
+.entry-card h3 {
+  margin: 0 0 1rem 0;
+  color: var(--color-accent);
+  font-size: 1.2em;
+}
+
+.period-metrics,
+.entry-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.metric-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.metric-item:last-child {
+  border-bottom: none;
+}
+
+.metric-label {
+  color: var(--color-text-secondary);
+  font-size: 0.95em;
+}
+
+.metric-value {
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.metric-value.positive {
+  color: #10b981;
+}
+
+.metric-value.negative {
+  color: #ef4444;
+}
+
+.metric-value.neutral {
+  color: var(--color-text-secondary);
+}
+
+.differences-card,
+.entry-differences-card {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border-radius: 8px;
+  border: 2px dashed var(--color-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.differences-card h3,
+.entry-differences-card h3 {
+  margin: 0 0 1rem 0;
+  color: var(--color-accent);
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.differences-metrics,
+.entry-differences-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.category-comparison {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--color-background-hover);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.category-comparison h3 {
+  margin: 0 0 1.5rem 0;
+  color: var(--color-text);
+  font-size: 1.3em;
+}
+
+.category-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.category-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.category-label {
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+.category-bars {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.category-bar {
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.85em;
+  font-weight: 600;
+  min-width: 30px;
+  transition: all 0.3s ease;
+}
+
+.category-bar:hover {
+  transform: scaleX(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.category-bar.period1 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.category-bar.period2 {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.entry-detail {
+  color: var(--color-text-secondary);
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.entry-detail strong {
+  color: var(--color-text);
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+  .metrics-grid,
+  .entry-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .period-selectors,
+  .entry-selectors {
+    grid-template-columns: 1fr;
+  }
+  
+  .category-row {
+    grid-template-columns: 120px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .comparison-container {
+    padding: 1.5rem;
+  }
+  
+  .period-card,
+  .entry-card,
+  .differences-card,
+  .entry-differences-card {
+    padding: 1rem;
+  }
+  
+  .category-row {
+    grid-template-columns: 100px 1fr;
+    font-size: 0.9em;
+  }
+  
+  .category-bar {
+    font-size: 0.8em;
+    height: 20px;
+  }
+}
+
