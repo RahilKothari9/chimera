@@ -5,7 +5,9 @@ import {
   getPresetPeriods,
   type ComparisonMetrics,
   type EntryComparison,
-  type ComparisonPeriod
+  type ComparisonPeriod,
+  type PeriodMetrics,
+  type MetricDifferences
 } from './comparisonEngine'
 
 /**
@@ -195,7 +197,7 @@ function renderPeriodComparison(metrics: ComparisonMetrics): HTMLElement {
 /**
  * Render period metrics card
  */
-function renderPeriodCard(period: any): HTMLElement {
+function renderPeriodCard(period: PeriodMetrics): HTMLElement {
   const card = document.createElement('div')
   card.className = 'period-card'
   
@@ -239,7 +241,7 @@ function renderPeriodCard(period: any): HTMLElement {
 /**
  * Render differences card
  */
-function renderDifferencesCard(differences: any): HTMLElement {
+function renderDifferencesCard(differences: MetricDifferences): HTMLElement {
   const card = document.createElement('div')
   card.className = 'differences-card'
   
@@ -461,19 +463,34 @@ function renderEntryCard(entry: ChangelogEntry, title: string): HTMLElement {
   
   const dayLabel = document.createElement('div')
   dayLabel.className = 'entry-detail'
-  dayLabel.innerHTML = `<strong>Day:</strong> ${entry.day}`
+  const dayStrong = document.createElement('strong')
+  dayStrong.textContent = 'Day: '
+  dayLabel.appendChild(dayStrong)
+  dayLabel.appendChild(document.createTextNode(entry.day))
   
   const dateLabel = document.createElement('div')
   dateLabel.className = 'entry-detail'
-  dateLabel.innerHTML = `<strong>Date:</strong> ${entry.date}`
+  const dateStrong = document.createElement('strong')
+  dateStrong.textContent = 'Date: '
+  dateLabel.appendChild(dateStrong)
+  dateLabel.appendChild(document.createTextNode(entry.date))
   
   const featureLabel = document.createElement('div')
   featureLabel.className = 'entry-detail'
-  featureLabel.innerHTML = `<strong>Feature:</strong> ${entry.feature}`
+  const featureStrong = document.createElement('strong')
+  featureStrong.textContent = 'Feature: '
+  featureLabel.appendChild(featureStrong)
+  featureLabel.appendChild(document.createTextNode(entry.feature))
   
   const descLabel = document.createElement('div')
   descLabel.className = 'entry-detail'
-  descLabel.innerHTML = `<strong>Description:</strong> ${entry.description.substring(0, 100)}...`
+  const descStrong = document.createElement('strong')
+  descStrong.textContent = 'Description: '
+  descLabel.appendChild(descStrong)
+  const truncatedDesc = entry.description.length > 100 
+    ? entry.description.substring(0, 100) + '...'
+    : entry.description
+  descLabel.appendChild(document.createTextNode(truncatedDesc))
   
   details.appendChild(dayLabel)
   details.appendChild(dateLabel)
@@ -489,7 +506,7 @@ function renderEntryCard(entry: ChangelogEntry, title: string): HTMLElement {
 /**
  * Render entry differences card
  */
-function renderEntryDifferencesCard(differences: any): HTMLElement {
+function renderEntryDifferencesCard(differences: EntryComparison['differences']): HTMLElement {
   const card = document.createElement('div')
   card.className = 'entry-differences-card'
   
