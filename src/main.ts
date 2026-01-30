@@ -18,6 +18,8 @@ import { setupMetricsUI } from './metricsUI.ts'
 import { createDependencyGraph } from './dependencyGraph.ts'
 import { setupDependencyGraphUI } from './dependencyGraphUI.ts'
 import { createComparisonUI } from './comparisonUI.ts'
+import { getStateFromURL, updateURLState } from './urlStateManager.ts'
+import { setupShareButton } from './shareableLinksUI.ts'
 
 // Initialize theme before rendering
 initializeTheme()
@@ -79,6 +81,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 const themeToggle = createThemeToggle()
 document.body.appendChild(themeToggle)
 
+// Setup shareable links button
+setupShareButton()
+
 // Load and display the evolution data
 async function initializeApp() {
   const dashboardContainer = document.querySelector<HTMLDivElement>('#dashboard')!
@@ -90,6 +95,9 @@ async function initializeApp() {
   const metricsContainer = document.querySelector<HTMLDivElement>('#metrics-section')!
   const dependencyGraphContainer = document.querySelector<HTMLDivElement>('#dependency-graph-section')!
   const comparisonContainer = document.querySelector<HTMLDivElement>('#comparison-section')!
+  
+  // Get initial state from URL
+  const urlState = getStateFromURL()
   
   try {
     const allEntries = await fetchChangelog()
@@ -131,7 +139,12 @@ async function initializeApp() {
     comparisonContainer.innerHTML = ''
     comparisonContainer.appendChild(comparisonUI)
     
-    // Setup search UI
+    // Setup search UI with URL state integration
+    const initialFilters: SearchFilters = {
+      searchTerm: urlState.searchQuery || '',
+      category: urlState.searchCategory || 'all',
+    }
+    
     const searchUI = createSearchUI({
       onSearchChange: (filters: SearchFilters) => {
         // Filter entries based on search criteria
@@ -142,11 +155,24 @@ async function initializeApp() {
         
         // Update results counter
         updateResultsCounter(searchUI, filteredEntries.length, allEntries.length)
-      }
+        
+        // Update URL state
+        updateURLState({
+          searchQuery: filters.searchTerm,
+          searchCategory: filters.category !== 'all' ? filters.category : undefined,
+        })
+      },
+      initialQuery: initialFilters.searchTerm,
+      initialCategory: initialFilters.category,
     })
     searchContainer.appendChild(searchUI)
     
-    // Setup initial timeline with all entries
+    // Apply initial filters from URL
+    if (urlState.searchQuery || urlState.searchCategory) {
+      filteredEntries = filterEntries(allEntries, initialFilters)
+    }
+    
+    // Setup initial timeline with filtered entries
     setupTimeline(timelineContainer, filteredEntries)
     
     // Initialize results counter
