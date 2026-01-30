@@ -3,6 +3,8 @@ import type { SearchFilters } from './search';
 
 export interface SearchUICallbacks {
   onSearchChange: (filters: SearchFilters) => void;
+  initialQuery?: string;
+  initialCategory?: string;
 }
 
 /**
@@ -18,6 +20,7 @@ export function createSearchUI(callbacks: SearchUICallbacks): HTMLElement {
   searchInput.className = 'search-input';
   searchInput.placeholder = '🔍 Search evolutions...';
   searchInput.setAttribute('aria-label', 'Search evolutions');
+  searchInput.value = callbacks.initialQuery || '';
 
   // Category filter dropdown
   const categorySelect = document.createElement('select');
@@ -29,6 +32,9 @@ export function createSearchUI(callbacks: SearchUICallbacks): HTMLElement {
     const option = document.createElement('option');
     option.value = value;
     option.textContent = label;
+    if (value === callbacks.initialCategory) {
+      option.selected = true;
+    }
     categorySelect.appendChild(option);
   });
 
