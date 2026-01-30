@@ -21,14 +21,24 @@ export function getStateFromURL(): URLState {
   const params = new URLSearchParams(window.location.search)
   const state: URLState = {}
 
-  if (params.has('q')) state.searchQuery = params.get('q')!
-  if (params.has('cat')) state.searchCategory = params.get('cat')!
-  if (params.has('theme')) state.theme = params.get('theme') as URLState['theme']
-  if (params.has('view')) state.view = params.get('view')!
-  if (params.has('day')) state.evolutionDay = parseInt(params.get('day')!, 10)
-  if (params.has('cmp')) state.comparisonMode = params.get('cmp')!
-  if (params.has('p1')) state.comparisonPeriod1 = params.get('p1')!
-  if (params.has('p2')) state.comparisonPeriod2 = params.get('p2')!
+  if (params.has('q')) state.searchQuery = params.get('q') ?? undefined
+  if (params.has('cat')) state.searchCategory = params.get('cat') ?? undefined
+  if (params.has('theme')) {
+    const theme = params.get('theme')
+    if (theme === 'light' || theme === 'dark' || theme === 'auto') {
+      state.theme = theme
+    }
+  }
+  if (params.has('view')) state.view = params.get('view') ?? undefined
+  if (params.has('day')) {
+    const day = parseInt(params.get('day')!, 10)
+    if (!isNaN(day)) {
+      state.evolutionDay = day
+    }
+  }
+  if (params.has('cmp')) state.comparisonMode = params.get('cmp') ?? undefined
+  if (params.has('p1')) state.comparisonPeriod1 = params.get('p1') ?? undefined
+  if (params.has('p2')) state.comparisonPeriod2 = params.get('p2') ?? undefined
 
   return state
 }
@@ -104,7 +114,7 @@ export async function copyURLToClipboard(url: string): Promise<boolean> {
       await navigator.clipboard.writeText(url)
       return true
     } else {
-      // Fallback for older browsers
+      // Fallback for older browsers using deprecated execCommand API
       const textarea = document.createElement('textarea')
       textarea.value = url
       textarea.style.position = 'fixed'

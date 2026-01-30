@@ -40,13 +40,23 @@ export function createShareButton(container: HTMLElement): void {
  * Open share modal with options
  */
 function openShareModal(): void {
+  // Prevent multiple modals
+  const existingModal = document.querySelector('.share-modal')
+  if (existingModal) {
+    document.body.removeChild(existingModal)
+  }
+
   const modal = document.createElement('div')
   modal.className = 'share-modal'
+  modal.setAttribute('role', 'dialog')
+  modal.setAttribute('aria-modal', 'true')
+  modal.setAttribute('aria-labelledby', 'share-modal-title')
+  
   modal.innerHTML = `
     <div class="share-modal-content">
       <div class="share-modal-header">
-        <h3>Share Chimera</h3>
-        <button class="share-modal-close">&times;</button>
+        <h3 id="share-modal-title">Share Chimera</h3>
+        <button class="share-modal-close" aria-label="Close share modal">&times;</button>
       </div>
       <div class="share-modal-body">
         <div class="share-current">
@@ -81,27 +91,46 @@ function openShareModal(): void {
 
   // Copy button
   const copyButton = modal.querySelector('.share-copy-button') as HTMLButtonElement
-  copyButton.addEventListener('click', async () => {
+  const copyHandler = async () => {
     const success = await copyURLToClipboard(currentURL)
     if (success) {
       showCopyFeedback(copyButton, 'Copied!')
     } else {
       showCopyFeedback(copyButton, 'Failed', true)
     }
-  })
+  }
+  copyButton.addEventListener('click', copyHandler)
 
   // Close button
   const closeButton = modal.querySelector('.share-modal-close') as HTMLButtonElement
-  closeButton.addEventListener('click', () => {
-    document.body.removeChild(modal)
-  })
+  const closeHandler = () => {
+    closeModal(modal)
+  }
+  closeButton.addEventListener('click', closeHandler)
 
   // Close on backdrop click
-  modal.addEventListener('click', (e) => {
+  const backdropHandler = (e: Event) => {
     if (e.target === modal) {
-      document.body.removeChild(modal)
+      closeModal(modal)
     }
-  })
+  }
+  modal.addEventListener('click', backdropHandler)
+
+  // Close on Escape key
+  const escapeHandler = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      closeModal(modal)
+    }
+  }
+  document.addEventListener('keydown', escapeHandler)
+
+  // Store handlers for cleanup
+  ;(modal as any)._handlers = {
+    copyHandler,
+    closeHandler,
+    backdropHandler,
+    escapeHandler,
+  }
 
   // Add preset options
   addPresetOptions(modal)
@@ -109,6 +138,20 @@ function openShareModal(): void {
   // Focus input for easy copying
   urlInput.select()
 }
+
+/**
+ * Close modal and cleanup event listeners
+ */
+function closeModal(modal: HTMLElement): void {
+  const handlers = (modal as any)._handlers
+  if (handlers) {
+    document.removeEventListener('keydown', handlers.escapeHandler)
+  }
+  document.body.removeChild(modal)
+}
+
+// Feedback duration constant
+const COPY_FEEDBACK_DURATION_MS = 2000
 
 /**
  * Add preset share options to modal
@@ -123,7 +166,7 @@ function addPresetOptions(modal: HTMLElement): void {
     {
       label: 'Latest Evolution',
       description: 'Jump to the most recent evolution',
-      state: { view: 'timeline', evolutionDay: 11 },
+      state: { view: 'timeline', evolutionDay: 11 }, // TODO: Dynamically determine latest day
     },
     {
       label: 'Dark Theme',
@@ -155,30 +198,41 @@ function addPresetOptions(modal: HTMLElement): void {
     
     const url = generateShareableURL(preset.state)
     
-    presetItem.innerHTML = `
-      <div class="share-preset-info">
-        <strong>${preset.label}</strong>
-        <p>${preset.description}</p>
-      </div>
-      <button class="share-preset-copy" data-url="${url}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-        </svg>
-        Copy Link
-      </button>
+    // Create elements safely without innerHTML to prevent XSS
+    const presetInfo = document.createElement('div')
+    presetInfo.className = 'share-preset-info'
+    
+    const label = document.createElement('strong')
+    label.textContent = preset.label
+    
+    const description = document.createElement('p')
+    description.textContent = preset.description
+    
+    presetInfo.appendChild(label)
+    presetInfo.appendChild(description)
+    
+    const copyBtn = document.createElement('button')
+    copyBtn.className = 'share-preset-copy'
+    copyBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      Copy Link
     `
 
-    const copyBtn = presetItem.querySelector('.share-preset-copy') as HTMLButtonElement
-    copyBtn.addEventListener('click', async () => {
+    const copyHandler = async () => {
       const success = await copyURLToClipboard(url)
       if (success) {
         showCopyFeedback(copyBtn, 'Copied!')
       } else {
         showCopyFeedback(copyBtn, 'Failed', true)
       }
-    })
+    }
+    copyBtn.addEventListener('click', copyHandler)
 
+    presetItem.appendChild(presetInfo)
+    presetItem.appendChild(copyBtn)
     presetList.appendChild(presetItem)
   })
 }
@@ -196,7 +250,7 @@ function showCopyFeedback(button: HTMLButtonElement, message: string, isError = 
     button.innerHTML = originalHTML
     button.classList.remove('error', 'success')
     button.disabled = false
-  }, 2000)
+  }, COPY_FEEDBACK_DURATION_MS)
 }
 
 /**

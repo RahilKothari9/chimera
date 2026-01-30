@@ -18,6 +18,12 @@
   --color-description: #aaa;
   --color-white: #fff;
   --color-error: #ff6b6b;
+  --color-success: #4caf50;
+  
+  /* Z-index layers */
+  --z-index-share-button: 1000;
+  --z-index-theme-toggle: 1000;
+  --z-index-modal: 2000;
   
   color-scheme: dark;
   color: var(--color-text);
@@ -44,6 +50,7 @@
   --color-description: #666;
   --color-white: #213547;
   --color-error: #d32f2f;
+  --color-success: #2e7d32;
   
   color-scheme: light;
   color: var(--color-text);
@@ -2020,7 +2027,7 @@ h1 {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  z-index: 1000;
+  z-index: var(--z-index-share-button);
 }
 
 .share-button {
@@ -2068,7 +2075,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: var(--z-index-modal);
   padding: 1rem;
   animation: fadeIn 0.2s ease;
 }
@@ -2205,7 +2212,7 @@ h1 {
 }
 
 .share-copy-button.success {
-  background: #4caf50;
+  background: var(--color-success);
 }
 
 .share-copy-button.error {
@@ -2293,7 +2300,7 @@ h1 {
 }
 
 .share-preset-copy.success {
-  background: #4caf50;
+  background: var(--color-success);
 }
 
 .share-preset-copy.error {
