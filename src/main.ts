@@ -9,7 +9,7 @@ import { setupImpactGraph } from './impactGraphUI.ts'
 import { generatePredictions } from './predictionEngine.ts'
 import { setupPredictionUI } from './predictionUI.ts'
 import { createExportUI } from './exportUI.ts'
-import { initializeTheme } from './themeSystem.ts'
+import { initializeTheme, toggleTheme } from './themeSystem.ts'
 import { createThemeToggle } from './themeToggle.ts'
 import { calculateAchievements } from './achievementSystem.ts'
 import { createAchievementUI } from './achievementUI.ts'
@@ -20,9 +20,16 @@ import { setupDependencyGraphUI } from './dependencyGraphUI.ts'
 import { createComparisonUI } from './comparisonUI.ts'
 import { getStateFromURL, updateURLState } from './urlStateManager.ts'
 import { setupShareButton } from './shareableLinksUI.ts'
+import { getGlobalRegistry, initializeKeyboardShortcuts } from './keyboardShortcuts.ts'
+import { showCommandPalette } from './commandPalette.ts'
+import { showHelpModal } from './helpModal.ts'
 
 // Initialize theme before rendering
 initializeTheme()
+
+// Initialize keyboard shortcuts
+const shortcutRegistry = getGlobalRegistry()
+initializeKeyboardShortcuts(shortcutRegistry)
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -83,6 +90,155 @@ document.body.appendChild(themeToggle)
 
 // Setup shareable links button
 setupShareButton()
+
+// Register all keyboard shortcuts
+function registerKeyboardShortcuts(searchUI: HTMLElement) {
+  const registry = getGlobalRegistry()
+  
+  // Command Palette (Ctrl+K or /)
+  registry.addShortcut({
+    id: 'open-command-palette',
+    name: 'Open Command Palette',
+    description: 'Quick access to all commands and features',
+    keys: ['ctrl+k', '/'],
+    category: 'search',
+    handler: () => {
+      showCommandPalette({ registry })
+    },
+  })
+  
+  // Help Modal (?)
+  registry.addShortcut({
+    id: 'show-help',
+    name: 'Show Keyboard Shortcuts',
+    description: 'Display all available keyboard shortcuts',
+    keys: ['shift+/'],
+    category: 'actions',
+    handler: () => {
+      showHelpModal({ registry })
+    },
+  })
+  
+  // Navigation shortcuts
+  registry.addShortcut({
+    id: 'nav-dashboard',
+    name: 'Go to Dashboard',
+    description: 'Scroll to the statistics dashboard',
+    keys: ['g+d', 'ctrl+1'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#dashboard')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-metrics',
+    name: 'Go to Metrics',
+    description: 'Scroll to the code metrics section',
+    keys: ['g+m', 'ctrl+2'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#metrics-section')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-achievements',
+    name: 'Go to Achievements',
+    description: 'Scroll to the achievements section',
+    keys: ['g+a', 'ctrl+3'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#achievement-section')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-predictions',
+    name: 'Go to Predictions',
+    description: 'Scroll to the predictions section',
+    keys: ['g+p', 'ctrl+4'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#prediction-section')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-timeline',
+    name: 'Go to Timeline',
+    description: 'Scroll to the evolution timeline',
+    keys: ['g+t', 'ctrl+5'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#timeline')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-top',
+    name: 'Go to Top',
+    description: 'Scroll to the top of the page',
+    keys: ['g+g'],
+    category: 'navigation',
+    handler: () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-bottom',
+    name: 'Go to Bottom',
+    description: 'Scroll to the bottom of the page',
+    keys: ['shift+g'],
+    category: 'navigation',
+    handler: () => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+    },
+  })
+  
+  // Action shortcuts
+  registry.addShortcut({
+    id: 'toggle-theme',
+    name: 'Toggle Theme',
+    description: 'Switch between light and dark mode',
+    keys: ['ctrl+shift+t'],
+    category: 'view',
+    handler: () => {
+      toggleTheme()
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'focus-search',
+    name: 'Focus Search',
+    description: 'Focus the search input',
+    keys: ['s'],
+    category: 'search',
+    handler: () => {
+      const searchInput = searchUI.querySelector('input')
+      if (searchInput) {
+        searchInput.focus()
+        searchInput.select()
+      }
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'clear-search',
+    name: 'Clear Search',
+    description: 'Clear search filters',
+    keys: ['escape'],
+    category: 'search',
+    handler: () => {
+      const searchInput = searchUI.querySelector('input') as HTMLInputElement
+      if (searchInput && searchInput.value) {
+        searchInput.value = ''
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }))
+      }
+    },
+  })
+}
 
 // Load and display the evolution data
 async function initializeApp() {
@@ -177,6 +333,9 @@ async function initializeApp() {
     
     // Initialize results counter
     updateResultsCounter(searchUI, filteredEntries.length, allEntries.length)
+    
+    // Register keyboard shortcuts
+    registerKeyboardShortcuts(searchUI)
   } catch (error) {
     dashboardContainer.innerHTML = '<p class="error">Failed to load statistics</p>'
     timelineContainer.innerHTML = '<p class="error">Failed to load evolution history</p>'
