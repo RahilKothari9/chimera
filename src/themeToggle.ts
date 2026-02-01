@@ -1,5 +1,6 @@
 // Theme Toggle UI Component
 import { toggleTheme, getCurrentTheme, getEffectiveTheme } from './themeSystem'
+import { notificationManager } from './notificationSystem'
 
 /**
  * Creates a theme toggle button that allows users to switch between light and dark modes
@@ -34,6 +35,11 @@ export function createThemeToggle(): HTMLElement {
   button.addEventListener('click', () => {
     toggleTheme()
     updateButton()
+    
+    // Show notification
+    const effective = getEffectiveTheme(getCurrentTheme())
+    const themeName = effective === 'dark' ? 'Dark' : 'Light'
+    notificationManager.success(`${themeName} mode activated`, 2000)
     
     // Dispatch custom event for other components to listen to
     window.dispatchEvent(new CustomEvent('themechange', {
