@@ -4,6 +4,7 @@
  */
 
 import { generateShareableURL, copyURLToClipboard, type URLState } from './urlStateManager'
+import { notificationManager } from './notificationSystem'
 
 export interface ShareOption {
   label: string
@@ -95,8 +96,10 @@ function openShareModal(): void {
     const success = await copyURLToClipboard(currentURL)
     if (success) {
       showCopyFeedback(copyButton, 'Copied!')
+      notificationManager.success('URL copied to clipboard')
     } else {
       showCopyFeedback(copyButton, 'Failed', true)
+      notificationManager.error('Failed to copy URL')
     }
   }
   copyButton.addEventListener('click', copyHandler)
@@ -225,8 +228,10 @@ function addPresetOptions(modal: HTMLElement): void {
       const success = await copyURLToClipboard(url)
       if (success) {
         showCopyFeedback(copyBtn, 'Copied!')
+        notificationManager.success('Quick link copied to clipboard')
       } else {
         showCopyFeedback(copyBtn, 'Failed', true)
+        notificationManager.error('Failed to copy quick link')
       }
     }
     copyBtn.addEventListener('click', copyHandler)

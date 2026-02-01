@@ -1,5 +1,6 @@
 import type { ChangelogEntry } from './changelogParser';
 import { exportEvolutionData, downloadExport, type ExportFormat } from './exportData';
+import { notificationManager } from './notificationSystem';
 
 /**
  * Creates the export UI component
@@ -77,6 +78,9 @@ export function createExportUI(entries: ChangelogEntry[]): HTMLElement {
 
       downloadExport(result);
 
+      // Show notification
+      notificationManager.success(`Successfully exported ${entries.length} entries as ${format.toUpperCase()}`);
+
       statusMessage.textContent = `✓ Successfully exported ${entries.length} entries as ${format.toUpperCase()}`;
       statusMessage.className = 'export-status export-status-success';
       statusMessage.style.display = 'block';
@@ -85,7 +89,11 @@ export function createExportUI(entries: ChangelogEntry[]): HTMLElement {
         statusMessage.style.display = 'none';
       }, 5000);
     } catch (error) {
-      statusMessage.textContent = `✗ Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      // Show error notification
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      notificationManager.error(`Export failed: ${errorMsg}`);
+
+      statusMessage.textContent = `✗ Export failed: ${errorMsg}`;
       statusMessage.className = 'export-status export-status-error';
       statusMessage.style.display = 'block';
     }

@@ -23,6 +23,10 @@ import { setupShareButton } from './shareableLinksUI.ts'
 import { getGlobalRegistry, initializeKeyboardShortcuts } from './keyboardShortcuts.ts'
 import { showCommandPalette } from './commandPalette.ts'
 import { showHelpModal } from './helpModal.ts'
+import { initNotificationUI } from './notificationUI.ts'
+
+// Initialize notification system
+initNotificationUI()
 
 // Initialize theme before rendering
 initializeTheme()
