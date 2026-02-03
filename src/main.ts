@@ -24,6 +24,7 @@ import { getGlobalRegistry, initializeKeyboardShortcuts } from './keyboardShortc
 import { showCommandPalette } from './commandPalette.ts'
 import { showHelpModal } from './helpModal.ts'
 import { initNotificationUI } from './notificationUI.ts'
+import { setupPerformanceUI } from './performanceUI.ts'
 
 // Initialize notification system
 initNotificationUI()
@@ -54,6 +55,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="metrics-section">
       <p class="loading">Analyzing codebase metrics...</p>
+    </div>
+    
+    <div id="performance-section">
+      <p class="loading">Collecting performance metrics...</p>
     </div>
     
     <div id="achievement-section">
@@ -143,6 +148,17 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'navigation',
     handler: () => {
       document.querySelector('#metrics-section')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-performance',
+    name: 'Go to Performance',
+    description: 'Scroll to the performance monitoring section',
+    keys: ['g+e'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#performance-section')?.scrollIntoView({ behavior: 'smooth' })
     },
   })
   
@@ -253,6 +269,7 @@ async function initializeApp() {
   const exportContainer = document.querySelector<HTMLDivElement>('#export-section')!
   const achievementContainer = document.querySelector<HTMLDivElement>('#achievement-section')!
   const metricsContainer = document.querySelector<HTMLDivElement>('#metrics-section')!
+  const performanceContainer = document.querySelector<HTMLDivElement>('#performance-section')!
   const dependencyGraphContainer = document.querySelector<HTMLDivElement>('#dependency-graph-section')!
   const comparisonContainer = document.querySelector<HTMLDivElement>('#comparison-section')!
   
@@ -272,6 +289,10 @@ async function initializeApp() {
     const metricsHistory = calculateHistoricalMetrics(allEntries.length)
     const metricsInsights = getMetricsInsights(metricsSummary)
     setupMetricsUI(metricsContainer, metricsSummary, metricsHistory, metricsInsights)
+    
+    // Setup performance monitoring
+    performanceContainer.innerHTML = ''
+    setupPerformanceUI(performanceContainer, allEntries.length)
     
     // Setup impact graph
     setupImpactGraph(allEntries)
