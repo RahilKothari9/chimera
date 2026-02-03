@@ -24,6 +24,11 @@ import { getGlobalRegistry, initializeKeyboardShortcuts } from './keyboardShortc
 import { showCommandPalette } from './commandPalette.ts'
 import { showHelpModal } from './helpModal.ts'
 import { initNotificationUI } from './notificationUI.ts'
+import { getAccessibilityManager } from './accessibility.ts'
+import { initializeHighContrastToggle } from './highContrastToggle.ts'
+
+// Initialize accessibility features
+const accessibilityManager = getAccessibilityManager()
 
 // Initialize notification system
 initNotificationUI()
@@ -45,39 +50,39 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       </p>
     </div>
     
-    <div class="dashboard-section">
+    <div class="dashboard-section" id="dashboard-section">
       <h2 class="section-title">Evolution Statistics</h2>
-      <div id="dashboard" class="dashboard-container">
+      <div id="dashboard" class="dashboard-container" role="region" aria-label="Evolution statistics">
         <p class="loading">Loading statistics...</p>
       </div>
     </div>
     
-    <div id="metrics-section">
+    <div id="metrics-section" role="region" aria-label="Code metrics">
       <p class="loading">Analyzing codebase metrics...</p>
     </div>
     
-    <div id="achievement-section">
+    <div id="achievement-section" role="region" aria-label="Achievements">
       <p class="loading">Loading achievements...</p>
     </div>
     
-    <div id="prediction-section">
+    <div id="prediction-section" role="region" aria-label="Evolution predictions">
       <p class="loading">Analyzing patterns and generating predictions...</p>
     </div>
     
     <div id="export-section"></div>
     
-    <div id="dependency-graph-section">
+    <div id="dependency-graph-section" role="region" aria-label="Feature dependency graph">
       <p class="loading">Building dependency graph...</p>
     </div>
     
-    <div id="comparison-section">
+    <div id="comparison-section" role="region" aria-label="Evolution comparison">
       <p class="loading">Preparing comparison tools...</p>
     </div>
     
     <div class="evolution-section">
-      <h2 class="section-title">Evolution Timeline</h2>
+      <h2 class="section-title" id="timeline">Evolution Timeline</h2>
       <div id="search-ui"></div>
-      <div id="timeline" class="timeline-container">
+      <div id="timeline-content" class="timeline-container" role="region" aria-label="Evolution timeline">
         <p class="loading">Loading evolution history...</p>
       </div>
     </div>
@@ -91,6 +96,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 // Add theme toggle to the page
 const themeToggle = createThemeToggle()
 document.body.appendChild(themeToggle)
+
+// Add high contrast toggle to the page
+initializeHighContrastToggle()
 
 // Setup shareable links button
 setupShareButton()
@@ -132,6 +140,7 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'navigation',
     handler: () => {
       document.querySelector('#dashboard')?.scrollIntoView({ behavior: 'smooth' })
+      accessibilityManager.announce('Navigated to dashboard')
     },
   })
   
@@ -143,6 +152,7 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'navigation',
     handler: () => {
       document.querySelector('#metrics-section')?.scrollIntoView({ behavior: 'smooth' })
+      accessibilityManager.announce('Navigated to metrics')
     },
   })
   
@@ -154,6 +164,7 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'navigation',
     handler: () => {
       document.querySelector('#achievement-section')?.scrollIntoView({ behavior: 'smooth' })
+      accessibilityManager.announce('Navigated to achievements')
     },
   })
   
@@ -165,6 +176,7 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'navigation',
     handler: () => {
       document.querySelector('#prediction-section')?.scrollIntoView({ behavior: 'smooth' })
+      accessibilityManager.announce('Navigated to predictions')
     },
   })
   
@@ -175,7 +187,8 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     keys: ['g+t', 'ctrl+5'],
     category: 'navigation',
     handler: () => {
-      document.querySelector('#timeline')?.scrollIntoView({ behavior: 'smooth' })
+      document.querySelector('#timeline-content')?.scrollIntoView({ behavior: 'smooth' })
+      accessibilityManager.announce('Navigated to timeline')
     },
   })
   
@@ -247,7 +260,7 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
 // Load and display the evolution data
 async function initializeApp() {
   const dashboardContainer = document.querySelector<HTMLDivElement>('#dashboard')!
-  const timelineContainer = document.querySelector<HTMLDivElement>('#timeline')!
+  const timelineContainer = document.querySelector<HTMLDivElement>('#timeline-content')!
   const searchContainer = document.querySelector<HTMLDivElement>('#search-ui')!
   const predictionContainer = document.querySelector<HTMLDivElement>('#prediction-section')!
   const exportContainer = document.querySelector<HTMLDivElement>('#export-section')!
@@ -262,6 +275,9 @@ async function initializeApp() {
   try {
     const allEntries = await fetchChangelog()
     let filteredEntries = allEntries
+    
+    // Announce loading completion
+    accessibilityManager.announce(`Loaded ${allEntries.length} evolution entries`)
     
     // Setup statistics dashboard
     const stats = calculateStatistics(allEntries)
@@ -316,6 +332,11 @@ async function initializeApp() {
         // Update results counter
         updateResultsCounter(searchUI, filteredEntries.length, allEntries.length)
         
+        // Announce filter results
+        accessibilityManager.announce(
+          `Showing ${filteredEntries.length} of ${allEntries.length} entries`
+        )
+        
         // Update URL state
         updateURLState({
           searchQuery: filters.searchTerm,
@@ -340,6 +361,9 @@ async function initializeApp() {
     
     // Register keyboard shortcuts
     registerKeyboardShortcuts(searchUI)
+    
+    // Announce page load complete
+    accessibilityManager.announce('Chimera dashboard loaded successfully')
   } catch (error) {
     dashboardContainer.innerHTML = '<p class="error">Failed to load statistics</p>'
     timelineContainer.innerHTML = '<p class="error">Failed to load evolution history</p>'
@@ -348,6 +372,7 @@ async function initializeApp() {
     metricsContainer.innerHTML = '<p class="error">Failed to load metrics</p>'
     dependencyGraphContainer.innerHTML = '<p class="error">Failed to build dependency graph</p>'
     comparisonContainer.innerHTML = '<p class="error">Failed to load comparison tools</p>'
+    accessibilityManager.announce('Error loading data', 'assertive')
     console.error('Error loading evolution data:', error)
   }
 }

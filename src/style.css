@@ -151,7 +151,6 @@ h1 {
   font-weight: 800;
   line-height: 1.1;
 }
-}
 
 .chimera-subtitle {
   font-size: 1.3em;
@@ -2977,6 +2976,186 @@ h1 {
 
   .notification {
     min-width: auto;
+  }
+}
+
+/* ============================================
+   Accessibility Styles
+   ============================================ */
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip navigation links */
+.skip-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  padding: 1rem 1.5rem;
+  background: var(--color-accent);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 8px 0;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-base) var(--ease-out);
+}
+
+.skip-link:focus {
+  left: 0;
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Focus visible styles (modern browsers) */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* High contrast mode support */
+.high-contrast {
+  --color-text: #ffffff;
+  --color-text-secondary: #e0e0e0;
+  --color-text-tertiary: #c0c0c0;
+  --color-background: #000000;
+  --color-background-secondary: #1a1a1a;
+  --color-background-hover: #2a2a2a;
+  --color-border: #ffffff;
+  --color-accent: #00ffff;
+  --color-accent-secondary: #00cccc;
+  --color-subtitle: #ffffff;
+  --color-description: #e0e0e0;
+}
+
+.high-contrast .card,
+.high-contrast .stat-card,
+.high-contrast .timeline-entry,
+.high-contrast .achievement-card,
+.high-contrast button,
+.high-contrast input,
+.high-contrast select {
+  border: 2px solid var(--color-border);
+}
+
+.high-contrast .skip-link:focus {
+  outline: 4px solid #ffff00;
+  background: #000000;
+  color: #ffff00;
+}
+
+/* Keyboard navigation indicators */
+.keyboard-user *:focus {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Improved button accessibility */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button[aria-pressed="true"] {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* ARIA live region styling */
+[role="status"],
+[role="alert"] {
+  position: absolute;
+  left: -9999px;
+}
+
+/* Ensure interactive elements have sufficient size (WCAG 2.1 Level AAA) */
+button,
+a,
+input,
+select,
+textarea {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Exception for inline links */
+p a,
+li a {
+  min-height: auto;
+  min-width: auto;
+}
+
+/* Improve reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast toggle button */
+.high-contrast-toggle {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-index-theme-toggle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  transition: all var(--transition-base) var(--ease-out);
+}
+
+.high-contrast-toggle:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: var(--shadow-xl);
+  filter: brightness(1.1);
+}
+
+.high-contrast-toggle:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .high-contrast-toggle {
+    bottom: 80px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
   }
 }
 
