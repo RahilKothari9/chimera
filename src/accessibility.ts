@@ -89,7 +89,7 @@ export class AccessibilityManager {
     const skipNav = document.createElement('div');
     skipNav.className = 'skip-navigation';
     skipNav.innerHTML = `
-      <a href="#main-content" class="skip-link">Skip to main content</a>
+      <a href="#app" class="skip-link">Skip to main content</a>
       <a href="#dashboard" class="skip-link">Skip to dashboard</a>
       <a href="#timeline" class="skip-link">Skip to timeline</a>
     `;
@@ -132,11 +132,11 @@ export class AccessibilityManager {
    * Add ARIA labels to common elements
    */
   private addARIALabels(): void {
-    // Add role to main content
+    // Add role to main content (but don't change the id)
     const app = document.querySelector('#app');
     if (app) {
       app.setAttribute('role', 'main');
-      app.setAttribute('id', 'main-content');
+      // Don't change the id - keep it as "app"
     }
 
     // Add navigation role to search

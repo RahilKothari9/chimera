@@ -51,9 +51,9 @@ describe('AccessibilityManager', () => {
       
       const app = document.querySelector('#app');
       if (app) {
-        // Only test if app exists
+        // Should have role set but keep original id
         expect(app.getAttribute('role')).toBe('main');
-        expect(app.id).toBe('main-content');
+        expect(app.id).toBe('app'); // Should still be 'app', not changed to 'main-content'
       } else {
         // App element doesn't exist in test, which is fine
         expect(app).toBeFalsy();
