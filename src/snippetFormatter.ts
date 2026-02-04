@@ -2,7 +2,7 @@
  * Snippet Formatter - Formats evolution entries into various shareable formats
  */
 
-import type { EvolutionEntry } from './changelogParser'
+import type { EvolutionEntry } from './changelogParser';
 
 export type SnippetFormat = 'markdown' | 'plain' | 'json' | 'html'
 
