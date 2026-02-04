@@ -6,6 +6,14 @@ export interface ChangelogEntry {
   filesModified: string;
 }
 
+export interface EvolutionEntry {
+  date: string;
+  day: number;
+  feature: string;
+  description: string;
+  files: string[];
+}
+
 /**
  * Parses the README changelog section and extracts evolution entries
  */

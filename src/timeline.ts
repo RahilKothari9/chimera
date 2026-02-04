@@ -1,4 +1,6 @@
 import type { ChangelogEntry } from './changelogParser';
+import { addSnippetCopyToTimelineEntry } from './snippetCopyUI';
+import type { EvolutionEntry } from './changelogParser';
 
 /**
  * Creates a timeline element for a single changelog entry
@@ -27,6 +29,16 @@ function createTimelineEntry(entry: ChangelogEntry): HTMLElement {
   container.appendChild(featureEl);
   container.appendChild(descEl);
   container.appendChild(filesEl);
+  
+  // Add snippet copy functionality
+  const evolutionEntry: EvolutionEntry = {
+    day: parseInt(entry.day, 10),
+    date: entry.date,
+    feature: entry.feature,
+    description: entry.description,
+    files: entry.filesModified ? entry.filesModified.split(', ').map(f => f.trim()) : [],
+  };
+  addSnippetCopyToTimelineEntry(container, evolutionEntry);
   
   return container;
 }
