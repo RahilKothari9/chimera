@@ -25,6 +25,7 @@ import { showCommandPalette } from './commandPalette.ts'
 import { showHelpModal } from './helpModal.ts'
 import { initNotificationUI } from './notificationUI.ts'
 import { setupPerformanceUI } from './performanceUI.ts'
+import { createVotingDashboard } from './votingUI.ts'
 
 // Initialize notification system
 initNotificationUI()
@@ -77,6 +78,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="comparison-section">
       <p class="loading">Preparing comparison tools...</p>
+    </div>
+    
+    <div id="voting-section">
+      <p class="loading">Loading community engagement...</p>
     </div>
     
     <div class="evolution-section">
@@ -272,6 +277,7 @@ async function initializeApp() {
   const performanceContainer = document.querySelector<HTMLDivElement>('#performance-section')!
   const dependencyGraphContainer = document.querySelector<HTMLDivElement>('#dependency-graph-section')!
   const comparisonContainer = document.querySelector<HTMLDivElement>('#comparison-section')!
+  const votingContainer = document.querySelector<HTMLDivElement>('#voting-section')!
   
   // Get initial state from URL
   const urlState = getStateFromURL()
@@ -319,6 +325,11 @@ async function initializeApp() {
     const comparisonUI = createComparisonUI(allEntries)
     comparisonContainer.innerHTML = ''
     comparisonContainer.appendChild(comparisonUI)
+    
+    // Setup voting dashboard
+    const votingDashboard = createVotingDashboard()
+    votingContainer.innerHTML = ''
+    votingContainer.appendChild(votingDashboard)
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
@@ -369,6 +380,7 @@ async function initializeApp() {
     metricsContainer.innerHTML = '<p class="error">Failed to load metrics</p>'
     dependencyGraphContainer.innerHTML = '<p class="error">Failed to build dependency graph</p>'
     comparisonContainer.innerHTML = '<p class="error">Failed to load comparison tools</p>'
+    votingContainer.innerHTML = '<p class="error">Failed to load voting dashboard</p>'
     console.error('Error loading evolution data:', error)
   }
 }

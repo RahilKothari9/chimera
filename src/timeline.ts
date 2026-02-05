@@ -1,6 +1,7 @@
 import type { ChangelogEntry } from './changelogParser';
 import { addSnippetCopyToTimelineEntry } from './snippetCopyUI';
 import type { EvolutionEntry } from './changelogParser';
+import { createVotingButton } from './votingUI';
 
 /**
  * Creates a timeline element for a single changelog entry
@@ -39,6 +40,10 @@ function createTimelineEntry(entry: ChangelogEntry): HTMLElement {
     files: entry.filesModified ? entry.filesModified.split(', ').map(f => f.trim()) : [],
   };
   addSnippetCopyToTimelineEntry(container, evolutionEntry);
+  
+  // Add voting buttons
+  const votingButtons = createVotingButton(evolutionEntry.day);
+  container.appendChild(votingButtons);
   
   return container;
 }
