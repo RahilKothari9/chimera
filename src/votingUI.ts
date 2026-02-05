@@ -53,6 +53,7 @@ export function createVotingButton(evolutionDay: number): HTMLElement {
   // Handle upvote
   upvoteBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    const currentVote = votingSystem.getVote(evolutionDay);
     const newVote = currentVote === 'up' ? null : 'up';
     votingSystem.vote(evolutionDay, newVote);
     
@@ -66,6 +67,7 @@ export function createVotingButton(evolutionDay: number): HTMLElement {
   // Handle downvote
   downvoteBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    const currentVote = votingSystem.getVote(evolutionDay);
     const newVote = currentVote === 'down' ? null : 'down';
     votingSystem.vote(evolutionDay, newVote);
     
