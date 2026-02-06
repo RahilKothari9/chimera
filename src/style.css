@@ -3800,4 +3800,290 @@ h1 {
   }
 }
 
+/* Evolution Tree Styles */
+.evolution-tree-container {
+  margin: 48px 0;
+}
+
+.evolution-tree-header {
+  margin-bottom: 24px;
+}
+
+.evolution-tree-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.evolution-tree-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.evolution-tree-filter {
+  padding: 10px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.evolution-tree-filter:hover {
+  border-color: var(--color-accent);
+  background: var(--color-bg-light);
+}
+
+.evolution-tree-filter:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.evolution-tree-zoom-fit {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.evolution-tree-zoom-fit:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.evolution-tree-description {
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.evolution-tree-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.evolution-tree-stat {
+  flex: 1;
+  min-width: 140px;
+  padding: 16px 20px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.evolution-tree-stat:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+.evolution-tree-stat-label {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.evolution-tree-stat-value {
+  color: var(--color-accent);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.evolution-tree-svg-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  max-height: 600px;
+}
+
+.evolution-tree-svg {
+  width: 100%;
+  height: auto;
+  min-height: 400px;
+}
+
+.evolution-tree-connection {
+  fill: none;
+  stroke-width: 2;
+  stroke-opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.evolution-tree-connection:hover {
+  stroke-opacity: 0.7;
+  stroke-width: 3;
+}
+
+.evolution-tree-connection.highlighted {
+  stroke-opacity: 0.9;
+  stroke-width: 4;
+}
+
+.evolution-tree-connection.filtered-out {
+  stroke-opacity: 0.05;
+}
+
+.evolution-tree-node {
+  transition: all 0.3s ease;
+}
+
+.evolution-tree-node:hover .evolution-tree-node-bg {
+  filter: brightness(1.2);
+  stroke: white;
+  stroke-width: 2;
+}
+
+.evolution-tree-node.highlighted .evolution-tree-node-bg {
+  filter: brightness(1.3);
+  stroke: white;
+  stroke-width: 3;
+}
+
+.evolution-tree-node.filtered-out {
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.evolution-tree-node-bg {
+  fill-opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.evolution-tree-category-badge {
+  fill: rgba(255, 255, 255, 0.8);
+}
+
+.evolution-tree-day {
+  fill: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.evolution-tree-feature {
+  fill: white;
+  font-size: 13px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.evolution-tree-category {
+  fill: rgba(255, 255, 255, 0.6);
+  font-size: 10px;
+  font-weight: 500;
+  text-anchor: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.evolution-tree-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.evolution-tree-legend-title {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.evolution-tree-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.evolution-tree-legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* Light theme adjustments */
+[data-theme="light"] .evolution-tree-svg-container {
+  background: var(--color-white);
+}
+
+[data-theme="light"] .evolution-tree-stat {
+  background: var(--color-bg-light);
+}
+
+[data-theme="light"] .evolution-tree-filter {
+  background: var(--color-white);
+}
+
+[data-theme="light"] .evolution-tree-legend {
+  background: var(--color-bg-light);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .evolution-tree-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .evolution-tree-controls {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .evolution-tree-filter,
+  .evolution-tree-zoom-fit {
+    width: 100%;
+  }
+  
+  .evolution-tree-stats {
+    flex-direction: column;
+  }
+  
+  .evolution-tree-stat {
+    min-width: unset;
+  }
+  
+  .evolution-tree-svg-container {
+    padding: 16px;
+    max-height: 500px;
+  }
+}
+
 
