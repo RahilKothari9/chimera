@@ -26,6 +26,7 @@ import { showHelpModal } from './helpModal.ts'
 import { initNotificationUI } from './notificationUI.ts'
 import { setupPerformanceUI } from './performanceUI.ts'
 import { createVotingDashboard } from './votingUI.ts'
+import { createEvolutionTreeUI } from './evolutionTreeUI.ts'
 
 // Initialize notification system
 initNotificationUI()
@@ -82,6 +83,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="voting-section">
       <p class="loading">Loading community engagement...</p>
+    </div>
+    
+    <div id="evolution-tree-section">
+      <p class="loading">Building evolution tree...</p>
     </div>
     
     <div class="evolution-section">
@@ -190,10 +195,21 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-evolution-tree',
+    name: 'Go to Evolution Tree',
+    description: 'Scroll to the evolution tree visualization',
+    keys: ['g+v', 'ctrl+6'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#evolution-tree-section')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
-    keys: ['g+t', 'ctrl+5'],
+    keys: ['g+t', 'ctrl+7'],
     category: 'navigation',
     handler: () => {
       document.querySelector('#timeline')?.scrollIntoView({ behavior: 'smooth' })
@@ -278,6 +294,7 @@ async function initializeApp() {
   const dependencyGraphContainer = document.querySelector<HTMLDivElement>('#dependency-graph-section')!
   const comparisonContainer = document.querySelector<HTMLDivElement>('#comparison-section')!
   const votingContainer = document.querySelector<HTMLDivElement>('#voting-section')!
+  const evolutionTreeContainer = document.querySelector<HTMLDivElement>('#evolution-tree-section')!
   
   // Get initial state from URL
   const urlState = getStateFromURL()
@@ -331,6 +348,11 @@ async function initializeApp() {
     votingContainer.innerHTML = ''
     votingContainer.appendChild(votingDashboard)
     
+    // Setup evolution tree
+    const evolutionTreeUI = createEvolutionTreeUI(allEntries)
+    evolutionTreeContainer.innerHTML = ''
+    evolutionTreeContainer.appendChild(evolutionTreeUI)
+    
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
       searchTerm: urlState.searchQuery || '',
@@ -381,6 +403,7 @@ async function initializeApp() {
     dependencyGraphContainer.innerHTML = '<p class="error">Failed to build dependency graph</p>'
     comparisonContainer.innerHTML = '<p class="error">Failed to load comparison tools</p>'
     votingContainer.innerHTML = '<p class="error">Failed to load voting dashboard</p>'
+    evolutionTreeContainer.innerHTML = '<p class="error">Failed to build evolution tree</p>'
     console.error('Error loading evolution data:', error)
   }
 }
