@@ -27,9 +27,14 @@ import { initNotificationUI } from './notificationUI.ts'
 import { setupPerformanceUI } from './performanceUI.ts'
 import { createVotingDashboard } from './votingUI.ts'
 import { createEvolutionTreeUI } from './evolutionTreeUI.ts'
+import { createActivityFeedUI, setupTimeUpdates } from './activityFeedUI.ts'
+import { initializeActivityFeed, trackActivity } from './activityFeed.ts'
 
 // Initialize notification system
 initNotificationUI()
+
+// Initialize activity feed
+initializeActivityFeed()
 
 // Initialize theme before rendering
 initializeTheme()
@@ -87,6 +92,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="evolution-tree-section">
       <p class="loading">Building evolution tree...</p>
+    </div>
+    
+    <div id="activity-feed-section">
+      <p class="loading">Loading activity feed...</p>
     </div>
     
     <div class="evolution-section">
@@ -147,6 +156,7 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'navigation',
     handler: () => {
       document.querySelector('#dashboard')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Dashboard', 'Used keyboard shortcut')
     },
   })
   
@@ -206,10 +216,22 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-activity-feed',
+    name: 'Go to Activity Feed',
+    description: 'Scroll to the activity feed section',
+    keys: ['g+f', 'ctrl+7'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#activity-feed-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Activity Feed', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
-    keys: ['g+t', 'ctrl+7'],
+    keys: ['g+t', 'ctrl+8'],
     category: 'navigation',
     handler: () => {
       document.querySelector('#timeline')?.scrollIntoView({ behavior: 'smooth' })
@@ -295,6 +317,7 @@ async function initializeApp() {
   const comparisonContainer = document.querySelector<HTMLDivElement>('#comparison-section')!
   const votingContainer = document.querySelector<HTMLDivElement>('#voting-section')!
   const evolutionTreeContainer = document.querySelector<HTMLDivElement>('#evolution-tree-section')!
+  const activityFeedContainer = document.querySelector<HTMLDivElement>('#activity-feed-section')!
   
   // Get initial state from URL
   const urlState = getStateFromURL()
@@ -353,6 +376,12 @@ async function initializeApp() {
     evolutionTreeContainer.innerHTML = ''
     evolutionTreeContainer.appendChild(evolutionTreeUI)
     
+    // Setup activity feed
+    const activityFeedUI = createActivityFeedUI()
+    activityFeedContainer.innerHTML = ''
+    activityFeedContainer.appendChild(activityFeedUI)
+    setupTimeUpdates()
+    
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
       searchTerm: urlState.searchQuery || '',
@@ -375,6 +404,16 @@ async function initializeApp() {
           searchQuery: filters.searchTerm,
           searchCategory: filters.category !== 'all' ? filters.category : undefined,
         })
+        
+        // Track search activity
+        if (filters.searchTerm || filters.category !== 'all') {
+          trackActivity(
+            'search',
+            'Searched evolutions',
+            `Found ${filteredEntries.length} results${filters.searchTerm ? ` for "${filters.searchTerm}"` : ''}${filters.category !== 'all' ? ` in ${filters.category}` : ''}`,
+            { query: filters.searchTerm, category: filters.category, results: filteredEntries.length }
+          )
+        }
       },
       initialQuery: initialFilters.searchTerm,
       initialCategory: initialFilters.category,
