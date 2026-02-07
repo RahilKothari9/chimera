@@ -4,7 +4,12 @@ import { trackActivity, clearActivities } from './activityFeed'
 
 // Mock the notification system
 vi.mock('./notificationSystem', () => ({
-  showNotification: vi.fn(),
+  notificationManager: {
+    info: vi.fn(),
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+  },
 }))
 
 describe('Activity Feed UI', () => {
