@@ -73,7 +73,7 @@ export function trackActivity(
   metadata?: Record<string, unknown>
 ): void {
   const activity: Activity = {
-    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
     type,
     title,
     description,
