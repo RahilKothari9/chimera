@@ -123,6 +123,12 @@ export function initNotificationUI(): void {
   notificationManager.subscribe(notifications => {
     renderNotifications(notifications);
   });
+  
+  // Listen for custom notification events (from backup UI and other features)
+  window.addEventListener('chimera-notification', ((event: CustomEvent) => {
+    const { message, type } = event.detail;
+    notificationManager.show(message, type);
+  }) as EventListener);
 }
 
 /**
