@@ -29,6 +29,7 @@ import { createVotingDashboard } from './votingUI.ts'
 import { createEvolutionTreeUI } from './evolutionTreeUI.ts'
 import { createActivityFeedUI, setupTimeUpdates } from './activityFeedUI.ts'
 import { initializeActivityFeed, trackActivity } from './activityFeed.ts'
+import { createDataBackupUI } from './dataBackupUI.ts'
 
 // Initialize notification system
 initNotificationUI()
@@ -96,6 +97,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="activity-feed-section">
       <p class="loading">Loading activity feed...</p>
+    </div>
+    
+    <div id="backup-section">
+      <p class="loading">Loading backup system...</p>
     </div>
     
     <div class="evolution-section">
@@ -228,10 +233,22 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-backup',
+    name: 'Go to Backup',
+    description: 'Scroll to the data backup section',
+    keys: ['g+b', 'ctrl+9'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#backup-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Backup', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
-    keys: ['g+t', 'ctrl+8'],
+    keys: ['g+t', 'ctrl+0'],
     category: 'navigation',
     handler: () => {
       document.querySelector('#timeline')?.scrollIntoView({ behavior: 'smooth' })
@@ -318,6 +335,7 @@ async function initializeApp() {
   const votingContainer = document.querySelector<HTMLDivElement>('#voting-section')!
   const evolutionTreeContainer = document.querySelector<HTMLDivElement>('#evolution-tree-section')!
   const activityFeedContainer = document.querySelector<HTMLDivElement>('#activity-feed-section')!
+  const backupContainer = document.querySelector<HTMLDivElement>('#backup-section')!
   
   // Get initial state from URL
   const urlState = getStateFromURL()
@@ -381,6 +399,21 @@ async function initializeApp() {
     activityFeedContainer.innerHTML = ''
     activityFeedContainer.appendChild(activityFeedUI)
     setupTimeUpdates()
+    
+    // Setup backup UI
+    backupContainer.innerHTML = ''
+    createDataBackupUI({
+      container: backupContainer,
+      onBackupCreated: () => {
+        trackActivity('backup', 'Created backup', 'Auto-backup completed')
+      },
+      onDataRestored: () => {
+        trackActivity('backup', 'Restored data', 'Data restored from backup')
+      },
+      onDataCleared: () => {
+        trackActivity('backup', 'Cleared data', 'All data cleared')
+      },
+    })
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

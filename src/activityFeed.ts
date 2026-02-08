@@ -16,6 +16,7 @@ export type ActivityType =
   | 'share'
   | 'achievement_unlock'
   | 'section_view'
+  | 'backup'
 
 export interface Activity {
   id: string
@@ -105,6 +106,7 @@ function getActivityIcon(type: ActivityType): string {
     share: '🔗',
     achievement_unlock: '🏆',
     section_view: '📊',
+    backup: '💾',
   }
   return icons[type] || '•'
 }
