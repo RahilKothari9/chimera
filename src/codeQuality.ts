@@ -5,6 +5,10 @@
  * code complexity, file sizes, and technical debt indicators.
  */
 
+// Constants for file size estimation heuristic
+const BASE_FILE_SIZE = 150 // Base average file size in lines (starting point)
+const FILE_GROWTH_PER_FEATURE = 8 // Lines added per feature on average
+
 export interface CodeQualityMetrics {
   testCoverage: {
     totalTests: number
@@ -229,7 +233,7 @@ export function generateCodeQualityMetrics(
   
   // Estimate average file size based on evolution count
   // More features typically means larger files
-  const avgFileSize = 150 + (evolutionCount * 8)
+  const avgFileSize = BASE_FILE_SIZE + (evolutionCount * FILE_GROWTH_PER_FEATURE)
   
   // Analyze code health
   const codeHealth = analyzeCodeHealth(sourceFiles, avgFileSize, evolutionCount)

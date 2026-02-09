@@ -377,10 +377,11 @@ async function initializeApp() {
     setupPerformanceUI(performanceContainer, allEntries.length)
     
     // Setup code quality dashboard
-    // Count test files (files ending with .test.ts)
-    const testFiles = 43 // Current count based on repository
-    const sourceFiles = 43 // Current count of non-test TypeScript files
-    const totalTests = 919 // Current test count
+    // Note: These values are hardcoded because we don't have access to the file system
+    // to dynamically count test files. Update these values manually as the codebase evolves.
+    const testFiles = 45 // Current count of test files (*.test.ts)
+    const sourceFiles = 45 // Current count of source files (non-test TypeScript files)
+    const totalTests = 981 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
