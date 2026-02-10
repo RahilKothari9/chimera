@@ -30,6 +30,7 @@ import { createEvolutionTreeUI } from './evolutionTreeUI.ts'
 import { createActivityFeedUI, setupTimeUpdates } from './activityFeedUI.ts'
 import { initializeActivityFeed, trackActivity } from './activityFeed.ts'
 import { createDataBackupUI } from './dataBackupUI.ts'
+import { setupCodeQualityDashboard } from './codeQualityUI.ts'
 import { accessibilityManager } from './accessibilitySystem.ts'
 import { AccessibilityDashboardUI } from './accessibilityUI.ts'
 
@@ -72,6 +73,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="performance-section">
       <p class="loading">Collecting performance metrics...</p>
+    </div>
+    
+    <div id="code-quality-section">
+      <p class="loading">Analyzing code quality...</p>
     </div>
     
     <div id="achievement-section">
@@ -193,6 +198,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'navigation',
     handler: () => {
       document.querySelector('#performance-section')?.scrollIntoView({ behavior: 'smooth' })
+    },
+  })
+  
+  registry.addShortcut({
+    id: 'nav-code-quality',
+    name: 'Go to Code Quality',
+    description: 'Scroll to the code quality dashboard',
+    keys: ['g+q', 'ctrl+8'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#code-quality-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Code Quality', 'Used keyboard shortcut')
     },
   })
   
@@ -351,6 +368,7 @@ async function initializeApp() {
   const achievementContainer = document.querySelector<HTMLDivElement>('#achievement-section')!
   const metricsContainer = document.querySelector<HTMLDivElement>('#metrics-section')!
   const performanceContainer = document.querySelector<HTMLDivElement>('#performance-section')!
+  const codeQualityContainer = document.querySelector<HTMLDivElement>('#code-quality-section')!
   const dependencyGraphContainer = document.querySelector<HTMLDivElement>('#dependency-graph-section')!
   const comparisonContainer = document.querySelector<HTMLDivElement>('#comparison-section')!
   const votingContainer = document.querySelector<HTMLDivElement>('#voting-section')!
@@ -379,6 +397,15 @@ async function initializeApp() {
     // Setup performance monitoring
     performanceContainer.innerHTML = ''
     setupPerformanceUI(performanceContainer, allEntries.length)
+    
+    // Setup code quality dashboard
+    // Note: These values are hardcoded because we don't have access to the file system
+    // to dynamically count test files. Update these values manually as the codebase evolves.
+    const testFiles = 45 // Current count of test files (*.test.ts)
+    const sourceFiles = 45 // Current count of source files (non-test TypeScript files)
+    const totalTests = 981 // Current test count (update after adding new tests)
+    codeQualityContainer.innerHTML = ''
+    setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
     // Setup impact graph
     setupImpactGraph(allEntries)
