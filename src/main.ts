@@ -30,6 +30,11 @@ import { createEvolutionTreeUI } from './evolutionTreeUI.ts'
 import { createActivityFeedUI, setupTimeUpdates } from './activityFeedUI.ts'
 import { initializeActivityFeed, trackActivity } from './activityFeed.ts'
 import { createDataBackupUI } from './dataBackupUI.ts'
+import { accessibilityManager } from './accessibilitySystem.ts'
+import { AccessibilityDashboardUI } from './accessibilityUI.ts'
+
+// Initialize accessibility features
+accessibilityManager.initialize()
 
 // Initialize notification system
 initNotificationUI()
@@ -103,7 +108,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <p class="loading">Loading backup system...</p>
     </div>
     
-    <div class="evolution-section">
+    <div id="accessibility-section-container">
+      <p class="loading">Loading accessibility system...</p>
+    </div>
+    
+    <div class="evolution-section" id="main-content" tabindex="-1">
       <h2 class="section-title">Evolution Timeline</h2>
       <div id="search-ui"></div>
       <div id="timeline" class="timeline-container">
@@ -245,6 +254,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-accessibility',
+    name: 'Go to Accessibility',
+    description: 'Scroll to the accessibility section',
+    keys: ['g+x', 'ctrl+8'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#accessibility-section-container')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Accessibility', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -336,6 +357,7 @@ async function initializeApp() {
   const evolutionTreeContainer = document.querySelector<HTMLDivElement>('#evolution-tree-section')!
   const activityFeedContainer = document.querySelector<HTMLDivElement>('#activity-feed-section')!
   const backupContainer = document.querySelector<HTMLDivElement>('#backup-section')!
+  const accessibilityContainer = document.querySelector<HTMLDivElement>('#accessibility-section-container')!
   
   // Get initial state from URL
   const urlState = getStateFromURL()
@@ -414,6 +436,12 @@ async function initializeApp() {
         trackActivity('backup', 'Cleared data', 'All data cleared')
       },
     })
+    
+    // Setup accessibility dashboard
+    const accessibilityUI = new AccessibilityDashboardUI()
+    accessibilityContainer.innerHTML = ''
+    accessibilityUI.render(accessibilityContainer)
+    trackActivity('page_view', 'Loaded accessibility system', 'Accessibility features initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
