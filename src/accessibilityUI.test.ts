@@ -164,7 +164,7 @@ describe('Accessibility Dashboard UI', () => {
 
       expect(showSpy).toHaveBeenCalledWith(
         expect.stringContaining('Running'),
-        'info'
+        { type: 'info' }
       );
     });
 
@@ -205,7 +205,7 @@ describe('Accessibility Dashboard UI', () => {
 
       expect(showSpy).toHaveBeenCalledWith(
         expect.stringContaining('complete'),
-        expect.any(String)
+        expect.objectContaining({ type: expect.any(String) })
       );
     });
   });
@@ -480,7 +480,7 @@ describe('Accessibility Dashboard UI', () => {
 
       expect(showSpy).toHaveBeenCalledWith(
         expect.stringContaining('Announcement sent'),
-        'success'
+        { type: 'success' }
       );
     });
   });
