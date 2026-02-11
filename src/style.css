@@ -5052,6 +5052,8 @@ h1 {
 
 .debt-level-high {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.1));
+}
+
 /* ========================================
    ACCESSIBILITY SYSTEM
    Screen reader support, skip links, focus states, audit results
@@ -5386,6 +5388,9 @@ body.keyboard-nav textarea:focus {
   
   .quality-card-value {
     font-size: 2rem;
+  }
+}
+
 .severity-badge.severity-serious {
   background: rgba(245, 158, 11, 0.1);
   color: #f59e0b;
