@@ -17,6 +17,10 @@ export type ActivityType =
   | 'achievement_unlock'
   | 'section_view'
   | 'backup'
+  | 'code_execution'
+  | 'snippet_save'
+  | 'snippet_load'
+  | 'snippet_delete'
 
 export interface Activity {
   id: string
@@ -107,6 +111,10 @@ function getActivityIcon(type: ActivityType): string {
     achievement_unlock: '🏆',
     section_view: '📊',
     backup: '💾',
+    code_execution: '▶️',
+    snippet_save: '💾',
+    snippet_load: '📂',
+    snippet_delete: '🗑️',
   }
   return icons[type] || '•'
 }

@@ -33,6 +33,7 @@ import { createDataBackupUI } from './dataBackupUI.ts'
 import { setupCodeQualityDashboard } from './codeQualityUI.ts'
 import { accessibilityManager } from './accessibilitySystem.ts'
 import { AccessibilityDashboardUI } from './accessibilityUI.ts'
+import { createCodePlaygroundUI } from './codePlaygroundUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -115,6 +116,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="accessibility-section-container">
       <p class="loading">Loading accessibility system...</p>
+    </div>
+    
+    <div id="playground-section">
+      <p class="loading">Loading code playground...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -283,6 +288,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-playground',
+    name: 'Go to Code Playground',
+    description: 'Scroll to the interactive code playground',
+    keys: ['g+c'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#playground-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Playground', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -376,6 +393,7 @@ async function initializeApp() {
   const activityFeedContainer = document.querySelector<HTMLDivElement>('#activity-feed-section')!
   const backupContainer = document.querySelector<HTMLDivElement>('#backup-section')!
   const accessibilityContainer = document.querySelector<HTMLDivElement>('#accessibility-section-container')!
+  const playgroundContainer = document.querySelector<HTMLDivElement>('#playground-section')!
   
   // Get initial state from URL
   const urlState = getStateFromURL()
@@ -469,6 +487,12 @@ async function initializeApp() {
     accessibilityContainer.innerHTML = ''
     accessibilityUI.render(accessibilityContainer)
     trackActivity('page_view', 'Loaded accessibility system', 'Accessibility features initialized')
+    
+    // Setup code playground
+    const playgroundUI = createCodePlaygroundUI()
+    playgroundContainer.innerHTML = ''
+    playgroundContainer.appendChild(playgroundUI)
+    trackActivity('page_view', 'Loaded code playground', 'Interactive code playground initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

@@ -5484,3 +5484,371 @@ body.keyboard-nav textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* ========================================
+   CODE PLAYGROUND
+   Interactive code editor with execution and output
+   ======================================== */
+
+.playground-container {
+  margin-bottom: 3rem;
+}
+
+.playground-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.playground-title-section {
+  flex: 1;
+}
+
+.playground-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.25rem;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.playground-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.playground-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.playground-editor-section {
+  background: var(--color-background-secondary);
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.playground-editor-section:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.playground-snippet-name {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.playground-snippet-name:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
+}
+
+.playground-editor-wrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  background: var(--color-background);
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.playground-line-numbers {
+  padding: 1rem 0.5rem;
+  background: var(--color-background-secondary);
+  color: var(--color-text-secondary);
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: right;
+  user-select: none;
+  overflow: hidden;
+  white-space: pre;
+  min-width: 3rem;
+}
+
+.playground-code-editor {
+  flex: 1;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 200px;
+  max-height: 500px;
+  overflow-y: auto;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+
+.playground-code-editor:focus {
+  outline: none;
+}
+
+.playground-code-editor::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.playground-run-btn {
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s ease;
+}
+
+.playground-run-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+  filter: brightness(1.1);
+}
+
+.playground-run-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.playground-output-section {
+  background: var(--color-background-secondary);
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.playground-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.playground-output-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.playground-output {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 150px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.playground-output-line {
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(102, 126, 234, 0.05);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 4px;
+}
+
+.playground-output-error {
+  color: var(--color-error);
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--color-error);
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.playground-output-empty {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.playground-output-info {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.playground-snippets-section {
+  background: var(--color-background-secondary);
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.playground-snippets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.playground-snippets-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.playground-snippets-count {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  background: var(--color-background);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.playground-snippets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.playground-snippets-empty {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.playground-snippet-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  gap: 1rem;
+}
+
+.playground-snippet-item:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+  transform: translateX(4px);
+}
+
+.playground-snippet-item.active {
+  border-color: var(--color-accent);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(237, 100, 166, 0.05));
+}
+
+.playground-snippet-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.playground-snippet-name {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+  word-break: break-word;
+}
+
+.playground-snippet-meta {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.playground-snippet-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Responsive Design for Code Playground */
+@media (max-width: 768px) {
+  .playground-header {
+    flex-direction: column;
+  }
+
+  .playground-actions {
+    width: 100%;
+  }
+
+  .playground-actions .btn {
+    flex: 1;
+  }
+
+  .playground-code-editor {
+    font-size: 0.8125rem;
+  }
+
+  .playground-output {
+    font-size: 0.8125rem;
+  }
+
+  .playground-snippet-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .playground-snippet-actions {
+    width: 100%;
+  }
+
+  .playground-snippet-actions .btn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .playground-title {
+    font-size: 1.5rem;
+  }
+
+  .playground-editor-section {
+    padding: 1rem;
+  }
+
+  .playground-output-section {
+    padding: 1rem;
+  }
+
+  .playground-snippets-section {
+    padding: 1rem;
+  }
+}
