@@ -166,7 +166,7 @@ export function clearAllSnippets(): boolean {
  * Generate a unique ID
  */
 function generateId(): string {
-  return `snippet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  return `snippet_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`
 }
 
 /**
