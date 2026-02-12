@@ -10,8 +10,10 @@ import {
   updateSnippet,
   deleteSnippet,
   getExampleSnippets,
+  getLanguageInfo,
   type PlaygroundSnippet,
   type ExecutionResult,
+  type SupportedLanguage,
 } from './codePlayground'
 import { notificationManager } from './notificationSystem'
 import { trackActivity } from './activityFeed'
@@ -28,6 +30,7 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
   container.className = 'playground-container'
 
   let currentSnippet: PlaygroundSnippet | null = null
+  let currentLanguage: SupportedLanguage = 'javascript'
   let isDirty = false
 
   // Create header
@@ -36,13 +39,29 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
   header.innerHTML = `
     <div class="playground-title-section">
       <h3 class="playground-title">🎮 Code Playground</h3>
-      <p class="playground-subtitle">Experiment with JavaScript code snippets</p>
+      <p class="playground-subtitle">Experiment with multiple programming languages</p>
     </div>
     <div class="playground-actions">
       <button class="btn btn-secondary" id="load-examples-btn">Load Examples</button>
       <button class="btn btn-secondary" id="clear-playground-btn">Clear</button>
       <button class="btn btn-primary" id="save-snippet-btn">Save Snippet</button>
     </div>
+  `
+
+  // Create language selector
+  const languageSelector = document.createElement('div')
+  languageSelector.className = 'playground-language-selector'
+  languageSelector.innerHTML = `
+    <label for="language-select">Language:</label>
+    <select id="language-select" class="playground-language-dropdown">
+      <option value="javascript">🟨 JavaScript</option>
+      <option value="typescript">🔷 TypeScript</option>
+      <option value="python">🐍 Python</option>
+      <option value="html">🌐 HTML</option>
+      <option value="css">🎨 CSS</option>
+      <option value="json">📋 JSON</option>
+    </select>
+    <span class="playground-language-info" id="language-info">Execute JavaScript code in a sandboxed environment</span>
   `
 
   // Create editor section
@@ -60,7 +79,7 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
 
   const codeEditor = document.createElement('textarea')
   codeEditor.className = 'playground-code-editor'
-  codeEditor.placeholder = 'Enter your JavaScript code here...\n\nExample:\nconsole.log("Hello, Chimera!");\nconst x = 10;\nconsole.log("Result:", x * 2);'
+  codeEditor.placeholder = 'Enter your code here...\n\nExample:\nconsole.log("Hello, Chimera!");\nconst x = 10;\nconsole.log("Result:", x * 2);'
   codeEditor.spellcheck = false
 
   const lineNumbers = document.createElement('div')
@@ -74,6 +93,7 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
   runButton.className = 'btn btn-primary playground-run-btn'
   runButton.innerHTML = '▶ Run Code'
 
+  editorSection.appendChild(languageSelector)
   editorSection.appendChild(snippetNameInput)
   editorSection.appendChild(editorWrapper)
   editorSection.appendChild(runButton)
@@ -125,6 +145,15 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
     lineNumbers.textContent = Array.from({ length: lines }, (_, i) => i + 1).join('\n')
   }
 
+  // Update language info
+  function updateLanguageInfo(language: SupportedLanguage) {
+    const info = getLanguageInfo(language)
+    const infoEl = languageSelector.querySelector('#language-info')
+    if (infoEl) {
+      infoEl.textContent = info.description
+    }
+  }
+
   // Mark as dirty when code changes
   function markDirty() {
     isDirty = true
@@ -138,7 +167,7 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
       return
     }
 
-    const result = executeCode(code)
+    const result = executeCode(code, currentLanguage)
 
     // Display output
     output.innerHTML = ''
@@ -161,7 +190,33 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
       })
     }
 
-    if (result.output.length === 0 && result.errors.length === 0) {
+    // Show HTML preview if available
+    if (result.preview) {
+      const previewContainer = document.createElement('div')
+      previewContainer.className = 'playground-output-preview'
+      const previewLabel = document.createElement('div')
+      previewLabel.className = 'playground-preview-label'
+      previewLabel.textContent = 'Preview:'
+      const previewContent = document.createElement('div')
+      previewContent.className = 'playground-preview-content'
+      
+      if (currentLanguage === 'html') {
+        // Create a sandboxed iframe for safe HTML preview
+        // Note: No sandbox flags = maximum security (no scripts, no same-origin access)
+        const iframe = document.createElement('iframe')
+        iframe.className = 'playground-preview-iframe'
+        iframe.srcdoc = result.preview
+        previewContent.appendChild(iframe)
+      } else {
+        previewContent.textContent = result.preview
+      }
+      
+      previewContainer.appendChild(previewLabel)
+      previewContainer.appendChild(previewContent)
+      output.appendChild(previewContainer)
+    }
+
+    if (result.output.length === 0 && result.errors.length === 0 && !result.preview) {
       const emptyMessage = document.createElement('div')
       emptyMessage.className = 'playground-output-empty'
       emptyMessage.textContent = 'No output (code executed successfully)'
@@ -208,17 +263,17 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
 
     if (currentSnippet) {
       // Update existing
-      updateSnippet(currentSnippet.id, { name, code })
+      updateSnippet(currentSnippet.id, { name, code, language: currentLanguage })
       notificationManager.show('Snippet updated', { type: 'success' })
     } else {
       // Create new
-      const newSnippet = saveSnippet({ name, code, language: 'javascript' })
+      const newSnippet = saveSnippet({ name, code, language: currentLanguage })
       currentSnippet = newSnippet
       notificationManager.show('Snippet saved', { type: 'success' })
     }
 
     isDirty = false
-    trackActivity('snippet_save', 'Saved code snippet', name)
+    trackActivity('snippet_save', 'Saved code snippet', `${name} (${currentLanguage})`)
     renderSnippetsList()
   }
 
@@ -233,12 +288,21 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
     currentSnippet = snippet
     snippetNameInput.value = snippet.name
     codeEditor.value = snippet.code
+    currentLanguage = snippet.language
+    
+    // Update language selector
+    const langSelect = languageSelector.querySelector('#language-select') as HTMLSelectElement
+    if (langSelect) {
+      langSelect.value = snippet.language
+      updateLanguageInfo(snippet.language)
+    }
+    
     isDirty = false
     updateLineNumbers()
     renderSnippetsList() // Re-render to update active state
 
     notificationManager.show(`Loaded: ${snippet.name}`, { type: 'info' })
-    trackActivity('snippet_load', 'Loaded code snippet', snippet.name)
+    trackActivity('snippet_load', 'Loaded code snippet', `${snippet.name} (${snippet.language})`)
   }
 
   // Delete snippet
@@ -317,12 +381,14 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
       const lastRunText = snippet.lastRun
         ? new Date(snippet.lastRun).toLocaleString()
         : 'Never'
+      
+      const langInfo = getLanguageInfo(snippet.language)
 
       item.innerHTML = `
         <div class="playground-snippet-info">
-          <div class="playground-snippet-name">${escapeHtml(snippet.name)}</div>
+          <div class="playground-snippet-name">${langInfo.icon} ${escapeHtml(snippet.name)}</div>
           <div class="playground-snippet-meta">
-            Last run: ${lastRunText}
+            ${langInfo.name} • Last run: ${lastRunText}
           </div>
         </div>
         <div class="playground-snippet-actions">
@@ -342,6 +408,20 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
   }
 
   // Event listeners
+  const langSelect = languageSelector.querySelector('#language-select') as HTMLSelectElement
+  langSelect?.addEventListener('change', (e) => {
+    const target = e.target as HTMLSelectElement
+    currentLanguage = target.value as SupportedLanguage
+    updateLanguageInfo(currentLanguage)
+    markDirty()
+    
+    // Update run button text based on language
+    const info = getLanguageInfo(currentLanguage)
+    runButton.innerHTML = info.executable ? '▶ Run Code' : '✓ Validate'
+    
+    trackActivity('code_execution', 'Changed language', currentLanguage)
+  })
+
   codeEditor.addEventListener('input', () => {
     updateLineNumbers()
     markDirty()

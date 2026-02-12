@@ -239,7 +239,7 @@ describe('Code Playground UI', () => {
       editor.value = 'console.log("test");'
       saveBtn.click()
 
-      expect(activityFeed.trackActivity).toHaveBeenCalledWith('snippet_save', 'Saved code snippet', 'Test Snippet')
+      expect(activityFeed.trackActivity).toHaveBeenCalledWith('snippet_save', 'Saved code snippet', 'Test Snippet (javascript)')
     })
   })
 
@@ -289,7 +289,7 @@ describe('Code Playground UI', () => {
 
       loadBtn.click()
 
-      expect(activityFeed.trackActivity).toHaveBeenCalledWith('snippet_load', 'Loaded code snippet', 'Test Snippet')
+      expect(activityFeed.trackActivity).toHaveBeenCalledWith('snippet_load', 'Loaded code snippet', 'Test Snippet (javascript)')
     })
   })
 
