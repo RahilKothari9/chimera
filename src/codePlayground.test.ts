@@ -13,7 +13,9 @@ import {
   getSnippet,
   clearAllSnippets,
   getExampleSnippets,
+  getLanguageInfo,
   type PlaygroundSnippet,
+  type SupportedLanguage,
 } from './codePlayground'
 
 describe('Code Playground', () => {
@@ -346,15 +348,158 @@ describe('Code Playground', () => {
         expect(snippet.id).toBeTruthy()
         expect(snippet.name).toBeTruthy()
         expect(snippet.code).toBeTruthy()
-        expect(snippet.language).toBe('javascript')
+        expect(['javascript', 'typescript', 'python', 'html', 'css', 'json']).toContain(snippet.language)
         expect(snippet.createdAt).toBeGreaterThan(0)
       })
     })
 
-    it('should include Hello World example', () => {
+    it('should include JavaScript examples', () => {
       const examples = getExampleSnippets()
-      const helloWorld = examples.find(s => s.name === 'Hello World')
-      expect(helloWorld).toBeTruthy()
+      const jsExamples = examples.filter(s => s.language === 'javascript')
+      expect(jsExamples.length).toBeGreaterThan(0)
+    })
+
+    it('should include examples for multiple languages', () => {
+      const examples = getExampleSnippets()
+      const languages = new Set(examples.map(s => s.language))
+      expect(languages.size).toBeGreaterThan(1)
+      expect(languages.has('javascript')).toBe(true)
+    })
+  })
+
+  describe('Multi-Language Support', () => {
+    describe('TypeScript validation', () => {
+      it('should validate TypeScript syntax', () => {
+        const code = `interface User {\n  name: string;\n  age: number;\n}`
+        const result = executeCode(code, 'typescript')
+        
+        expect(result.success).toBe(true)
+        expect(result.output.some(line => line.includes('TypeScript syntax detected'))).toBe(true)
+      })
+
+      it('should detect syntax errors in TypeScript', () => {
+        const code = `const x = {` // Missing closing brace
+        const result = executeCode(code, 'typescript')
+        
+        expect(result.success).toBe(false)
+        expect(result.errors.length).toBeGreaterThan(0)
+      })
+    })
+
+    describe('Python validation', () => {
+      it('should detect Python syntax', () => {
+        const code = `def hello():\n    print("Hello")`
+        const result = executeCode(code, 'python')
+        
+        expect(result.success).toBe(true)
+        expect(result.output.some(line => line.includes('Python syntax detected'))).toBe(true)
+      })
+
+      it('should validate indentation', () => {
+        const code = `def hello():\n    return True`
+        const result = executeCode(code, 'python')
+        
+        expect(result.success).toBe(true)
+        expect(result.output.some(line => line.includes('Indentation appears valid'))).toBe(true)
+      })
+
+      it('should detect mixed tabs and spaces', () => {
+        const code = `def hello():\n\t  return True` // Tab followed by spaces
+        const result = executeCode(code, 'python')
+        
+        expect(result.success).toBe(false)
+        expect(result.errors.some(err => err.includes('Mixed tabs and spaces'))).toBe(true)
+      })
+    })
+
+    describe('HTML rendering', () => {
+      it('should render HTML preview', () => {
+        const code = `<div><h1>Hello</h1></div>`
+        const result = executeCode(code, 'html')
+        
+        expect(result.success).toBe(true)
+        expect(result.preview).toBe(code)
+        expect(result.output.some(line => line.includes('HTML rendered'))).toBe(true)
+      })
+    })
+
+    describe('CSS validation', () => {
+      it('should validate CSS syntax', () => {
+        const code = `.class { color: red; }`
+        const result = executeCode(code, 'css')
+        
+        expect(result.success).toBe(true)
+        expect(result.output.some(line => line.includes('CSS syntax'))).toBe(true)
+      })
+
+      it('should detect invalid CSS', () => {
+        const code = `invalid css without braces`
+        const result = executeCode(code, 'css')
+        
+        expect(result.success).toBe(false)
+        expect(result.errors.some(err => err.includes('Missing braces'))).toBe(true)
+      })
+    })
+
+    describe('JSON validation', () => {
+      it('should validate and format JSON', () => {
+        const code = `{"name":"test","value":123}`
+        const result = executeCode(code, 'json')
+        
+        expect(result.success).toBe(true)
+        expect(result.output.some(line => line.includes('Valid JSON'))).toBe(true)
+        expect(result.output.some(line => line.includes('Formatted'))).toBe(true)
+      })
+
+      it('should detect invalid JSON', () => {
+        const code = `{invalid json}`
+        const result = executeCode(code, 'json')
+        
+        expect(result.success).toBe(false)
+        expect(result.errors.length).toBeGreaterThan(0)
+      })
+
+      it('should count JSON keys', () => {
+        const code = `{"a":1,"b":2,"c":3}`
+        const result = executeCode(code, 'json')
+        
+        expect(result.success).toBe(true)
+        expect(result.output.some(line => line.includes('3 top-level keys'))).toBe(true)
+      })
+    })
+  })
+
+  describe('getLanguageInfo', () => {
+    it('should return info for JavaScript', () => {
+      const info = getLanguageInfo('javascript')
+      expect(info.name).toBe('JavaScript')
+      expect(info.icon).toBe('🟨')
+      expect(info.executable).toBe(true)
+    })
+
+    it('should return info for TypeScript', () => {
+      const info = getLanguageInfo('typescript')
+      expect(info.name).toBe('TypeScript')
+      expect(info.icon).toBe('🔷')
+      expect(info.executable).toBe(false)
+    })
+
+    it('should return info for Python', () => {
+      const info = getLanguageInfo('python')
+      expect(info.name).toBe('Python')
+      expect(info.icon).toBe('🐍')
+      expect(info.executable).toBe(false)
+    })
+
+    it('should return info for all supported languages', () => {
+      const languages: SupportedLanguage[] = ['javascript', 'typescript', 'python', 'html', 'css', 'json']
+      languages.forEach(lang => {
+        const info = getLanguageInfo(lang)
+        expect(info.name).toBeTruthy()
+        expect(info.icon).toBeTruthy()
+        expect(info.description).toBeTruthy()
+        expect(typeof info.executable).toBe('boolean')
+      })
     })
   })
 })

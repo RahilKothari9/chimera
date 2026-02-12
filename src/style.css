@@ -5544,6 +5544,53 @@ body.keyboard-nav textarea:focus {
   box-shadow: var(--shadow-lg);
 }
 
+.playground-language-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.playground-language-selector label {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.playground-language-dropdown {
+  padding: 0.5rem 0.75rem;
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 180px;
+}
+
+.playground-language-dropdown:hover {
+  border-color: var(--color-accent);
+}
+
+.playground-language-dropdown:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+}
+
+.playground-language-info {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
 .playground-snippet-name {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -5706,6 +5753,41 @@ body.keyboard-nav textarea:focus {
   margin-top: 1rem;
   padding-top: 0.75rem;
   border-top: 1px solid var(--color-border);
+}
+
+.playground-output-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.playground-preview-label {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.playground-preview-content {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1rem;
+  color: black;
+  font-family: 'Courier New', monospace;
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.playground-preview-iframe {
+  width: 100%;
+  min-height: 200px;
+  border: none;
+  border-radius: 6px;
+  background: white;
 }
 
 .playground-snippets-section {
