@@ -123,7 +123,7 @@ function validateTypeScript(code: string): ExecutionResult {
     
     // For pure TypeScript (interfaces, types), skip JavaScript validation
     // Only validate JavaScript syntax if it doesn't look like pure TS declarations
-    const isPureTypeScript = code.includes('interface ') || code.includes('type ') && !code.includes('=')
+    const isPureTypeScript = (code.includes('interface ') || code.includes('type ')) && !code.includes('=')
     
     if (!isPureTypeScript) {
       // Try to parse as JavaScript to catch basic syntax errors

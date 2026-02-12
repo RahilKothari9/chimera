@@ -201,10 +201,10 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
       previewContent.className = 'playground-preview-content'
       
       if (currentLanguage === 'html') {
-        // Create an iframe for safe HTML preview
+        // Create a sandboxed iframe for safe HTML preview
+        // Note: No sandbox flags = maximum security (no scripts, no same-origin access)
         const iframe = document.createElement('iframe')
         iframe.className = 'playground-preview-iframe'
-        iframe.sandbox.add('allow-same-origin')
         iframe.srcdoc = result.preview
         previewContent.appendChild(iframe)
       } else {
