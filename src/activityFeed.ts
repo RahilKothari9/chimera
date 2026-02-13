@@ -21,6 +21,10 @@ export type ActivityType =
   | 'snippet_save'
   | 'snippet_load'
   | 'snippet_delete'
+  | 'template_browse'
+  | 'template_preview'
+  | 'template_use'
+  | 'template_search'
 
 export interface Activity {
   id: string
@@ -115,6 +119,10 @@ function getActivityIcon(type: ActivityType): string {
     snippet_save: '💾',
     snippet_load: '📂',
     snippet_delete: '🗑️',
+    template_browse: '📚',
+    template_preview: '👁️',
+    template_use: '✨',
+    template_search: '🔍',
   }
   return icons[type] || '•'
 }
