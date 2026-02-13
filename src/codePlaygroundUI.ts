@@ -17,6 +17,8 @@ import {
 } from './codePlayground'
 import { notificationManager } from './notificationSystem'
 import { trackActivity } from './activityFeed'
+import { createTemplateLibraryUI } from './codeTemplatesUI'
+import type { CodeTemplate } from './codeTemplates'
 
 export interface PlaygroundUIOptions {
   onSnippetRun?: (snippet: PlaygroundSnippet, result: ExecutionResult) => void
@@ -42,6 +44,7 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
       <p class="playground-subtitle">Experiment with multiple programming languages</p>
     </div>
     <div class="playground-actions">
+      <button class="btn btn-secondary" id="browse-templates-btn">📚 Templates</button>
       <button class="btn btn-secondary" id="load-examples-btn">Load Examples</button>
       <button class="btn btn-secondary" id="clear-playground-btn">Clear</button>
       <button class="btn btn-primary" id="save-snippet-btn">Save Snippet</button>
@@ -441,6 +444,82 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
 
   const loadExamplesBtn = header.querySelector('#load-examples-btn')
   loadExamplesBtn?.addEventListener('click', loadExamples)
+
+  const browseTemplatesBtn = header.querySelector('#browse-templates-btn')
+  browseTemplatesBtn?.addEventListener('click', () => {
+    showTemplateLibraryModal()
+  })
+
+  // Show template library modal
+  function showTemplateLibraryModal() {
+    const modal = document.createElement('div')
+    modal.className = 'playground-template-modal'
+    
+    const modalContent = document.createElement('div')
+    modalContent.className = 'playground-template-modal-content'
+    
+    const modalHeader = document.createElement('div')
+    modalHeader.className = 'playground-template-modal-header'
+    modalHeader.innerHTML = `
+      <h2>Code Template Library</h2>
+      <button class="playground-template-modal-close" aria-label="Close">✕</button>
+    `
+    
+    const templateLibrary = createTemplateLibraryUI((template: CodeTemplate) => {
+      // Load template into editor
+      codeEditor.value = template.code
+      snippetNameInput.value = template.name
+      currentLanguage = template.language
+      
+      // Update language selector
+      langSelect.value = template.language
+      updateLanguageInfo(template.language)
+      
+      // Update run button
+      const info = getLanguageInfo(template.language)
+      runButton.innerHTML = info.executable ? '▶ Run Code' : '✓ Validate'
+      
+      // Update UI
+      currentSnippet = null
+      isDirty = true
+      updateLineNumbers()
+      
+      // Close modal
+      document.body.removeChild(modal)
+      
+      // Focus editor
+      codeEditor.focus()
+    })
+    
+    modalContent.appendChild(modalHeader)
+    modalContent.appendChild(templateLibrary)
+    modal.appendChild(modalContent)
+    
+    // Close button
+    const closeBtn = modalHeader.querySelector('.playground-template-modal-close')!
+    closeBtn.addEventListener('click', () => {
+      document.body.removeChild(modal)
+    })
+    
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        document.body.removeChild(modal)
+      }
+    })
+    
+    // Close on Escape
+    const escapeHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && document.body.contains(modal)) {
+        document.body.removeChild(modal)
+        document.removeEventListener('keydown', escapeHandler)
+      }
+    }
+    document.addEventListener('keydown', escapeHandler)
+    
+    document.body.appendChild(modal)
+    trackActivity('template_browse', 'Opened template library', 'Code playground')
+  }
 
   const clearOutputBtn = outputSection.querySelector('#clear-output-btn')
   clearOutputBtn?.addEventListener('click', () => {
