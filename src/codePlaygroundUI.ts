@@ -19,6 +19,7 @@ import { notificationManager } from './notificationSystem'
 import { trackActivity } from './activityFeed'
 import { createTemplateLibraryUI } from './codeTemplatesUI'
 import type { CodeTemplate } from './codeTemplates'
+import { showQRCodeModal, type ShareData } from './qrCodeUI'
 
 export interface PlaygroundUIOptions {
   onSnippetRun?: (snippet: PlaygroundSnippet, result: ExecutionResult) => void
@@ -45,6 +46,7 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
     </div>
     <div class="playground-actions">
       <button class="btn btn-secondary" id="browse-templates-btn">📚 Templates</button>
+      <button class="btn btn-secondary" id="share-qr-btn">📱 Share QR</button>
       <button class="btn btn-secondary" id="load-examples-btn">Load Examples</button>
       <button class="btn btn-secondary" id="clear-playground-btn">Clear</button>
       <button class="btn btn-primary" id="save-snippet-btn">Save Snippet</button>
@@ -339,6 +341,43 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
     notificationManager.show('Editor cleared', { type: 'info' })
   }
 
+  // Share code as QR
+  function shareCodeAsQR() {
+    const code = codeEditor.value.trim()
+    const name = snippetNameInput.value.trim() || 'Untitled Snippet'
+
+    if (!code) {
+      notificationManager.show('Enter some code to share', { type: 'warning' })
+      return
+    }
+
+    // Create a shareable data package
+    const dataPackage = {
+      name,
+      code,
+      language: currentLanguage,
+      timestamp: new Date().toISOString()
+    }
+
+    const dataString = JSON.stringify(dataPackage)
+    
+    // For very long code, warn the user
+    if (dataString.length > 500) {
+      if (!confirm('This code snippet is quite large. The QR code may be difficult to scan. Continue anyway?')) {
+        return
+      }
+    }
+
+    const shareData: ShareData = {
+      title: `Code: ${name}`,
+      url: `data:text/plain;charset=utf-8,${encodeURIComponent(dataString)}`,
+      description: `${currentLanguage} code snippet - Scan to view`
+    }
+
+    showQRCodeModal(shareData)
+    trackActivity('playground_qr_share', 'Shared code via QR', `${name} (${currentLanguage})`)
+  }
+
   // Load examples
   function loadExamples() {
     const examples = getExampleSnippets()
@@ -448,6 +487,11 @@ export function createCodePlaygroundUI(options: PlaygroundUIOptions = {}): HTMLE
   const browseTemplatesBtn = header.querySelector('#browse-templates-btn')
   browseTemplatesBtn?.addEventListener('click', () => {
     showTemplateLibraryModal()
+  })
+
+  const shareQRBtn = header.querySelector('#share-qr-btn')
+  shareQRBtn?.addEventListener('click', () => {
+    shareCodeAsQR()
   })
 
   // Show template library modal

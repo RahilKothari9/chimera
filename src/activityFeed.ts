@@ -25,6 +25,12 @@ export type ActivityType =
   | 'template_preview'
   | 'template_use'
   | 'template_search'
+  | 'qr_generate'
+  | 'qr_modal_open'
+  | 'qr_copy_url'
+  | 'qr_download'
+  | 'qr_print'
+  | 'playground_qr_share'
 
 export interface Activity {
   id: string
@@ -123,6 +129,12 @@ function getActivityIcon(type: ActivityType): string {
     template_preview: '👁️',
     template_use: '✨',
     template_search: '🔍',
+    qr_generate: '📱',
+    qr_modal_open: '📱',
+    qr_copy_url: '📋',
+    qr_download: '⬇️',
+    qr_print: '🖨️',
+    playground_qr_share: '🔗',
   }
   return icons[type] || '•'
 }
