@@ -281,7 +281,9 @@ export function showQRCodeModal(data: ShareData): void {
     }
   }
   document.addEventListener('keydown', handleKeyDown)
-  modal.dataset.keyHandler = 'true'
+  
+  // Store the handler for cleanup
+  ;(modal as any)._keyHandler = handleKeyDown
 
   // Focus management
   closeBtn.focus()
@@ -293,8 +295,11 @@ export function showQRCodeModal(data: ShareData): void {
  * Closes the QR code modal
  */
 function closeModal(modal: HTMLElement): void {
-  if (modal.dataset.keyHandler) {
-    document.removeEventListener('keydown', () => {})
+  // Remove keyboard handler if it exists
+  const handler = (modal as any)._keyHandler
+  if (handler) {
+    document.removeEventListener('keydown', handler)
+    delete (modal as any)._keyHandler
   }
   document.body.removeChild(modal)
 }
