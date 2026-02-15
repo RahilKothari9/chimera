@@ -6755,7 +6755,7 @@ body.keyboard-nav textarea:focus {
 /* Tutorial Launcher Button */
 .tutorial-launcher-btn {
   position: fixed;
-  bottom: 20px;
+  bottom: 90px;
   right: 20px;
   padding: 12px 20px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

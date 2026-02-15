@@ -34,7 +34,7 @@ import { setupCodeQualityDashboard } from './codeQualityUI.ts'
 import { accessibilityManager } from './accessibilitySystem.ts'
 import { AccessibilityDashboardUI } from './accessibilityUI.ts'
 import { createCodePlaygroundUI } from './codePlaygroundUI.ts'
-import { createTutorialLauncher, startTutorial, showTutorialMenu } from './tutorialUI.ts'
+import { createTutorialLauncher, showTutorialMenu } from './tutorialUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
