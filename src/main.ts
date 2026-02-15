@@ -34,6 +34,7 @@ import { setupCodeQualityDashboard } from './codeQualityUI.ts'
 import { accessibilityManager } from './accessibilitySystem.ts'
 import { AccessibilityDashboardUI } from './accessibilityUI.ts'
 import { createCodePlaygroundUI } from './codePlaygroundUI.ts'
+import { createTutorialLauncher, showTutorialMenu } from './tutorialUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -140,6 +141,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 const themeToggle = createThemeToggle()
 document.body.appendChild(themeToggle)
 
+// Add tutorial launcher button to the page
+const tutorialLauncher = createTutorialLauncher()
+document.body.appendChild(tutorialLauncher)
+
 // Setup shareable links button
 setupShareButton()
 
@@ -168,6 +173,19 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
     category: 'actions',
     handler: () => {
       showHelpModal({ registry })
+    },
+  })
+  
+  // Tutorials
+  registry.addShortcut({
+    id: 'show-tutorials',
+    name: 'Show Tutorials',
+    description: 'Open interactive tutorial menu',
+    keys: ['t'],
+    category: 'actions',
+    handler: () => {
+      showTutorialMenu()
+      trackActivity('tutorial', 'Opened Tutorial Menu', 'Used keyboard shortcut')
     },
   })
   
