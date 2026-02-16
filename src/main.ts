@@ -455,9 +455,9 @@ async function initializeApp() {
     // Setup code quality dashboard
     // Note: These values are hardcoded because we don't have access to the file system
     // to dynamically count test files. Update these values manually as the codebase evolves.
-    const testFiles = 45 // Current count of test files (*.test.ts)
-    const sourceFiles = 45 // Current count of source files (non-test TypeScript files)
-    const totalTests = 981 // Current test count (update after adding new tests)
+    const testFiles = 57 // Current count of test files (*.test.ts)
+    const sourceFiles = 59 // Current count of source files (non-test TypeScript files)
+    const totalTests = 1466 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
