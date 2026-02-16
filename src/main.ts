@@ -35,6 +35,7 @@ import { accessibilityManager } from './accessibilitySystem.ts'
 import { AccessibilityDashboardUI } from './accessibilityUI.ts'
 import { createCodePlaygroundUI } from './codePlaygroundUI.ts'
 import { createTutorialLauncher, showTutorialMenu } from './tutorialUI.ts'
+import { createRoadmapDashboard } from './roadmapUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -121,6 +122,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="playground-section">
       <p class="loading">Loading code playground...</p>
+    </div>
+    
+    <div id="roadmap-section">
+      <p class="loading">Loading community roadmap...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -318,6 +323,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-roadmap',
+    name: 'Go to Roadmap',
+    description: 'Scroll to the community roadmap section',
+    keys: ['g+r'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#roadmap-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Roadmap', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -412,6 +429,7 @@ async function initializeApp() {
   const backupContainer = document.querySelector<HTMLDivElement>('#backup-section')!
   const accessibilityContainer = document.querySelector<HTMLDivElement>('#accessibility-section-container')!
   const playgroundContainer = document.querySelector<HTMLDivElement>('#playground-section')!
+  const roadmapContainer = document.querySelector<HTMLDivElement>('#roadmap-section')!
   
   // Get initial state from URL
   const urlState = getStateFromURL()
@@ -511,6 +529,12 @@ async function initializeApp() {
     playgroundContainer.innerHTML = ''
     playgroundContainer.appendChild(playgroundUI)
     trackActivity('page_view', 'Loaded code playground', 'Interactive code playground initialized')
+    
+    // Setup roadmap dashboard
+    const roadmapUI = createRoadmapDashboard()
+    roadmapContainer.innerHTML = ''
+    roadmapContainer.appendChild(roadmapUI)
+    trackActivity('page_view', 'Loaded community roadmap', 'Feature request system initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

@@ -32,6 +32,7 @@ export type ActivityType =
   | 'qr_print'
   | 'playground_qr_share'
   | 'tutorial'
+  | 'roadmap'
 
 export interface Activity {
   id: string
@@ -137,6 +138,7 @@ function getActivityIcon(type: ActivityType): string {
     qr_print: '🖨️',
     playground_qr_share: '🔗',
     tutorial: '📚',
+    roadmap: '🗺️',
   }
   return icons[type] || '•'
 }
