@@ -158,7 +158,7 @@ export function addFeatureRequest(request: Omit<FeatureRequest, 'id' | 'votes' |
   
   const newRequest: FeatureRequest = {
     ...request,
-    id: `fr-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `fr-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     votes: 1, // Start with 1 vote (from submitter)
     submittedAt: Date.now(),
   }
