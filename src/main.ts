@@ -36,6 +36,7 @@ import { AccessibilityDashboardUI } from './accessibilityUI.ts'
 import { createCodePlaygroundUI } from './codePlaygroundUI.ts'
 import { createTutorialLauncher, showTutorialMenu } from './tutorialUI.ts'
 import { createRoadmapDashboard } from './roadmapUI.ts'
+import { createCodeSmellDashboard } from './codeSmellUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -126,6 +127,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="roadmap-section">
       <p class="loading">Loading community roadmap...</p>
+    </div>
+    
+    <div id="code-smell-section">
+      <p class="loading">Loading code smell detector...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -335,6 +340,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-code-smell',
+    name: 'Go to Code Smell Detector',
+    description: 'Scroll to the code smell detection section',
+    keys: ['g+s'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#code-smell-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Code Smell Detector', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -535,6 +552,13 @@ async function initializeApp() {
     roadmapContainer.innerHTML = ''
     roadmapContainer.appendChild(roadmapUI)
     trackActivity('page_view', 'Loaded community roadmap', 'Feature request system initialized')
+    
+    // Setup code smell detector
+    const codeSmellContainer = document.querySelector<HTMLDivElement>('#code-smell-section')!
+    const codeSmellUI = createCodeSmellDashboard()
+    codeSmellContainer.innerHTML = ''
+    codeSmellContainer.appendChild(codeSmellUI)
+    trackActivity('page_view', 'Loaded code smell detector', 'Code quality analysis tool initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

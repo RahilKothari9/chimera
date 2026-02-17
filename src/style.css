@@ -7923,3 +7923,618 @@ body.keyboard-nav textarea:focus {
     width: 100%;
   }
 }
+
+/* ========================================
+   Code Smell Detection System Styles
+   ======================================== */
+
+.code-smell-container {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 20px;
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+  box-shadow: var(--shadow-medium);
+}
+
+.code-smell-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.code-smell-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-top: var(--space-sm);
+}
+
+/* Analyzer Input Section */
+.code-smell-analyzer {
+  margin-bottom: var(--space-xl);
+}
+
+.analyzer-input {
+  margin-bottom: var(--space-md);
+}
+
+.analyzer-label {
+  display: block;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+  font-size: 1rem;
+}
+
+.code-input-area {
+  width: 100%;
+  min-height: 250px;
+  padding: var(--space-md);
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  border-radius: 16px;
+  color: var(--text-primary);
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+.code-input-area:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+}
+
+.code-input-area::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Analyzer Actions */
+.analyzer-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.analyze-button,
+.clear-button {
+  padding: var(--space-md) var(--space-xl);
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.analyze-button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+.analyze-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-large);
+}
+
+.clear-button {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  color: var(--text-primary);
+}
+
+.clear-button:hover {
+  border-color: var(--danger-color);
+  background: rgba(239, 68, 68, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Results Section */
+.code-smell-results {
+  margin-top: var(--space-xl);
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.results-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Quality Score Badge */
+.quality-score-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 16px;
+  border: 2px solid var(--card-border);
+  background: var(--card-bg);
+  transition: all 0.3s ease;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.score-value {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quality-score-badge.score-excellent {
+  border-color: #10b981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.quality-score-badge.score-excellent .score-value {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quality-score-badge.score-good {
+  border-color: #3b82f6;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.quality-score-badge.score-good .score-value {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quality-score-badge.score-fair {
+  border-color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+.quality-score-badge.score-fair .score-value {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quality-score-badge.score-poor {
+  border-color: #ef4444;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+}
+
+.quality-score-badge.score-poor .score-value {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smell Statistics */
+.smell-statistics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 16px;
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-medium);
+}
+
+.stat-icon {
+  font-size: 2rem;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.stat-card.severity-critical {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.stat-card.severity-high {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.stat-card.severity-medium {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.stat-card.severity-low {
+  border-color: rgba(107, 114, 128, 0.5);
+}
+
+/* Recommendations Section */
+.recommendations-section {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 16px;
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.recommendations-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-md) 0;
+}
+
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.recommendation-item {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--input-bg);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-left: 4px solid var(--primary-color);
+}
+
+.no-recommendations {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Smell Filters */
+.smell-filters {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.smell-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.smell-filter-select {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.smell-filter-select:hover {
+  border-color: var(--primary-color);
+}
+
+.smell-filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+}
+
+/* Smell List and Cards */
+.smell-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.no-smells {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.smell-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 16px;
+  padding: var(--space-lg);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.smell-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.smell-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-large);
+}
+
+.smell-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Severity-specific styling */
+.smell-card.smell-severity-critical {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.smell-card.smell-severity-critical::before {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.smell-card.smell-severity-high {
+  border-color: rgba(245, 158, 11, 0.5);
+}
+
+.smell-card.smell-severity-high::before {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.smell-card.smell-severity-medium {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.smell-card.smell-severity-medium::before {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.smell-card.smell-severity-low {
+  border-color: rgba(107, 114, 128, 0.5);
+}
+
+.smell-card.smell-severity-low::before {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+/* Smell Card Header */
+.smell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.smell-type-badge,
+.smell-severity-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.smell-type-badge {
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+}
+
+.smell-severity-badge {
+  color: white;
+}
+
+.smell-severity-badge.smell-severity-critical {
+  background: #ef4444;
+}
+
+.smell-severity-badge.smell-severity-high {
+  background: #f59e0b;
+}
+
+.smell-severity-badge.smell-severity-medium {
+  background: #3b82f6;
+}
+
+.smell-severity-badge.smell-severity-low {
+  background: #6b7280;
+}
+
+/* Smell Card Content */
+.smell-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.smell-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
+}
+
+.smell-location {
+  background: var(--input-bg);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+  display: inline-block;
+}
+
+.smell-suggestion {
+  background: rgba(124, 58, 237, 0.1);
+  border-left: 4px solid var(--primary-color);
+  padding: var(--space-md);
+  border-radius: 8px;
+  margin-bottom: var(--space-md);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.smell-suggestion strong {
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+/* Smell Card Footer */
+.smell-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--card-border);
+  flex-wrap: wrap;
+}
+
+.smell-impact {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.smell-impact strong {
+  color: var(--text-primary);
+}
+
+.effort-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--card-border);
+}
+
+.effort-badge.effort-small {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.effort-badge.effort-medium {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.effort-badge.effort-large {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .code-smell-container {
+    padding: var(--space-md);
+  }
+  
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .quality-score-badge {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .smell-statistics {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  
+  .smell-filters {
+    flex-direction: column;
+  }
+  
+  .smell-filters label {
+    width: 100%;
+  }
+  
+  .smell-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .smell-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .analyzer-actions {
+    flex-direction: column;
+  }
+  
+  .analyze-button,
+  .clear-button {
+    width: 100%;
+  }
+}
+
+/* Dark/Light theme adjustments */
+:root {
+  --danger-color: #ef4444;
+}
+
+:root[data-theme='light'] {
+  --danger-color: #dc2626;
+}
