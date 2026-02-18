@@ -34,6 +34,7 @@ export type ActivityType =
   | 'tutorial'
   | 'roadmap'
   | 'code-smell'
+  | 'challenge'
 
 export interface Activity {
   id: string
@@ -141,6 +142,7 @@ function getActivityIcon(type: ActivityType): string {
     tutorial: '📚',
     roadmap: '🗺️',
     'code-smell': '🔍',
+    challenge: '🎯',
   }
   return icons[type] || '•'
 }

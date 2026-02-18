@@ -37,6 +37,7 @@ import { createCodePlaygroundUI } from './codePlaygroundUI.ts'
 import { createTutorialLauncher, showTutorialMenu } from './tutorialUI.ts'
 import { createRoadmapDashboard } from './roadmapUI.ts'
 import { createCodeSmellDashboard } from './codeSmellUI.ts'
+import { createDailyChallengeUI } from './dailyChallengeUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -131,6 +132,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="code-smell-section">
       <p class="loading">Loading code smell detector...</p>
+    </div>
+    
+    <div id="daily-challenge-section">
+      <p class="loading">Loading daily challenge...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -352,6 +357,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-daily-challenge',
+    name: 'Go to Daily Challenge',
+    description: 'Scroll to the daily coding challenge section',
+    keys: ['g+h'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#daily-challenge-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Daily Challenge', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -559,6 +576,13 @@ async function initializeApp() {
     codeSmellContainer.innerHTML = ''
     codeSmellContainer.appendChild(codeSmellUI)
     trackActivity('page_view', 'Loaded code smell detector', 'Code quality analysis tool initialized')
+    
+    // Setup daily challenge
+    const dailyChallengeContainer = document.querySelector<HTMLDivElement>('#daily-challenge-section')!
+    const dailyChallengeUI = createDailyChallengeUI()
+    dailyChallengeContainer.innerHTML = ''
+    dailyChallengeContainer.appendChild(dailyChallengeUI)
+    trackActivity('page_view', 'Loaded daily challenge', 'Daily coding challenge system initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
