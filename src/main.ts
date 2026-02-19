@@ -38,6 +38,7 @@ import { createTutorialLauncher, showTutorialMenu } from './tutorialUI.ts'
 import { createRoadmapDashboard } from './roadmapUI.ts'
 import { createCodeSmellDashboard } from './codeSmellUI.ts'
 import { createDailyChallengeUI } from './dailyChallengeUI.ts'
+import { setupSnippetLibrary } from './snippetLibraryUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -136,6 +137,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="daily-challenge-section">
       <p class="loading">Loading daily challenge...</p>
+    </div>
+    
+    <div id="snippet-library-section">
+      <p class="loading">Loading code snippet library...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -369,6 +374,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-snippet-library',
+    name: 'Go to Snippet Library',
+    description: 'Scroll to the code snippet library section',
+    keys: ['g+l'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#snippet-library-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Snippet Library', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -583,6 +600,10 @@ async function initializeApp() {
     dailyChallengeContainer.innerHTML = ''
     dailyChallengeContainer.appendChild(dailyChallengeUI)
     trackActivity('page_view', 'Loaded daily challenge', 'Daily coding challenge system initialized')
+    
+    // Setup snippet library
+    setupSnippetLibrary()
+    trackActivity('page_view', 'Loaded snippet library', 'Code snippet library initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
