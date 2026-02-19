@@ -4,7 +4,9 @@ import { loadSnippets } from './snippetLibrary'
 
 // Mock notification system
 vi.mock('./notificationSystem', () => ({
-  showNotification: vi.fn(),
+  notificationManager: {
+    show: vi.fn(),
+  },
 }))
 
 // Mock clipboard API
