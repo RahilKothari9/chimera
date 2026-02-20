@@ -36,6 +36,9 @@ export type ActivityType =
   | 'code-smell'
   | 'challenge'
   | 'snippet'
+  | 'regex_example'
+  | 'regex_flags'
+  | 'regex_test'
 
 export interface Activity {
   id: string
@@ -145,6 +148,9 @@ function getActivityIcon(type: ActivityType): string {
     'code-smell': '🔍',
     challenge: '🎯',
     snippet: '📝',
+    regex_example: '🔍',
+    regex_flags: '⚙️',
+    regex_test: '🧪',
   }
   return icons[type] || '•'
 }
