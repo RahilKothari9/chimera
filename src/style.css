@@ -9590,3 +9590,383 @@ body.keyboard-nav textarea:focus {
 [data-theme="light"] .syntax-number {
   color: #098658;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Regex Tester
+   ═══════════════════════════════════════════════════════════ */
+
+.regex-tester-section {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: var(--card-bg, rgba(255, 255, 255, 0.05));
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.regex-tester-subtitle {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  font-size: 0.9rem;
+  margin: 0.25rem 0 1.5rem;
+  text-align: center;
+}
+
+.regex-tester-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .regex-tester-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.regex-tester-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.regex-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.regex-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.5));
+}
+
+/* Pattern row: /pattern/flags */
+.regex-pattern-row {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.regex-pattern-row:focus-within {
+  border-color: rgba(124, 58, 237, 0.6);
+}
+
+.regex-delimiter {
+  padding: 0 0.6rem;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 1.1rem;
+  color: rgba(124, 58, 237, 0.8);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.regex-pattern-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.95rem;
+  padding: 0.6rem 0;
+}
+
+.regex-flags-display {
+  padding: 0 0.6rem;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.95rem;
+  color: rgba(251, 146, 60, 0.9);
+  min-width: 2rem;
+  flex-shrink: 0;
+}
+
+.regex-pattern-error {
+  font-size: 0.8rem;
+  color: #f87171;
+  padding: 0.35rem 0.6rem;
+  background: rgba(248, 113, 113, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  display: none;
+}
+
+/* Flags */
+.regex-flags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.regex-flag-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  cursor: pointer;
+  padding: 0.3rem 0.65rem;
+  background: var(--input-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.regex-flag-label:hover {
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.regex-flag-checkbox {
+  accent-color: #7c3aed;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* Test textarea */
+.regex-test-textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: var(--input-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: inherit;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+  min-height: 100px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.regex-test-textarea:focus {
+  border-color: rgba(124, 58, 237, 0.6);
+}
+
+/* Example buttons */
+.regex-examples-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.regex-example-btn {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.65rem;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 20px;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.regex-example-btn:hover {
+  background: rgba(124, 58, 237, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Summary badge */
+.regex-summary {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.regex-summary--success {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: #34d399;
+}
+
+.regex-summary--error {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.25);
+  color: #f87171;
+}
+
+/* Highlight output */
+.regex-highlight-output {
+  min-height: 80px;
+  padding: 0.75rem;
+  background: var(--input-bg, rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.regex-match-highlight {
+  background: rgba(251, 191, 36, 0.35);
+  color: #fbbf24;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-weight: 600;
+  outline: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.regex-highlight-placeholder {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.35));
+  font-style: italic;
+}
+
+/* Details list */
+.regex-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.regex-details-empty {
+  font-size: 0.85rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.4));
+  font-style: italic;
+  padding: 0.5rem;
+}
+
+.regex-match-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.regex-match-card:hover {
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.regex-match-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.75rem;
+  background: rgba(124, 58, 237, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.regex-match-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(167, 139, 250, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.regex-copy-btn {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.regex-copy-btn:hover {
+  background: rgba(124, 58, 237, 0.3);
+}
+
+.regex-match-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.regex-match-table th,
+.regex-match-table td {
+  padding: 0.3rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.regex-match-table th {
+  font-weight: 600;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.5));
+  width: 30%;
+  white-space: nowrap;
+}
+
+.regex-match-table td code {
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.8rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+/* Light theme overrides */
+[data-theme="light"] .regex-tester-section {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .regex-pattern-row,
+[data-theme="light"] .regex-test-textarea,
+[data-theme="light"] .regex-highlight-output {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+[data-theme="light"] .regex-flag-label {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+
+[data-theme="light"] .regex-match-card {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .regex-match-card-header {
+  background: rgba(124, 58, 237, 0.05);
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .regex-match-table th {
+  color: #64748b;
+}
+
+[data-theme="light"] .regex-match-table td code {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+[data-theme="light"] .regex-summary {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #334155;
+}
+
+[data-theme="light"] .regex-highlight-output {
+  color: #1e293b;
+}
+
+[data-theme="light"] .regex-highlight-placeholder {
+  color: #94a3b8;
+}

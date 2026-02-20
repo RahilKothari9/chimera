@@ -39,6 +39,7 @@ import { createRoadmapDashboard } from './roadmapUI.ts'
 import { createCodeSmellDashboard } from './codeSmellUI.ts'
 import { createDailyChallengeUI } from './dailyChallengeUI.ts'
 import { setupSnippetLibrary } from './snippetLibraryUI.ts'
+import { setupRegexTester } from './regexTesterUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -141,6 +142,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="snippet-library-section">
       <p class="loading">Loading code snippet library...</p>
+    </div>
+    
+    <div id="regex-tester-section">
+      <p class="loading">Loading regex tester...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -386,6 +391,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-regex-tester',
+    name: 'Go to Regex Tester',
+    description: 'Scroll to the interactive regex tester section',
+    keys: ['g+n'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#regex-tester-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Regex Tester', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -604,6 +621,11 @@ async function initializeApp() {
     // Setup snippet library
     setupSnippetLibrary()
     trackActivity('page_view', 'Loaded snippet library', 'Code snippet library initialized')
+    
+    // Setup regex tester
+    const regexTesterContainer = document.querySelector<HTMLDivElement>('#regex-tester-section')!
+    setupRegexTester(regexTesterContainer)
+    trackActivity('page_view', 'Loaded regex tester', 'Interactive regex tester initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
