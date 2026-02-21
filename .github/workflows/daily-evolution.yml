@@ -132,6 +132,7 @@ jobs:
               "### Existing Agents",
               "- `daily-evolution.yml` - Daily feature evolution (you)",
               "- `weekly-frontend-polish.yml` - Weekly UI/UX refinements",
+              "- `monthly-dependency-audit.yml` - Monthly dependency security audit",
               "",
               "### Agent Creation Guidelines",
               "- Keep agents focused on ONE responsibility",

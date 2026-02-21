@@ -1,0 +1,164 @@
+name: Monthly Dependency Audit
+
+on:
+  schedule:
+    # Runs on the 1st of every month at 12:00 UTC
+    - cron: '0 12 1 * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  create-dependency-audit-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Dependency Audit Issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.COPILOT_PAT }}
+          script: |
+            const today = new Date().toISOString().split('T')[0];
+            const monthYear = today.slice(0, 7); // e.g., "2026-02"
+            const expectedTitle = "Chimera Dependency Audit - " + monthYear;
+
+            // Check if an issue for this month already exists
+            const { data: existingIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: "dependency-audit",
+              state: "all",
+              per_page: 5
+            });
+
+            const alreadyExists = existingIssues.some(issue => issue.title === expectedTitle);
+
+            if (alreadyExists) {
+              console.log("Dependency audit issue for this month already exists, skipping");
+              return;
+            }
+
+            const issueBody = [
+              "# Chimera Dependency Audit - " + monthYear,
+              "",
+              "## Your Role: Dependency & Security Specialist",
+              "",
+              "You are the monthly dependency audit agent for Chimera. Your mission is to review all project dependencies for outdated versions and security vulnerabilities, then update them safely to keep the project healthy and secure.",
+              "",
+              "## Audit Checklist",
+              "",
+              "### 1. Security Vulnerability Scan",
+              "Run the following and address any findings:",
+              "```bash",
+              "npm audit",
+              "```",
+              "- Fix any **critical** or **high** severity vulnerabilities by updating the affected packages",
+              "- Document **moderate** vulnerabilities if they cannot be safely fixed",
+              "- **Low** severity issues should be noted but do not block the PR",
+              "",
+              "### 2. Outdated Dependency Check",
+              "Run the following to identify outdated packages:",
+              "```bash",
+              "npm outdated",
+              "```",
+              "Review each outdated package:",
+              "- **Patch updates** (e.g., 1.0.0 → 1.0.1): Safe to update, update all",
+              "- **Minor updates** (e.g., 1.0.0 → 1.1.0): Usually safe, update after verifying changelog",
+              "- **Major updates** (e.g., 1.0.0 → 2.0.0): May have breaking changes, update carefully",
+              "",
+              "### 3. Update Process",
+              "For safe updates:",
+              "```bash",
+              "npm update          # Updates within semver ranges in package.json",
+              "npm install <pkg>@latest  # For specific package major bumps",
+              "```",
+              "",
+              "### 4. Verification After Updates",
+              "After any dependency updates, you MUST verify:",
+              "```bash",
+              "npm run build       # Build must pass",
+              "npm run test        # All tests must pass",
+              "```",
+              "",
+              "If any build or test fails after an update, **revert that specific package update** and document the issue.",
+              "",
+              "## Non-Negotiable Requirements",
+              "",
+              "1. **Build must pass**: `npm run build` must complete without errors",
+              "2. **Tests must pass**: `npm run test` - all tests must pass",
+              "3. **No regressions**: Don't break existing functionality",
+              "4. **Document findings**: Update the changelog in BOTH README.md AND public/README.md",
+              "5. **Security first**: Always fix critical/high severity vulnerabilities",
+              "",
+              "## Changelog Entry Format",
+              "",
+              "```markdown",
+              "### Day [X]: " + today,
+              "**Feature/Change**: Monthly Dependency Audit - " + monthYear,
+              "**Description**: [Summary of what was updated, vulnerabilities fixed, or 'All dependencies up to date']",
+              "**Files Modified**: package.json, package-lock.json (if updated), README.md, public/README.md",
+              "```",
+              "",
+              "## Audit Report Format",
+              "",
+              "Include a summary in the PR description:",
+              "```",
+              "## Dependency Audit Report - " + monthYear,
+              "",
+              "### Security Vulnerabilities",
+              "- Critical: [count] fixed / [count] remaining",
+              "- High: [count] fixed / [count] remaining",
+              "- Moderate: [count] noted",
+              "",
+              "### Updated Packages",
+              "| Package | Old Version | New Version | Type |",
+              "|---------|-------------|-------------|------|",
+              "| example | 1.0.0       | 1.0.1       | patch |",
+              "",
+              "### Packages Not Updated (with reason)",
+              "| Package | Current | Latest | Reason |",
+              "|---------|---------|--------|--------|",
+              "```",
+              "",
+              "## Verification Checklist",
+              "",
+              "- [ ] `npm audit` run and findings addressed",
+              "- [ ] `npm outdated` reviewed",
+              "- [ ] Safe updates applied",
+              "- [ ] `npm run build` passes",
+              "- [ ] `npm run test` passes (all tests pass)",
+              "- [ ] README.md AND public/README.md updated",
+              "- [ ] PR description includes audit report",
+              "",
+              "## Remember",
+              "",
+              "Dependency hygiene is critical for security and maintainability. Even if no updates are needed, document that the audit was performed and all dependencies are current. A clean audit is a successful audit!",
+              "",
+              "**If there are no updates needed**: Still create the PR with a changelog entry noting 'All dependencies reviewed and up to date as of " + today + "'.",
+              "",
+              "---",
+              "*This issue was automatically generated by the Chimera Monthly Dependency Audit System*"
+            ].join("\n");
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Chimera Dependency Audit - " + monthYear,
+              body: issueBody,
+              labels: ["dependency-audit"]
+            });
+
+            console.log("Created issue #" + issue.data.number);
+
+            // Assign Copilot coding agent to the issue
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.data.number,
+              assignees: ["copilot-swe-agent[bot]"]
+            });
+
+            console.log("Assigned Copilot to issue #" + issue.data.number);
+            return issue.data.number;

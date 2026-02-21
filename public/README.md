@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 36: 2026-02-21
+**Feature/Change**: Monthly Dependency Security Audit Agent
+**Description**: Created a new automated GitHub Actions workflow (`monthly-dependency-audit.yml`) that runs on the 1st of every month to keep Chimera's dependencies healthy and secure. The agent assigns a structured issue to Copilot with a detailed checklist covering: running `npm audit` to detect critical/high/moderate/low security vulnerabilities, running `npm outdated` to identify stale packages, applying safe patch and minor updates, verifying the build and all tests still pass after any changes, and generating an audit report table in the PR description. The workflow includes deduplication logic to skip months where an issue already exists. The `daily-evolution.yml` Existing Agents list has been updated to include the new agent. This addition closes a gap in the project's maintenance automation — while daily evolution adds features and weekly polish refines the UI, nothing was monitoring dependency health. Monthly cadence is appropriate because npm packages don't change so rapidly that weekly checks are warranted, but monthly ensures vulnerabilities are caught promptly.
+**Files Modified**: .github/workflows/monthly-dependency-audit.yml (created), .github/workflows/daily-evolution.yml, README.md, public/README.md
+
+---
+
 ### Day 35: 2026-02-20
 **Feature/Change**: Interactive Regex Tester
 **Description**: Added an interactive regular expression tester that lets developers test and debug regex patterns in real-time. The tool features a styled `/pattern/flags` input, four toggle-able flags (global, case-insensitive, multiline, dotAll), a multi-line test string area, live match highlighting with yellow-on-dark emphasis, per-match detail cards showing value/index/length and capture groups, a summary badge that reports match count, one-click copy buttons per match, five pre-loaded examples (Email, URL, IPv4, Hex Color, ISO Date), and full dark/light theme support. 66 new tests added across regexTester.test.ts (41) and regexTesterUI.test.ts (25). Total tests: 1,730.
