@@ -40,6 +40,7 @@ import { createCodeSmellDashboard } from './codeSmellUI.ts'
 import { createDailyChallengeUI } from './dailyChallengeUI.ts'
 import { setupSnippetLibrary } from './snippetLibraryUI.ts'
 import { setupRegexTester } from './regexTesterUI.ts'
+import { createWordCloudUI } from './wordCloudUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -146,6 +147,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="regex-tester-section">
       <p class="loading">Loading regex tester...</p>
+    </div>
+    
+    <div id="word-cloud-section">
+      <p class="loading">Building word cloud...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -403,6 +408,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
   
   registry.addShortcut({
+    id: 'nav-word-cloud',
+    name: 'Go to Word Cloud',
+    description: 'Scroll to the evolution word cloud section',
+    keys: ['g+w'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#word-cloud-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Word Cloud', 'Used keyboard shortcut')
+    },
+  })
+  
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -523,9 +540,9 @@ async function initializeApp() {
     // Setup code quality dashboard
     // Note: These values are hardcoded because we don't have access to the file system
     // to dynamically count test files. Update these values manually as the codebase evolves.
-    const testFiles = 57 // Current count of test files (*.test.ts)
-    const sourceFiles = 59 // Current count of source files (non-test TypeScript files)
-    const totalTests = 1466 // Current test count (update after adding new tests)
+    const testFiles = 67 // Current count of test files (*.test.ts)
+    const sourceFiles = 69 // Current count of source files (non-test TypeScript files)
+    const totalTests = 1755 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
@@ -626,6 +643,13 @@ async function initializeApp() {
     const regexTesterContainer = document.querySelector<HTMLDivElement>('#regex-tester-section')!
     setupRegexTester(regexTesterContainer)
     trackActivity('page_view', 'Loaded regex tester', 'Interactive regex tester initialized')
+    
+    // Setup word cloud
+    const wordCloudContainer = document.querySelector<HTMLDivElement>('#word-cloud-section')!
+    const wordCloudEl = createWordCloudUI(allEntries)
+    wordCloudContainer.innerHTML = ''
+    wordCloudContainer.appendChild(wordCloudEl)
+    trackActivity('page_view', 'Loaded word cloud', 'Evolution term frequency analyzer initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
