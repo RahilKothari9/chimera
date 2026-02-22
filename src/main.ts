@@ -495,6 +495,57 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 }
 
+// Scroll-reveal: fade sections in as they enter the viewport
+function setupScrollReveal(): void {
+  if (typeof IntersectionObserver === 'undefined') return
+
+  const sectionIds = [
+    '#metrics-section',
+    '#performance-section',
+    '#code-quality-section',
+    '#achievement-section',
+    '#prediction-section',
+    '#export-section',
+    '#dependency-graph-section',
+    '#comparison-section',
+    '#voting-section',
+    '#evolution-tree-section',
+    '#activity-feed-section',
+    '#backup-section',
+    '#accessibility-section-container',
+    '#playground-section',
+    '#roadmap-section',
+    '#code-smell-section',
+    '#daily-challenge-section',
+    '#snippet-library-section',
+    '#regex-tester-section',
+    '#word-cloud-section',
+  ]
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.04, rootMargin: '0px 0px -30px 0px' },
+  )
+
+  sectionIds.forEach((id) => {
+    const section = document.querySelector<HTMLElement>(id)
+    if (!section) return
+    const rect = section.getBoundingClientRect()
+    // Only animate sections that start below the fold
+    if (rect.top >= window.innerHeight || rect.bottom <= 0) {
+      section.classList.add('reveal-section')
+      observer.observe(section)
+    }
+  })
+}
+
 // Load and display the evolution data
 async function initializeApp() {
   const dashboardContainer = document.querySelector<HTMLDivElement>('#dashboard')!
@@ -702,6 +753,9 @@ async function initializeApp() {
     
     // Register keyboard shortcuts
     registerKeyboardShortcuts(searchUI)
+
+    // Activate scroll-reveal for below-fold sections
+    setupScrollReveal()
   } catch (error) {
     dashboardContainer.innerHTML = '<p class="error">Failed to load statistics</p>'
     timelineContainer.innerHTML = '<p class="error">Failed to load evolution history</p>'

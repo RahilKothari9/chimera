@@ -277,7 +277,10 @@ h1 {
 
 .section-title {
   font-size: 2.2em;
-  color: var(--color-white);
+  background: linear-gradient(135deg, var(--color-text) 30%, var(--color-accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: var(--space-lg);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -674,7 +677,7 @@ h1 {
   }
   
   .section-title {
-    color: #213547;
+    /* gradient text adapts via CSS variables */
   }
   
   .stat-card {
@@ -10125,5 +10128,27 @@ body.keyboard-nav textarea:focus {
 
   .wc-sidebar {
     width: 100%;
+  }
+}
+
+/* ================================
+   Scroll-Reveal Animation System
+   ================================ */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
+}
+
+.reveal-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

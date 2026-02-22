@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 38: 2026-02-22
+**Feature/Change**: Frontend Polish - Scroll-Reveal Animations & Gradient Section Titles
+**Description**: Elevated the visual quality of the Chimera dashboard with two cohesive polish improvements. First, all page sections below the fold now animate in smoothly as the user scrolls — an IntersectionObserver triggers a subtle `translateY(28px) → 0` + opacity fade-in (550ms, ease-out spring) on each section as it enters the viewport. Sections already visible on load are excluded from the animation to avoid jarring flashes. A `prefers-reduced-motion` media query disables all animation for users who opt out, preserving accessibility. Second, every `.section-title` heading across the app now renders as gradient text (dark/white → accent-purple) using `-webkit-background-clip: text`, harmonising with the gradient treatment on the main CHIMERA hero title and creating a more cohesive design language throughout the page. Both themes (dark/light) look equally polished because the gradient uses CSS variables that adapt per theme.
+**Files Modified**: src/style.css, src/main.ts, README.md, public/README.md
+
+---
+
 ### Day 37: 2026-02-22
 **Feature/Change**: Evolution Word Cloud — Term Frequency Analyzer
 **Description**: Added an interactive word cloud that visualizes the most frequently used concepts and terms across all of Chimera's evolution entries. The feature analyzes every feature name and description, filters common stop words, counts word occurrences, and renders a visually engaging cloud where word size and opacity reflect frequency. A companion "Top 10 Terms" sidebar ranks the highest-frequency terms. Words are color-coded by a deterministic hue derived from the word itself for consistent, varied coloring between renders. Hovering a word shows a tooltip with the exact occurrence count. The full layout is responsive (stacks on mobile), supports both light and dark themes, and is accessible with aria-labels. 25 new tests added across wordCloud.test.ts (14) and wordCloudUI.test.ts (11). Total tests: 1,755.
