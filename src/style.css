@@ -10152,3 +10152,250 @@ body.keyboard-nav textarea:focus {
     transition: none;
   }
 }
+
+/* ================================
+   JSON Formatter & Validator
+   ================================ */
+.json-formatter-section {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.json-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.json-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.json-input-panel,
+.json-output-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.json-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.json-panel-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.json-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.json-textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.json-textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.json-action-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.json-btn {
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.json-btn-primary {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color: #fff;
+}
+
+.json-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+}
+
+.json-btn-secondary {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.json-btn-secondary:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.json-output {
+  min-height: 220px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  padding: 0.9rem;
+  overflow: auto;
+}
+
+.json-pre {
+  margin: 0;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  white-space: pre;
+}
+
+.json-placeholder {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.json-error-msg {
+  color: #ef4444;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.json-stats-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0;
+}
+
+.json-stat {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+}
+
+.json-stat strong {
+  color: var(--accent-color);
+}
+
+.json-examples-select {
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* Diff section */
+.json-diff-section {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+.json-diff-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.json-diff-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.json-diff-result {
+  margin-top: 1rem;
+}
+
+.json-diff-same {
+  color: #22c55e;
+  font-weight: 500;
+}
+
+.json-diff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.json-diff-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+}
+
+.json-diff-added { background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; }
+.json-diff-removed { background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; }
+.json-diff-changed { background: rgba(234, 179, 8, 0.1); border-left: 3px solid #eab308; }
+
+.json-diff-badge {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 18px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.json-diff-badge.added { background: #22c55e; color: #fff; }
+.json-diff-badge.removed { background: #ef4444; color: #fff; }
+.json-diff-badge.changed { background: #eab308; color: #fff; }
+
+.json-diff-path {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .json-layout,
+  .json-diff-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -41,6 +41,7 @@ import { createDailyChallengeUI } from './dailyChallengeUI.ts'
 import { setupSnippetLibrary } from './snippetLibraryUI.ts'
 import { setupRegexTester } from './regexTesterUI.ts'
 import { createWordCloudUI } from './wordCloudUI.ts'
+import { setupJsonFormatter } from './jsonFormatterUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -151,6 +152,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="word-cloud-section">
       <p class="loading">Building word cloud...</p>
+    </div>
+
+    <div id="json-formatter-section">
+      <p class="loading">Loading JSON formatter...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -418,7 +423,19 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
       trackActivity('navigation', 'Navigated to Word Cloud', 'Used keyboard shortcut')
     },
   })
-  
+
+  registry.addShortcut({
+    id: 'nav-json-formatter',
+    name: 'Go to JSON Formatter',
+    description: 'Scroll to the JSON formatter and validator',
+    keys: ['g+j'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#json-formatter-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to JSON Formatter', 'Used keyboard shortcut')
+    },
+  })
+
   registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
@@ -520,6 +537,7 @@ function setupScrollReveal(): void {
     '#snippet-library-section',
     '#regex-tester-section',
     '#word-cloud-section',
+    '#json-formatter-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -701,6 +719,11 @@ async function initializeApp() {
     wordCloudContainer.innerHTML = ''
     wordCloudContainer.appendChild(wordCloudEl)
     trackActivity('page_view', 'Loaded word cloud', 'Evolution term frequency analyzer initialized')
+
+    // Setup JSON formatter
+    const jsonFormatterContainer = document.querySelector<HTMLDivElement>('#json-formatter-section')!
+    setupJsonFormatter(jsonFormatterContainer)
+    trackActivity('page_view', 'Loaded JSON formatter', 'JSON formatter and validator initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

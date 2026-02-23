@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 39: 2026-02-23
+**Feature/Change**: JSON Formatter & Validator
+**Description**: Added a full-featured interactive JSON Formatter and Validator tool for developers. The tool provides: one-click pretty-printing with configurable indentation, minification to strip all whitespace, alphabetical key sorting (recursive), an auto-repair mode that fixes common mistakes like trailing commas and single-quoted strings, live validation with error messages that show line and column numbers, a stats bar displaying key count, object/array counts, nesting depth, and byte size, one-click clipboard copy of output, three built-in examples (User Object, API Response, Config File) to get started quickly, and a side-by-side JSON diff tool that highlights added, removed, and changed paths between two JSON values. The core engine (`jsonFormatter.ts`) is fully unit-tested with 45 tests; the UI (`jsonFormatterUI.ts`) is covered by 25 tests — 70 new tests total, bringing the suite from 1,755 to 1,825 tests. A keyboard shortcut (`g+j`) navigates directly to the section. Styling integrates with Chimera's existing dark/light theme system.
+**Files Modified**: src/jsonFormatter.ts (created), src/jsonFormatter.test.ts (created), src/jsonFormatterUI.ts (created), src/jsonFormatterUI.test.ts (created), src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
 ### Day 38: 2026-02-22
 **Feature/Change**: Frontend Polish - Scroll-Reveal Animations & Gradient Section Titles
 **Description**: Elevated the visual quality of the Chimera dashboard with two cohesive polish improvements. First, all page sections below the fold now animate in smoothly as the user scrolls — an IntersectionObserver triggers a subtle `translateY(28px) → 0` + opacity fade-in (550ms, ease-out spring) on each section as it enters the viewport. Sections already visible on load are excluded from the animation to avoid jarring flashes. A `prefers-reduced-motion` media query disables all animation for users who opt out, preserving accessibility. Second, every `.section-title` heading across the app now renders as gradient text (dark/white → accent-purple) using `-webkit-background-clip: text`, harmonising with the gradient treatment on the main CHIMERA hero title and creating a more cohesive design language throughout the page. Both themes (dark/light) look equally polished because the gradient uses CSS variables that adapt per theme.
