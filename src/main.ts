@@ -42,6 +42,7 @@ import { setupSnippetLibrary } from './snippetLibraryUI.ts'
 import { setupRegexTester } from './regexTesterUI.ts'
 import { createWordCloudUI } from './wordCloudUI.ts'
 import { setupJsonFormatter } from './jsonFormatterUI.ts'
+import { setupMarkdownEditor } from './markdownEditorUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -156,6 +157,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="json-formatter-section">
       <p class="loading">Loading JSON formatter...</p>
+    </div>
+
+    <div id="markdown-editor-section">
+      <p class="loading">Loading Markdown editor...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -437,6 +442,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-markdown-editor',
+    name: 'Go to Markdown Editor',
+    description: 'Scroll to the live Markdown editor and previewer',
+    keys: ['g+e'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#markdown-editor-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Markdown Editor', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -538,6 +555,7 @@ function setupScrollReveal(): void {
     '#regex-tester-section',
     '#word-cloud-section',
     '#json-formatter-section',
+    '#markdown-editor-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -724,6 +742,11 @@ async function initializeApp() {
     const jsonFormatterContainer = document.querySelector<HTMLDivElement>('#json-formatter-section')!
     setupJsonFormatter(jsonFormatterContainer)
     trackActivity('page_view', 'Loaded JSON formatter', 'JSON formatter and validator initialized')
+
+    // Setup Markdown editor
+    const markdownEditorContainer = document.querySelector<HTMLDivElement>('#markdown-editor-section')!
+    setupMarkdownEditor(markdownEditorContainer)
+    trackActivity('page_view', 'Loaded Markdown editor', 'Live Markdown editor initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
