@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 40: 2026-02-24
+**Feature/Change**: Live Markdown Editor & Previewer
+**Description**: Added an interactive split-view Markdown editor that renders a live HTML preview as you type. The tool includes: a formatting toolbar with buttons for Bold, Italic, Strikethrough, H1–H3, Inline Code, Code Block, Blockquote, Unordered/Ordered List, Link, and Horizontal Rule; Ctrl+B / Ctrl+I keyboard shortcuts inside the editor; Tab-to-indent support; three built-in starter templates (README, Blog Post, Meeting Notes); one-click copy for both the Markdown source and the rendered HTML; and a live stats bar showing word count, character count, line count, heading count, code-block count, and link count. The core renderer (`markdownEditor.ts`) handles headings, bold, italic, bold+italic, strikethrough, inline code, fenced code blocks with language classes, blockquotes, ordered/unordered lists, horizontal rules, tables, links, and images — all with HTML-escaping in code contexts to prevent XSS. A keyboard shortcut `g+e` navigates directly to the section. 60 new tests added across markdownEditor.test.ts (39) and markdownEditorUI.test.ts (21), bringing the total from 1,825 to 1,885. Styles integrate fully with Chimera's dark/light theme system.
+**Files Modified**: src/markdownEditor.ts (created), src/markdownEditor.test.ts (created), src/markdownEditorUI.ts (created), src/markdownEditorUI.test.ts (created), src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
 ### Day 39: 2026-02-23
 **Feature/Change**: JSON Formatter & Validator
 **Description**: Added a full-featured interactive JSON Formatter and Validator tool for developers. The tool provides: one-click pretty-printing with configurable indentation, minification to strip all whitespace, alphabetical key sorting (recursive), an auto-repair mode that fixes common mistakes like trailing commas and single-quoted strings, live validation with error messages that show line and column numbers, a stats bar displaying key count, object/array counts, nesting depth, and byte size, one-click clipboard copy of output, three built-in examples (User Object, API Response, Config File) to get started quickly, and a side-by-side JSON diff tool that highlights added, removed, and changed paths between two JSON values. The core engine (`jsonFormatter.ts`) is fully unit-tested with 45 tests; the UI (`jsonFormatterUI.ts`) is covered by 25 tests — 70 new tests total, bringing the suite from 1,755 to 1,825 tests. A keyboard shortcut (`g+j`) navigates directly to the section. Styling integrates with Chimera's existing dark/light theme system.
