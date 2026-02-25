@@ -43,6 +43,7 @@ import { setupRegexTester } from './regexTesterUI.ts'
 import { createWordCloudUI } from './wordCloudUI.ts'
 import { setupJsonFormatter } from './jsonFormatterUI.ts'
 import { setupMarkdownEditor } from './markdownEditorUI.ts'
+import { setupColorPalette } from './colorPaletteUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -161,6 +162,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="markdown-editor-section">
       <p class="loading">Loading Markdown editor...</p>
+    </div>
+
+    <div id="color-palette-section">
+      <p class="loading">Loading color palette generator...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -454,6 +459,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-color-palette',
+    name: 'Go to Color Palette Generator',
+    description: 'Scroll to the color palette generator and contrast checker',
+    keys: ['g+p'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#color-palette-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Color Palette Generator', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -556,6 +573,7 @@ function setupScrollReveal(): void {
     '#word-cloud-section',
     '#json-formatter-section',
     '#markdown-editor-section',
+    '#color-palette-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -627,9 +645,9 @@ async function initializeApp() {
     // Setup code quality dashboard
     // Note: These values are hardcoded because we don't have access to the file system
     // to dynamically count test files. Update these values manually as the codebase evolves.
-    const testFiles = 67 // Current count of test files (*.test.ts)
-    const sourceFiles = 69 // Current count of source files (non-test TypeScript files)
-    const totalTests = 1755 // Current test count (update after adding new tests)
+    const testFiles = 73 // Current count of test files (*.test.ts)
+    const sourceFiles = 75 // Current count of source files (non-test TypeScript files)
+    const totalTests = 1962 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
@@ -747,6 +765,11 @@ async function initializeApp() {
     const markdownEditorContainer = document.querySelector<HTMLDivElement>('#markdown-editor-section')!
     setupMarkdownEditor(markdownEditorContainer)
     trackActivity('page_view', 'Loaded Markdown editor', 'Live Markdown editor initialized')
+
+    // Setup color palette generator
+    const colorPaletteContainer = document.querySelector<HTMLDivElement>('#color-palette-section')!
+    setupColorPalette(colorPaletteContainer)
+    trackActivity('page_view', 'Loaded color palette generator', 'Color palette generator initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
