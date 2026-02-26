@@ -43,6 +43,7 @@ import { setupRegexTester } from './regexTesterUI.ts'
 import { createWordCloudUI } from './wordCloudUI.ts'
 import { setupJsonFormatter } from './jsonFormatterUI.ts'
 import { setupMarkdownEditor } from './markdownEditorUI.ts'
+import { createColorPaletteUI } from './colorPaletteUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -161,6 +162,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="markdown-editor-section">
       <p class="loading">Loading Markdown editor...</p>
+    </div>
+
+    <div id="color-palette-section">
+      <p class="loading">Loading color palette generator...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -454,6 +459,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-color-palette',
+    name: 'Go to Color Palette Generator',
+    description: 'Scroll to the colour palette generator',
+    keys: ['g+p'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#color-palette-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Color Palette Generator', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -556,6 +573,7 @@ function setupScrollReveal(): void {
     '#word-cloud-section',
     '#json-formatter-section',
     '#markdown-editor-section',
+    '#color-palette-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -747,6 +765,13 @@ async function initializeApp() {
     const markdownEditorContainer = document.querySelector<HTMLDivElement>('#markdown-editor-section')!
     setupMarkdownEditor(markdownEditorContainer)
     trackActivity('page_view', 'Loaded Markdown editor', 'Live Markdown editor initialized')
+
+    // Setup Color Palette Generator
+    const colorPaletteContainer = document.querySelector<HTMLDivElement>('#color-palette-section')!
+    const colorPaletteEl = createColorPaletteUI()
+    colorPaletteContainer.innerHTML = ''
+    colorPaletteContainer.appendChild(colorPaletteEl)
+    trackActivity('page_view', 'Loaded Color Palette Generator', 'Colour harmony palette generator initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

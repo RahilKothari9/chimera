@@ -10651,3 +10651,252 @@ body.keyboard-nav textarea:focus {
     min-height: 600px;
   }
 }
+
+/* ============================================================
+   Color Palette Generator
+   ============================================================ */
+.cp-container {
+  padding: 1.5rem;
+}
+
+.cp-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0.25rem 0 1.25rem;
+}
+
+.cp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.cp-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1 1 220px;
+}
+
+.cp-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cp-color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cp-color-input {
+  width: 44px;
+  height: 38px;
+  border-radius: 0.4rem;
+  border: 1px solid var(--border-color);
+  background: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.cp-hex-input {
+  flex: 1;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.cp-hex-input:focus {
+  outline: 2px solid var(--accent-color, #7c3aed);
+  outline-offset: 1px;
+}
+
+.cp-select {
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.cp-select:focus {
+  outline: 2px solid var(--accent-color, #7c3aed);
+  outline-offset: 1px;
+}
+
+.cp-type-description {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+.cp-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.cp-btn:active { transform: scale(0.97); }
+.cp-btn:hover  { opacity: 0.88; }
+
+.cp-btn-primary {
+  background: var(--accent-color, #7c3aed);
+  color: #fff;
+  align-self: flex-end;
+}
+
+.cp-btn-secondary {
+  background: var(--bg-secondary, rgba(0,0,0,0.08));
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+}
+
+/* Palette grid */
+.cp-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cp-swatch-card {
+  border-radius: 0.6rem;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: transform 0.15s;
+}
+
+.cp-swatch-card:hover { transform: translateY(-2px); }
+
+.cp-swatch-seed {
+  border-color: var(--accent-color, #7c3aed);
+  box-shadow: 0 0 0 2px var(--accent-color, #7c3aed);
+}
+
+.cp-swatch-preview {
+  position: relative;
+  height: 90px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.cp-swatch-label {
+  background: rgba(0,0,0,0.25);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.35rem;
+}
+
+.cp-swatch-badge {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  background: var(--accent-color, #7c3aed);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cp-swatch-info {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cp-swatch-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cp-copy-btn {
+  background: var(--bg-secondary, rgba(0,0,0,0.05));
+  border: 1px solid var(--border-color);
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.4rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+  width: 100%;
+}
+
+.cp-copy-btn:hover {
+  background: var(--accent-color, #7c3aed);
+  color: #fff;
+  border-color: var(--accent-color, #7c3aed);
+}
+
+.cp-copy-feedback {
+  background: #22c55e !important;
+  color: #fff !important;
+  border-color: #22c55e !important;
+}
+
+/* Export row */
+.cp-export-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.cp-export-btn {
+  padding: 0.45rem 0.9rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary, rgba(0,0,0,0.06));
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cp-export-btn:hover {
+  background: var(--accent-color, #7c3aed);
+  color: #fff;
+  border-color: var(--accent-color, #7c3aed);
+}
+
+.cp-error {
+  color: #ef4444;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  background: rgba(239,68,68,0.08);
+  border-radius: 0.4rem;
+  border: 1px solid rgba(239,68,68,0.25);
+}
+
+@media (max-width: 600px) {
+  .cp-palette-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .cp-controls { flex-direction: column; }
+}
