@@ -1,97 +1,102 @@
 /**
  * Color Palette Generator
- * Converts colors between formats and generates harmony-based palettes
+ * Generates harmonious color palettes and calculates WCAG accessibility contrast ratios
  */
 
-export type PaletteType =
-  | 'complementary'
-  | 'analogous'
-  | 'triadic'
-  | 'split-complementary'
-  | 'tetradic'
-  | 'monochromatic'
-
-export interface RGB {
+export interface RGBColor {
   r: number
   g: number
   b: number
 }
 
-export interface HSL {
-  h: number // 0–360
-  s: number // 0–100
-  l: number // 0–100
+export interface HSLColor {
+  h: number // 0-360
+  s: number // 0-100
+  l: number // 0-100
 }
 
-export interface ColorSwatch {
+export interface ColorInfo {
   hex: string
-  rgb: RGB
-  hsl: HSL
-  label: string
+  rgb: RGBColor
+  hsl: HSLColor
 }
 
-export interface PaletteResult {
-  seed: ColorSwatch
-  swatches: ColorSwatch[]
+export interface ContrastResult {
+  ratio: number
+  ratioText: string
+  aaLarge: boolean  // >= 3:1
+  aa: boolean       // >= 4.5:1
+  aaaLarge: boolean // >= 4.5:1
+  aaa: boolean      // >= 7:1
+}
+
+export type PaletteType =
+  | 'complementary'
+  | 'analogous'
+  | 'triadic'
+  | 'tetradic'
+  | 'split-complementary'
+  | 'monochromatic'
+
+export interface ColorPalette {
   type: PaletteType
+  baseColor: ColorInfo
+  colors: ColorInfo[]
 }
-
-// ---------------------------------------------------------------------------
-// Conversion utilities
-// ---------------------------------------------------------------------------
 
 /**
- * Parses a 3- or 6-digit hex string (with or without leading '#') into RGB.
- * Returns null if the string is not a valid hex colour.
+ * Parses a hex color string (with or without #) and returns an RGBColor, or null if invalid
  */
-export function hexToRgb(hex: string): RGB | null {
-  const clean = hex.replace(/^#/, '').trim()
-  const full =
-    clean.length === 3
-      ? clean
-          .split('')
-          .map((c) => c + c)
-          .join('')
-      : clean
-  if (!/^[0-9a-fA-F]{6}$/.test(full)) return null
-  return {
-    r: parseInt(full.slice(0, 2), 16),
-    g: parseInt(full.slice(2, 4), 16),
-    b: parseInt(full.slice(4, 6), 16),
+export function hexToRgb(hex: string): RGBColor | null {
+  const sanitized = hex.replace('#', '')
+  if (sanitized.length === 3) {
+    const r = parseInt(sanitized[0] + sanitized[0], 16)
+    const g = parseInt(sanitized[1] + sanitized[1], 16)
+    const b = parseInt(sanitized[2] + sanitized[2], 16)
+    if (isNaN(r) || isNaN(g) || isNaN(b)) return null
+    return { r, g, b }
   }
+  if (sanitized.length === 6) {
+    const r = parseInt(sanitized.slice(0, 2), 16)
+    const g = parseInt(sanitized.slice(2, 4), 16)
+    const b = parseInt(sanitized.slice(4, 6), 16)
+    if (isNaN(r) || isNaN(g) || isNaN(b)) return null
+    return { r, g, b }
+  }
+  return null
 }
 
-/** Converts RGB (0–255) to a lowercase hex string like '#a1b2c3'. */
-export function rgbToHex(rgb: RGB): string {
-  const toHex = (n: number) => Math.round(Math.max(0, Math.min(255, n))).toString(16).padStart(2, '0')
+/**
+ * Converts an RGBColor to a lowercase hex string (e.g. "#ff0000")
+ */
+export function rgbToHex(rgb: RGBColor): string {
+  const toHex = (n: number) =>
+    Math.round(Math.max(0, Math.min(255, n))).toString(16).padStart(2, '0')
   return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`
 }
 
-/** Converts RGB (0–255) to HSL (h:0–360, s:0–100, l:0–100). */
-export function rgbToHsl(rgb: RGB): HSL {
+/**
+ * Converts an RGBColor to HSLColor
+ */
+export function rgbToHsl(rgb: RGBColor): HSLColor {
   const r = rgb.r / 255
   const g = rgb.g / 255
   const b = rgb.b / 255
   const max = Math.max(r, g, b)
   const min = Math.min(r, g, b)
-  const delta = max - min
-  let h = 0
-  let s = 0
   const l = (max + min) / 2
 
-  if (delta !== 0) {
-    s = delta / (1 - Math.abs(2 * l - 1))
-    switch (max) {
-      case r:
-        h = ((g - b) / delta + (g < b ? 6 : 0)) / 6
-        break
-      case g:
-        h = ((b - r) / delta + 2) / 6
-        break
-      default:
-        h = ((r - g) / delta + 4) / 6
-    }
+  if (max === min) {
+    return { h: 0, s: 0, l: Math.round(l * 100) }
   }
+
+  const d = max - min
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+
+  let h = 0
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6
+  else if (max === g) h = ((b - r) / d + 2) / 6
+  else h = ((r - g) / d + 4) / 6
 
   return {
     h: Math.round(h * 360),
@@ -100,221 +105,149 @@ export function rgbToHsl(rgb: RGB): HSL {
   }
 }
 
-/** Converts HSL (h:0–360, s:0–100, l:0–100) to RGB (0–255). */
-export function hslToRgb(hsl: HSL): RGB {
+/**
+ * Converts an HSLColor to RGBColor
+ */
+export function hslToRgb(hsl: HSLColor): RGBColor {
   const h = hsl.h / 360
   const s = hsl.s / 100
   const l = hsl.l / 100
+
   if (s === 0) {
     const v = Math.round(l * 255)
     return { r: v, g: v, b: v }
   }
-  const q = l < 0.5 ? l * (1 + s) : l + s - l * s
-  const p = 2 * l - q
-  const hue2rgb = (t: number) => {
-    let tt = t
-    if (tt < 0) tt += 1
-    if (tt > 1) tt -= 1
-    if (tt < 1 / 6) return p + (q - p) * 6 * tt
-    if (tt < 1 / 2) return q
-    if (tt < 2 / 3) return p + (q - p) * (2 / 3 - tt) * 6
+
+  const hue2rgb = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1
+    if (t > 1) t -= 1
+    if (t < 1 / 6) return p + (q - p) * 6 * t
+    if (t < 1 / 2) return q
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
     return p
   }
+
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+  const p = 2 * l - q
+
   return {
-    r: Math.round(hue2rgb(h + 1 / 3) * 255),
-    g: Math.round(hue2rgb(h) * 255),
-    b: Math.round(hue2rgb(h - 1 / 3) * 255),
+    r: Math.round(hue2rgb(p, q, h + 1 / 3) * 255),
+    g: Math.round(hue2rgb(p, q, h) * 255),
+    b: Math.round(hue2rgb(p, q, h - 1 / 3) * 255),
   }
 }
-
-/** Converts a hex colour to HSL. Returns null for invalid input. */
-export function hexToHsl(hex: string): HSL | null {
-  const rgb = hexToRgb(hex)
-  return rgb ? rgbToHsl(rgb) : null
-}
-
-/** Constructs a swatch from a hex string (with label). */
-function buildSwatch(hex: string, label: string): ColorSwatch {
-  const rgb = hexToRgb(hex)!
-  const hsl = rgbToHsl(rgb)
-  return { hex, rgb, hsl, label }
-}
-
-/** Creates a swatch by rotating the hue of a seed HSL value. */
-function swatchFromHue(seedHsl: HSL, hueDelta: number, label: string): ColorSwatch {
-  const hsl: HSL = {
-    h: (seedHsl.h + hueDelta + 360) % 360,
-    s: seedHsl.s,
-    l: seedHsl.l,
-  }
-  const rgb = hslToRgb(hsl)
-  const hex = rgbToHex(rgb)
-  return { hex, rgb, hsl, label }
-}
-
-// ---------------------------------------------------------------------------
-// Palette generation
-// ---------------------------------------------------------------------------
 
 /**
- * Generates a colour palette from a seed hex colour using the requested
- * harmony type.
+ * Creates a ColorInfo from a hex string; returns null if the hex is invalid
  */
-export function generatePalette(seedHex: string, type: PaletteType): PaletteResult | null {
-  const rgb = hexToRgb(seedHex)
+export function colorFromHex(hex: string): ColorInfo | null {
+  const rgb = hexToRgb(hex)
   if (!rgb) return null
   const hsl = rgbToHsl(rgb)
-  const seed = buildSwatch(seedHex.startsWith('#') ? seedHex : `#${seedHex}`, 'Seed')
+  return { hex: rgbToHex(rgb), rgb, hsl }
+}
 
-  let swatches: ColorSwatch[]
+/**
+ * Creates a ColorInfo from HSL values, normalizing hue to [0, 360)
+ */
+export function colorFromHsl(h: number, s: number, l: number): ColorInfo {
+  const normH = ((h % 360) + 360) % 360
+  const normS = Math.max(0, Math.min(100, s))
+  const normL = Math.max(0, Math.min(100, l))
+  const hsl: HSLColor = { h: normH, s: normS, l: normL }
+  const rgb = hslToRgb(hsl)
+  return { hex: rgbToHex(rgb), rgb, hsl }
+}
+
+/**
+ * Calculates the WCAG 2.1 relative luminance of an RGB color
+ */
+export function relativeLuminance(rgb: RGBColor): number {
+  const linearize = (c: number) => {
+    const sRGB = c / 255
+    return sRGB <= 0.03928 ? sRGB / 12.92 : Math.pow((sRGB + 0.055) / 1.055, 2.4)
+  }
+  return 0.2126 * linearize(rgb.r) + 0.7152 * linearize(rgb.g) + 0.0722 * linearize(rgb.b)
+}
+
+/**
+ * Calculates the WCAG 2.1 contrast ratio between two RGB colors
+ */
+export function contrastRatio(colorA: RGBColor, colorB: RGBColor): number {
+  const lumA = relativeLuminance(colorA)
+  const lumB = relativeLuminance(colorB)
+  const lighter = Math.max(lumA, lumB)
+  const darker = Math.min(lumA, lumB)
+  return (lighter + 0.05) / (darker + 0.05)
+}
+
+/**
+ * Returns WCAG 2.1 compliance information for a foreground/background color pair
+ */
+export function checkContrast(colorA: ColorInfo, colorB: ColorInfo): ContrastResult {
+  const ratio = contrastRatio(colorA.rgb, colorB.rgb)
+  return {
+    ratio,
+    ratioText: ratio.toFixed(2) + ':1',
+    aaLarge: ratio >= 3,
+    aa: ratio >= 4.5,
+    aaaLarge: ratio >= 4.5,
+    aaa: ratio >= 7,
+  }
+}
+
+/**
+ * Generates a color palette from a base hex color using the specified harmony rule
+ */
+export function generatePalette(baseHex: string, type: PaletteType): ColorPalette | null {
+  const base = colorFromHex(baseHex)
+  if (!base) return null
+
+  const { h, s, l } = base.hsl
+  let colors: ColorInfo[]
 
   switch (type) {
     case 'complementary':
-      swatches = [swatchFromHue(hsl, 180, 'Complement')]
+      colors = [base, colorFromHsl(h + 180, s, l)]
       break
-
     case 'analogous':
-      swatches = [
-        swatchFromHue(hsl, -30, 'Analogous −30°'),
-        swatchFromHue(hsl, 30, 'Analogous +30°'),
-      ]
+      colors = [colorFromHsl(h - 30, s, l), base, colorFromHsl(h + 30, s, l)]
       break
-
     case 'triadic':
-      swatches = [
-        swatchFromHue(hsl, 120, 'Triadic +120°'),
-        swatchFromHue(hsl, 240, 'Triadic +240°'),
-      ]
+      colors = [base, colorFromHsl(h + 120, s, l), colorFromHsl(h + 240, s, l)]
       break
-
-    case 'split-complementary':
-      swatches = [
-        swatchFromHue(hsl, 150, 'Split +150°'),
-        swatchFromHue(hsl, 210, 'Split +210°'),
-      ]
-      break
-
     case 'tetradic':
-      swatches = [
-        swatchFromHue(hsl, 90, 'Tetradic +90°'),
-        swatchFromHue(hsl, 180, 'Tetradic +180°'),
-        swatchFromHue(hsl, 270, 'Tetradic +270°'),
+      colors = [
+        base,
+        colorFromHsl(h + 90, s, l),
+        colorFromHsl(h + 180, s, l),
+        colorFromHsl(h + 270, s, l),
       ]
       break
-
-    case 'monochromatic': {
-      const steps: Array<[number, string]> = [
-        [hsl.l - 30, 'Darker'],
-        [hsl.l - 15, 'Dark'],
-        [hsl.l + 15, 'Light'],
-        [hsl.l + 30, 'Lighter'],
-      ]
-      swatches = steps.map(([lightness, label]) => {
-        const adjHsl: HSL = { h: hsl.h, s: hsl.s, l: Math.max(5, Math.min(95, lightness)) }
-        const adjRgb = hslToRgb(adjHsl)
-        return { hex: rgbToHex(adjRgb), rgb: adjRgb, hsl: adjHsl, label }
-      })
+    case 'split-complementary':
+      colors = [base, colorFromHsl(h + 150, s, l), colorFromHsl(h + 210, s, l)]
       break
-    }
-
-    default:
-      return null
+    case 'monochromatic':
+      colors = [
+        colorFromHsl(h, s, Math.max(10, l - 40)),
+        colorFromHsl(h, s, Math.max(10, l - 20)),
+        base,
+        colorFromHsl(h, s, Math.min(90, l + 20)),
+        colorFromHsl(h, s, Math.min(90, l + 40)),
+      ]
+      break
   }
 
-  return { seed, swatches, type }
-}
-
-// ---------------------------------------------------------------------------
-// Utility helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Calculates the relative luminance of a hex colour (WCAG formula).
- * Returns a value between 0 (black) and 1 (white).
- */
-export function getLuminance(hex: string): number {
-  const rgb = hexToRgb(hex)
-  if (!rgb) return 0
-  const toLinear = (v: number) => {
-    const c = v / 255
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
-  }
-  return 0.2126 * toLinear(rgb.r) + 0.7152 * toLinear(rgb.g) + 0.0722 * toLinear(rgb.b)
+  return { type, baseColor: base, colors }
 }
 
 /**
- * Returns '#000000' or '#ffffff' whichever has better contrast against the
- * given background colour.
+ * Returns white or black — whichever gives better contrast against the background color
  */
-export function getContrastColor(hex: string): string {
-  return getLuminance(hex) > 0.179 ? '#000000' : '#ffffff'
+export function bestTextColor(background: ColorInfo): ColorInfo {
+  const white = colorFromHex('#ffffff')!
+  const black = colorFromHex('#000000')!
+  return contrastRatio(background.rgb, white.rgb) > contrastRatio(background.rgb, black.rgb)
+    ? white
+    : black
 }
-
-/**
- * Generates a random hex colour string like '#a1b2c3'.
- */
-export function generateRandomColor(): string {
-  const rand = () => Math.floor(Math.random() * 256)
-  return rgbToHex({ r: rand(), g: rand(), b: rand() })
-}
-
-/** Returns a human-readable label for HSL-based colour families. */
-export function getColorName(hex: string): string {
-  const rgb = hexToRgb(hex)
-  if (!rgb) return 'Unknown'
-  const hsl = rgbToHsl(rgb)
-  const { h, s, l } = hsl
-
-  if (l <= 10) return 'Near Black'
-  if (l >= 90) return 'Near White'
-  if (s < 12) {
-    if (l < 35) return 'Dark Gray'
-    if (l < 65) return 'Gray'
-    return 'Light Gray'
-  }
-
-  if (h < 15 || h >= 345) return 'Red'
-  if (h < 40) return 'Orange'
-  if (h < 65) return 'Yellow'
-  if (h < 150) return 'Green'
-  if (h < 195) return 'Cyan'
-  if (h < 255) return 'Blue'
-  if (h < 285) return 'Indigo'
-  if (h < 320) return 'Purple'
-  if (h < 345) return 'Pink'
-  return 'Red'
-}
-
-/** Returns all palette type options with display labels. */
-export const PALETTE_TYPES: Array<{ value: PaletteType; label: string; description: string }> = [
-  {
-    value: 'complementary',
-    label: 'Complementary',
-    description: 'Opposite colour on the wheel — high contrast',
-  },
-  {
-    value: 'analogous',
-    label: 'Analogous',
-    description: 'Adjacent colours — harmonious and cohesive',
-  },
-  {
-    value: 'triadic',
-    label: 'Triadic',
-    description: 'Three evenly-spaced colours — vibrant balance',
-  },
-  {
-    value: 'split-complementary',
-    label: 'Split-Complementary',
-    description: 'Complement with two neighbours — softer contrast',
-  },
-  {
-    value: 'tetradic',
-    label: 'Tetradic',
-    description: 'Four evenly-spaced colours — rich variety',
-  },
-  {
-    value: 'monochromatic',
-    label: 'Monochromatic',
-    description: 'Tints and shades of one hue — elegant simplicity',
-  },
-]

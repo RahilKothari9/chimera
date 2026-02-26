@@ -43,7 +43,7 @@ import { setupRegexTester } from './regexTesterUI.ts'
 import { createWordCloudUI } from './wordCloudUI.ts'
 import { setupJsonFormatter } from './jsonFormatterUI.ts'
 import { setupMarkdownEditor } from './markdownEditorUI.ts'
-import { createColorPaletteUI } from './colorPaletteUI.ts'
+import { setupColorPalette } from './colorPaletteUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -461,7 +461,7 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   registry.addShortcut({
     id: 'nav-color-palette',
     name: 'Go to Color Palette Generator',
-    description: 'Scroll to the colour palette generator',
+    description: 'Scroll to the color palette generator and contrast checker',
     keys: ['g+p'],
     category: 'navigation',
     handler: () => {
@@ -645,9 +645,9 @@ async function initializeApp() {
     // Setup code quality dashboard
     // Note: These values are hardcoded because we don't have access to the file system
     // to dynamically count test files. Update these values manually as the codebase evolves.
-    const testFiles = 67 // Current count of test files (*.test.ts)
-    const sourceFiles = 69 // Current count of source files (non-test TypeScript files)
-    const totalTests = 1755 // Current test count (update after adding new tests)
+    const testFiles = 73 // Current count of test files (*.test.ts)
+    const sourceFiles = 75 // Current count of source files (non-test TypeScript files)
+    const totalTests = 1962 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
@@ -766,12 +766,10 @@ async function initializeApp() {
     setupMarkdownEditor(markdownEditorContainer)
     trackActivity('page_view', 'Loaded Markdown editor', 'Live Markdown editor initialized')
 
-    // Setup Color Palette Generator
+    // Setup color palette generator
     const colorPaletteContainer = document.querySelector<HTMLDivElement>('#color-palette-section')!
-    const colorPaletteEl = createColorPaletteUI()
-    colorPaletteContainer.innerHTML = ''
-    colorPaletteContainer.appendChild(colorPaletteEl)
-    trackActivity('page_view', 'Loaded Color Palette Generator', 'Colour harmony palette generator initialized')
+    setupColorPalette(colorPaletteContainer)
+    trackActivity('page_view', 'Loaded color palette generator', 'Color palette generator initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

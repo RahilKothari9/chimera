@@ -4,326 +4,263 @@ import {
   rgbToHex,
   rgbToHsl,
   hslToRgb,
-  hexToHsl,
+  colorFromHex,
+  colorFromHsl,
+  relativeLuminance,
+  contrastRatio,
+  checkContrast,
   generatePalette,
-  getLuminance,
-  getContrastColor,
-  generateRandomColor,
-  getColorName,
-  PALETTE_TYPES,
+  bestTextColor,
 } from './colorPalette'
 
-// ---------------------------------------------------------------------------
-// hexToRgb
-// ---------------------------------------------------------------------------
 describe('hexToRgb', () => {
-  it('parses a 6-digit hex with hash', () => {
+  it('parses a 6-char hex with hash', () => {
     expect(hexToRgb('#ff0000')).toEqual({ r: 255, g: 0, b: 0 })
   })
-
-  it('parses a 6-digit hex without hash', () => {
-    expect(hexToRgb('00ff00')).toEqual({ r: 0, g: 255, b: 0 })
+  it('parses a 3-char hex with hash', () => {
+    expect(hexToRgb('#f00')).toEqual({ r: 255, g: 0, b: 0 })
   })
-
-  it('expands a 3-digit hex', () => {
-    expect(hexToRgb('#fff')).toEqual({ r: 255, g: 255, b: 255 })
-    expect(hexToRgb('#000')).toEqual({ r: 0, g: 0, b: 0 })
-    expect(hexToRgb('#f80')).toEqual({ r: 255, g: 136, b: 0 })
+  it('handles uppercase letters', () => {
+    expect(hexToRgb('#FF8800')).toEqual({ r: 255, g: 136, b: 0 })
   })
-
-  it('handles uppercase hex', () => {
-    expect(hexToRgb('#FF0000')).toEqual({ r: 255, g: 0, b: 0 })
+  it('parses hex without hash', () => {
+    expect(hexToRgb('ffffff')).toEqual({ r: 255, g: 255, b: 255 })
   })
-
-  it('returns null for invalid hex', () => {
-    expect(hexToRgb('xyz')).toBeNull()
-    expect(hexToRgb('#gggggg')).toBeNull()
-    expect(hexToRgb('')).toBeNull()
-    expect(hexToRgb('#12345')).toBeNull()
+  it('parses black', () => {
+    expect(hexToRgb('#000000')).toEqual({ r: 0, g: 0, b: 0 })
+  })
+  it('returns null for invalid length', () => {
+    expect(hexToRgb('#1234')).toBeNull()
+    expect(hexToRgb('#12')).toBeNull()
+  })
+  it('returns null for non-hex characters in 6-char form', () => {
+    expect(hexToRgb('#xxyyzz')).toBeNull()
+  })
+  it('returns null for non-hex characters in 3-char form', () => {
+    expect(hexToRgb('#xyz')).toBeNull()
   })
 })
 
-// ---------------------------------------------------------------------------
-// rgbToHex
-// ---------------------------------------------------------------------------
 describe('rgbToHex', () => {
   it('converts red', () => {
     expect(rgbToHex({ r: 255, g: 0, b: 0 })).toBe('#ff0000')
   })
-
   it('converts white', () => {
     expect(rgbToHex({ r: 255, g: 255, b: 255 })).toBe('#ffffff')
   })
-
   it('converts black', () => {
     expect(rgbToHex({ r: 0, g: 0, b: 0 })).toBe('#000000')
   })
-
-  it('clamps values out of range', () => {
-    expect(rgbToHex({ r: 300, g: -5, b: 128 })).toBe('#ff0080')
+  it('clamps values above 255', () => {
+    expect(rgbToHex({ r: 300, g: 0, b: 0 })).toBe('#ff0000')
+  })
+  it('clamps negative values', () => {
+    expect(rgbToHex({ r: -10, g: 128, b: 0 })).toBe('#008000')
   })
 })
 
-// ---------------------------------------------------------------------------
-// rgbToHsl
-// ---------------------------------------------------------------------------
 describe('rgbToHsl', () => {
-  it('converts red', () => {
-    expect(rgbToHsl({ r: 255, g: 0, b: 0 })).toEqual({ h: 0, s: 100, l: 50 })
+  it('converts pure red', () => {
+    const hsl = rgbToHsl({ r: 255, g: 0, b: 0 })
+    expect(hsl.h).toBe(0)
+    expect(hsl.s).toBe(100)
+    expect(hsl.l).toBe(50)
   })
-
+  it('converts pure green', () => {
+    const hsl = rgbToHsl({ r: 0, g: 255, b: 0 })
+    expect(hsl.h).toBe(120)
+    expect(hsl.s).toBe(100)
+    expect(hsl.l).toBe(50)
+  })
+  it('converts pure blue', () => {
+    const hsl = rgbToHsl({ r: 0, g: 0, b: 255 })
+    expect(hsl.h).toBe(240)
+    expect(hsl.s).toBe(100)
+    expect(hsl.l).toBe(50)
+  })
   it('converts white', () => {
-    expect(rgbToHsl({ r: 255, g: 255, b: 255 })).toEqual({ h: 0, s: 0, l: 100 })
+    const hsl = rgbToHsl({ r: 255, g: 255, b: 255 })
+    expect(hsl.s).toBe(0)
+    expect(hsl.l).toBe(100)
   })
-
   it('converts black', () => {
-    expect(rgbToHsl({ r: 0, g: 0, b: 0 })).toEqual({ h: 0, s: 0, l: 0 })
+    const hsl = rgbToHsl({ r: 0, g: 0, b: 0 })
+    expect(hsl.s).toBe(0)
+    expect(hsl.l).toBe(0)
   })
-
-  it('converts a mid-range colour', () => {
-    const hsl = rgbToHsl({ r: 0, g: 128, b: 255 })
-    expect(hsl.h).toBeGreaterThan(200)
-    expect(hsl.h).toBeLessThan(220)
-    expect(hsl.s).toBeGreaterThan(90)
+  it('converts mid-gray', () => {
+    const hsl = rgbToHsl({ r: 128, g: 128, b: 128 })
+    expect(hsl.s).toBe(0)
   })
 })
 
-// ---------------------------------------------------------------------------
-// hslToRgb
-// ---------------------------------------------------------------------------
 describe('hslToRgb', () => {
   it('converts pure red', () => {
     expect(hslToRgb({ h: 0, s: 100, l: 50 })).toEqual({ r: 255, g: 0, b: 0 })
   })
-
-  it('converts achromatic (grey)', () => {
-    const grey = hslToRgb({ h: 0, s: 0, l: 50 })
-    expect(grey.r).toBe(grey.g)
-    expect(grey.g).toBe(grey.b)
-    expect(grey.r).toBeGreaterThan(100)
-    expect(grey.r).toBeLessThan(150)
+  it('converts white (achromatic)', () => {
+    expect(hslToRgb({ h: 0, s: 0, l: 100 })).toEqual({ r: 255, g: 255, b: 255 })
   })
-
-  it('roundtrips rgb → hsl → rgb', () => {
-    const original = { r: 123, g: 45, b: 200 }
-    const hsl = rgbToHsl(original)
-    const back = hslToRgb(hsl)
-    expect(Math.abs(back.r - original.r)).toBeLessThanOrEqual(2)
-    expect(Math.abs(back.g - original.g)).toBeLessThanOrEqual(2)
-    expect(Math.abs(back.b - original.b)).toBeLessThanOrEqual(2)
+  it('converts black (achromatic)', () => {
+    expect(hslToRgb({ h: 0, s: 0, l: 0 })).toEqual({ r: 0, g: 0, b: 0 })
   })
-})
-
-// ---------------------------------------------------------------------------
-// hexToHsl
-// ---------------------------------------------------------------------------
-describe('hexToHsl', () => {
-  it('converts a valid hex', () => {
-    const hsl = hexToHsl('#ff0000')
-    expect(hsl).not.toBeNull()
-    expect(hsl!.h).toBe(0)
-    expect(hsl!.s).toBe(100)
-    expect(hsl!.l).toBe(50)
+  it('round-trips with rgbToHsl within 1 unit', () => {
+    const original = { r: 100, g: 150, b: 200 }
+    const back = hslToRgb(rgbToHsl(original))
+    expect(Math.abs(back.r - original.r)).toBeLessThanOrEqual(1)
+    expect(Math.abs(back.g - original.g)).toBeLessThanOrEqual(1)
+    expect(Math.abs(back.b - original.b)).toBeLessThanOrEqual(1)
   })
-
-  it('returns null for invalid hex', () => {
-    expect(hexToHsl('invalid')).toBeNull()
+  it('converts pure green', () => {
+    const rgb = hslToRgb({ h: 120, s: 100, l: 50 })
+    expect(rgb.g).toBe(255)
+    expect(rgb.r).toBe(0)
+    expect(rgb.b).toBe(0)
   })
 })
 
-// ---------------------------------------------------------------------------
-// generatePalette
-// ---------------------------------------------------------------------------
-describe('generatePalette', () => {
-  it('returns null for invalid hex', () => {
-    expect(generatePalette('invalid', 'complementary')).toBeNull()
+describe('colorFromHex', () => {
+  it('creates a ColorInfo from a valid hex', () => {
+    const c = colorFromHex('#ff0000')
+    expect(c).not.toBeNull()
+    expect(c!.hex).toBe('#ff0000')
+    expect(c!.rgb).toEqual({ r: 255, g: 0, b: 0 })
+    expect(c!.hsl.h).toBe(0)
   })
-
-  it('generates a complementary palette with 1 swatch', () => {
-    const result = generatePalette('#ff0000', 'complementary')
-    expect(result).not.toBeNull()
-    expect(result!.swatches).toHaveLength(1)
-    expect(result!.type).toBe('complementary')
-    // Complement of red (h=0) is cyan (h=180)
-    expect(result!.swatches[0].hsl.h).toBe(180)
+  it('returns null for an invalid hex', () => {
+    expect(colorFromHex('#xyz')).toBeNull()
   })
-
-  it('generates an analogous palette with 2 swatches', () => {
-    const result = generatePalette('#00ff00', 'analogous')
-    expect(result).not.toBeNull()
-    expect(result!.swatches).toHaveLength(2)
-  })
-
-  it('generates a triadic palette with 2 swatches', () => {
-    const result = generatePalette('#ff0000', 'triadic')
-    expect(result).not.toBeNull()
-    expect(result!.swatches).toHaveLength(2)
-    const hues = result!.swatches.map((s) => s.hsl.h)
-    expect(hues[0]).toBe(120)
-    expect(hues[1]).toBe(240)
-  })
-
-  it('generates a split-complementary palette with 2 swatches', () => {
-    const result = generatePalette('#ff0000', 'split-complementary')
-    expect(result).not.toBeNull()
-    expect(result!.swatches).toHaveLength(2)
-  })
-
-  it('generates a tetradic palette with 3 swatches', () => {
-    const result = generatePalette('#ff0000', 'tetradic')
-    expect(result).not.toBeNull()
-    expect(result!.swatches).toHaveLength(3)
-  })
-
-  it('generates a monochromatic palette with 4 swatches', () => {
-    const result = generatePalette('#ff0000', 'monochromatic')
-    expect(result).not.toBeNull()
-    expect(result!.swatches).toHaveLength(4)
-  })
-
-  it('seed swatch has correct hex', () => {
-    const result = generatePalette('#3498db', 'complementary')
-    expect(result!.seed.hex).toBe('#3498db')
-  })
-
-  it('each swatch has hex, rgb, hsl, and label', () => {
-    const result = generatePalette('#ff8800', 'triadic')!
-    for (const swatch of [result.seed, ...result.swatches]) {
-      expect(swatch.hex).toMatch(/^#[0-9a-f]{6}$/)
-      expect(swatch.rgb).toHaveProperty('r')
-      expect(swatch.rgb).toHaveProperty('g')
-      expect(swatch.rgb).toHaveProperty('b')
-      expect(swatch.hsl).toHaveProperty('h')
-      expect(swatch.label).toBeTruthy()
-    }
-  })
-
-  it('accepts hex without leading hash', () => {
-    const result = generatePalette('ff0000', 'complementary')
-    expect(result).not.toBeNull()
-  })
-
-  it('monochromatic lightness is clamped within 5–95', () => {
-    // Very dark seed — lighter swatches should not exceed 95
-    const result = generatePalette('#080808', 'monochromatic')!
-    for (const swatch of result.swatches) {
-      expect(swatch.hsl.l).toBeGreaterThanOrEqual(5)
-      expect(swatch.hsl.l).toBeLessThanOrEqual(95)
-    }
+  it('normalizes hex casing', () => {
+    const c = colorFromHex('#ABCDEF')
+    expect(c!.hex).toBe('#abcdef')
   })
 })
 
-// ---------------------------------------------------------------------------
-// getLuminance
-// ---------------------------------------------------------------------------
-describe('getLuminance', () => {
-  it('white has luminance 1', () => {
-    expect(getLuminance('#ffffff')).toBeCloseTo(1, 2)
+describe('colorFromHsl', () => {
+  it('creates a ColorInfo from valid HSL', () => {
+    const c = colorFromHsl(0, 100, 50)
+    expect(c.hsl.h).toBe(0)
+    expect(c.hsl.s).toBe(100)
+    expect(c.hsl.l).toBe(50)
   })
+  it('normalizes hue > 360', () => {
+    const c = colorFromHsl(370, 50, 50)
+    expect(c.hsl.h).toBe(10)
+  })
+  it('normalizes negative hue', () => {
+    const c = colorFromHsl(-30, 50, 50)
+    expect(c.hsl.h).toBe(330)
+  })
+  it('clamps saturation above 100', () => {
+    const c = colorFromHsl(180, 150, 50)
+    expect(c.hsl.s).toBe(100)
+  })
+  it('clamps lightness below 0', () => {
+    const c = colorFromHsl(180, 50, -10)
+    expect(c.hsl.l).toBe(0)
+  })
+})
 
+describe('relativeLuminance', () => {
+  it('white has luminance ~1', () => {
+    expect(relativeLuminance({ r: 255, g: 255, b: 255 })).toBeCloseTo(1, 2)
+  })
   it('black has luminance 0', () => {
-    expect(getLuminance('#000000')).toBeCloseTo(0, 5)
+    expect(relativeLuminance({ r: 0, g: 0, b: 0 })).toBeCloseTo(0, 5)
   })
-
-  it('returns 0 for invalid hex', () => {
-    expect(getLuminance('invalid')).toBe(0)
-  })
-
-  it('mid-grey has luminance between 0 and 1', () => {
-    const l = getLuminance('#808080')
-    expect(l).toBeGreaterThan(0)
-    expect(l).toBeLessThan(1)
+  it('luminance is between 0 and 1 for any color', () => {
+    const lum = relativeLuminance({ r: 100, g: 149, b: 237 })
+    expect(lum).toBeGreaterThan(0)
+    expect(lum).toBeLessThan(1)
   })
 })
 
-// ---------------------------------------------------------------------------
-// getContrastColor
-// ---------------------------------------------------------------------------
-describe('getContrastColor', () => {
-  it('dark background → white text', () => {
-    expect(getContrastColor('#000000')).toBe('#ffffff')
-    expect(getContrastColor('#1a1a2e')).toBe('#ffffff')
+describe('contrastRatio', () => {
+  it('black on white gives maximum ratio of ~21', () => {
+    const ratio = contrastRatio({ r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 })
+    expect(ratio).toBeCloseTo(21, 0)
   })
-
-  it('light background → black text', () => {
-    expect(getContrastColor('#ffffff')).toBe('#000000')
-    expect(getContrastColor('#eeeeee')).toBe('#000000')
+  it('identical colors give ratio of 1', () => {
+    expect(contrastRatio({ r: 128, g: 64, b: 32 }, { r: 128, g: 64, b: 32 })).toBeCloseTo(1, 2)
   })
-})
-
-// ---------------------------------------------------------------------------
-// generateRandomColor
-// ---------------------------------------------------------------------------
-describe('generateRandomColor', () => {
-  it('returns a valid hex colour', () => {
-    const color = generateRandomColor()
-    expect(color).toMatch(/^#[0-9a-f]{6}$/)
-  })
-
-  it('returns a different colour on each call (statistically)', () => {
-    const colors = new Set(Array.from({ length: 10 }, () => generateRandomColor()))
-    expect(colors.size).toBeGreaterThan(1)
+  it('is symmetric (order does not matter)', () => {
+    const a = { r: 100, g: 200, b: 50 }
+    const b = { r: 30, g: 30, b: 30 }
+    expect(contrastRatio(a, b)).toBeCloseTo(contrastRatio(b, a), 5)
   })
 })
 
-// ---------------------------------------------------------------------------
-// getColorName
-// ---------------------------------------------------------------------------
-describe('getColorName', () => {
-  it('identifies red', () => {
-    expect(getColorName('#ff0000')).toBe('Red')
+describe('checkContrast', () => {
+  it('black/white pair passes all WCAG levels', () => {
+    const result = checkContrast(colorFromHex('#000000')!, colorFromHex('#ffffff')!)
+    expect(result.aaLarge).toBe(true)
+    expect(result.aa).toBe(true)
+    expect(result.aaaLarge).toBe(true)
+    expect(result.aaa).toBe(true)
   })
-
-  it('identifies blue', () => {
-    expect(getColorName('#0000ff')).toBe('Blue')
+  it('yellow/white pair fails AA normal text', () => {
+    const result = checkContrast(colorFromHex('#ffff00')!, colorFromHex('#ffffff')!)
+    expect(result.aa).toBe(false)
   })
-
-  it('identifies green', () => {
-    expect(getColorName('#00ff00')).toBe('Green')
+  it('ratioText has the correct format', () => {
+    const result = checkContrast(colorFromHex('#000000')!, colorFromHex('#ffffff')!)
+    expect(result.ratioText).toMatch(/^\d+\.\d{2}:1$/)
   })
-
-  it('identifies near-black', () => {
-    expect(getColorName('#050505')).toBe('Near Black')
-  })
-
-  it('identifies near-white', () => {
-    expect(getColorName('#f8f8f8')).toBe('Near White')
-  })
-
-  it('identifies grey', () => {
-    expect(getColorName('#808080')).toBe('Gray')
-  })
-
-  it('returns Unknown for invalid hex', () => {
-    expect(getColorName('invalid')).toBe('Unknown')
-  })
-
-  it('identifies orange', () => {
-    expect(getColorName('#ff8800')).toBe('Orange')
-  })
-
-  it('identifies yellow', () => {
-    expect(getColorName('#ffff00')).toBe('Yellow')
-  })
-
-  it('identifies cyan', () => {
-    expect(getColorName('#00ffff')).toBe('Cyan')
+  it('ratio matches contrastRatio function', () => {
+    const a = colorFromHex('#336699')!
+    const b = colorFromHex('#ffffff')!
+    const result = checkContrast(a, b)
+    expect(result.ratio).toBeCloseTo(contrastRatio(a.rgb, b.rgb), 5)
   })
 })
 
-// ---------------------------------------------------------------------------
-// PALETTE_TYPES
-// ---------------------------------------------------------------------------
-describe('PALETTE_TYPES', () => {
-  it('contains all 6 types', () => {
-    expect(PALETTE_TYPES).toHaveLength(6)
+describe('generatePalette', () => {
+  it('returns null for an invalid hex', () => {
+    expect(generatePalette('#xyz', 'complementary')).toBeNull()
   })
+  it('complementary palette has 2 colors', () => {
+    const p = generatePalette('#ff0000', 'complementary')!
+    expect(p.colors).toHaveLength(2)
+    expect(p.type).toBe('complementary')
+  })
+  it('analogous palette has 3 colors', () => {
+    expect(generatePalette('#ff0000', 'analogous')!.colors).toHaveLength(3)
+  })
+  it('triadic palette has 3 colors', () => {
+    expect(generatePalette('#ff0000', 'triadic')!.colors).toHaveLength(3)
+  })
+  it('tetradic palette has 4 colors', () => {
+    expect(generatePalette('#ff0000', 'tetradic')!.colors).toHaveLength(4)
+  })
+  it('split-complementary palette has 3 colors', () => {
+    expect(generatePalette('#ff0000', 'split-complementary')!.colors).toHaveLength(3)
+  })
+  it('monochromatic palette has 5 colors', () => {
+    expect(generatePalette('#ff0000', 'monochromatic')!.colors).toHaveLength(5)
+  })
+  it('baseColor matches the input hex', () => {
+    const p = generatePalette('#3399ff', 'complementary')!
+    expect(p.baseColor.hex).toBe('#3399ff')
+  })
+  it('all colors in the palette have valid hex values', () => {
+    const p = generatePalette('#6366f1', 'tetradic')!
+    p.colors.forEach(c => {
+      expect(c.hex).toMatch(/^#[0-9a-f]{6}$/)
+    })
+  })
+})
 
-  it('each entry has value, label, and description', () => {
-    for (const entry of PALETTE_TYPES) {
-      expect(entry.value).toBeTruthy()
-      expect(entry.label).toBeTruthy()
-      expect(entry.description).toBeTruthy()
-    }
+describe('bestTextColor', () => {
+  it('returns white for a very dark background', () => {
+    expect(bestTextColor(colorFromHex('#1a1a2e')!).hex).toBe('#ffffff')
+  })
+  it('returns black for a very light background', () => {
+    expect(bestTextColor(colorFromHex('#f0f0f0')!).hex).toBe('#000000')
+  })
+  it('returns white for pure black', () => {
+    expect(bestTextColor(colorFromHex('#000000')!).hex).toBe('#ffffff')
+  })
+  it('returns black for pure white', () => {
+    expect(bestTextColor(colorFromHex('#ffffff')!).hex).toBe('#000000')
   })
 })

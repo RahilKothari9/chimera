@@ -1,221 +1,252 @@
 /**
  * Color Palette Generator UI
- * Interactive widget to generate and explore colour palettes
+ * Interactive tool for generating harmonious color palettes and checking WCAG contrast
  */
 
 import {
   generatePalette,
-  generateRandomColor,
-  getColorName,
-  getContrastColor,
-  PALETTE_TYPES,
-  type ColorSwatch,
-  type PaletteResult,
+  checkContrast,
+  colorFromHex,
+  bestTextColor,
   type PaletteType,
-} from './colorPalette'
+  type ColorInfo,
+} from './colorPalette.ts'
+import { notificationManager } from './notificationSystem.ts'
+import { trackActivity } from './activityFeed.ts'
 
-// ---------------------------------------------------------------------------
-// Copy-to-clipboard helper
-// ---------------------------------------------------------------------------
-async function copyText(text: string): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(text)
-    return true
-  } catch {
-    return false
-  }
+const PRESET_COLORS = [
+  { name: 'Indigo', hex: '#6366f1' },
+  { name: 'Crimson', hex: '#dc143c' },
+  { name: 'Ocean Blue', hex: '#0066cc' },
+  { name: 'Forest Green', hex: '#228b22' },
+  { name: 'Sunset Orange', hex: '#ff6b35' },
+  { name: 'Royal Purple', hex: '#7b2d8b' },
+]
+
+const PALETTE_TYPES: { value: PaletteType; label: string; desc: string }[] = [
+  { value: 'complementary', label: 'Complementary', desc: 'Opposite colors on the wheel' },
+  { value: 'analogous', label: 'Analogous', desc: 'Adjacent colors on the wheel' },
+  { value: 'triadic', label: 'Triadic', desc: 'Three evenly spaced colors' },
+  { value: 'tetradic', label: 'Tetradic', desc: 'Four evenly spaced colors' },
+  { value: 'split-complementary', label: 'Split-Complementary', desc: 'Base + two adjacent to complement' },
+  { value: 'monochromatic', label: 'Monochromatic', desc: 'Shades of a single hue' },
+]
+
+function copyToClipboard(text: string, label: string) {
+  navigator.clipboard.writeText(text).then(() => {
+    notificationManager.show(`Copied ${label} to clipboard`, { type: 'success' })
+  }).catch(() => {
+    notificationManager.show('Failed to copy to clipboard', { type: 'error' })
+  })
 }
 
-// ---------------------------------------------------------------------------
-// Swatch card
-// ---------------------------------------------------------------------------
-function createSwatchCard(swatch: ColorSwatch, isSeed = false): HTMLElement {
+function renderColorCard(color: ColorInfo): HTMLElement {
+  const textColor = bestTextColor(color)
   const card = document.createElement('div')
-  card.className = `cp-swatch-card${isSeed ? ' cp-swatch-seed' : ''}`
-  card.setAttribute('data-hex', swatch.hex)
+  card.className = 'palette-color-card'
+  card.setAttribute('data-hex', color.hex)
 
-  const contrastColor = getContrastColor(swatch.hex)
-  const colorName = getColorName(swatch.hex)
+  const { h, s, l } = color.hsl
+  const { r, g, b } = color.rgb
 
-  card.innerHTML = `
-    <div class="cp-swatch-preview" style="background:${swatch.hex};color:${contrastColor}">
-      <span class="cp-swatch-label">${swatch.label}</span>
-      ${isSeed ? '<span class="cp-swatch-badge">Seed</span>' : ''}
-    </div>
-    <div class="cp-swatch-info">
-      <div class="cp-swatch-name">${colorName}</div>
-      <button class="cp-copy-btn" data-value="${swatch.hex}" title="Copy HEX">
-        ${swatch.hex}
-      </button>
-      <button class="cp-copy-btn cp-copy-rgb" data-value="rgb(${swatch.rgb.r}, ${swatch.rgb.g}, ${swatch.rgb.b})" title="Copy RGB">
-        rgb(${swatch.rgb.r}, ${swatch.rgb.g}, ${swatch.rgb.b})
-      </button>
-      <button class="cp-copy-btn cp-copy-hsl" data-value="hsl(${swatch.hsl.h}, ${swatch.hsl.s}%, ${swatch.hsl.l}%)" title="Copy HSL">
-        hsl(${swatch.hsl.h}, ${swatch.hsl.s}%, ${swatch.hsl.l}%)
-      </button>
-    </div>
-  `
+  const swatch = document.createElement('div')
+  swatch.className = 'palette-swatch'
+  swatch.style.backgroundColor = color.hex
+  swatch.style.color = textColor.hex
+  swatch.textContent = color.hex
 
-  // Wire up copy buttons
-  card.querySelectorAll<HTMLButtonElement>('.cp-copy-btn').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const value = btn.dataset.value ?? ''
-      const ok = await copyText(value)
-      const prev = btn.textContent
-      btn.textContent = ok ? '✓ Copied!' : '✗ Failed'
-      btn.classList.add('cp-copy-feedback')
-      setTimeout(() => {
-        btn.textContent = prev
-        btn.classList.remove('cp-copy-feedback')
-      }, 1500)
+  const values = document.createElement('div')
+  values.className = 'palette-color-values'
+
+  const rows: { fmt: string; val: string }[] = [
+    { fmt: 'HEX', val: color.hex },
+    { fmt: 'RGB', val: `rgb(${r}, ${g}, ${b})` },
+    { fmt: 'HSL', val: `hsl(${h}, ${s}%, ${l}%)` },
+  ]
+
+  rows.forEach(({ fmt, val }) => {
+    const row = document.createElement('div')
+    row.className = 'palette-value-row'
+    row.innerHTML = `
+      <span class="palette-format-label">${fmt}</span>
+      <code class="palette-code">${val}</code>
+      <button class="palette-copy-btn" title="Copy ${fmt}">⎘</button>
+    `
+    row.querySelector<HTMLButtonElement>('.palette-copy-btn')!.addEventListener('click', () => {
+      copyToClipboard(val, `${fmt} ${val}`)
+      trackActivity('snippet', 'Copied color value', val)
     })
+    values.appendChild(row)
   })
 
+  card.appendChild(swatch)
+  card.appendChild(values)
   return card
 }
 
-// ---------------------------------------------------------------------------
-// Palette grid
-// ---------------------------------------------------------------------------
-function renderPalette(container: HTMLElement, result: PaletteResult): void {
-  container.innerHTML = ''
+function renderContrastTable(colors: ColorInfo[]): HTMLElement {
+  const wrapper = document.createElement('div')
+  wrapper.className = 'contrast-checker'
 
-  const grid = document.createElement('div')
-  grid.className = 'cp-palette-grid'
+  const title = document.createElement('h3')
+  title.className = 'contrast-checker-title'
+  title.textContent = 'Contrast Checker'
+  wrapper.appendChild(title)
 
-  grid.appendChild(createSwatchCard(result.seed, true))
-  for (const swatch of result.swatches) {
-    grid.appendChild(createSwatchCard(swatch))
+  const subtitle = document.createElement('p')
+  subtitle.className = 'contrast-checker-subtitle'
+  subtitle.textContent = 'WCAG 2.1 accessibility compliance for all color pairs'
+  wrapper.appendChild(subtitle)
+
+  if (colors.length < 2) {
+    const msg = document.createElement('p')
+    msg.textContent = 'Generate a palette with at least 2 colors to see contrast data.'
+    wrapper.appendChild(msg)
+    return wrapper
   }
 
-  container.appendChild(grid)
+  const table = document.createElement('table')
+  table.className = 'contrast-table'
 
-  // Export row
-  const exportRow = document.createElement('div')
-  exportRow.className = 'cp-export-row'
+  const thead = table.createTHead()
+  thead.innerHTML = `<tr>
+    <th>Pair</th>
+    <th>Ratio</th>
+    <th>AA Large ≥3:1</th>
+    <th>AA ≥4.5:1</th>
+    <th>AAA Large ≥4.5:1</th>
+    <th>AAA ≥7:1</th>
+  </tr>`
 
-  const allSwatches = [result.seed, ...result.swatches]
-  const hexList = allSwatches.map((s) => s.hex).join(', ')
-  const cssVars = allSwatches
-    .map((s, i) => `  --color-${i}: ${s.hex};`)
-    .join('\n')
-  const cssBlock = `:root {\n${cssVars}\n}`
+  const tbody = table.createTBody()
 
-  const copyHexBtn = document.createElement('button')
-  copyHexBtn.className = 'cp-export-btn'
-  copyHexBtn.textContent = 'Copy HEX list'
-  copyHexBtn.addEventListener('click', async () => {
-    const ok = await copyText(hexList)
-    copyHexBtn.textContent = ok ? '✓ Copied!' : '✗ Failed'
-    setTimeout(() => (copyHexBtn.textContent = 'Copy HEX list'), 1500)
-  })
+  for (let i = 0; i < colors.length; i++) {
+    for (let j = i + 1; j < colors.length; j++) {
+      const result = checkContrast(colors[i], colors[j])
+      const row = tbody.insertRow()
+      const badge = (pass: boolean) =>
+        pass
+          ? `<span class="wcag-badge wcag-pass">✓ Pass</span>`
+          : `<span class="wcag-badge wcag-fail">✗ Fail</span>`
 
-  const copyCssBtn = document.createElement('button')
-  copyCssBtn.className = 'cp-export-btn'
-  copyCssBtn.textContent = 'Copy CSS variables'
-  copyCssBtn.addEventListener('click', async () => {
-    const ok = await copyText(cssBlock)
-    copyCssBtn.textContent = ok ? '✓ Copied!' : '✗ Failed'
-    setTimeout(() => (copyCssBtn.textContent = 'Copy CSS variables'), 1500)
-  })
+      row.innerHTML = `
+        <td class="contrast-pair-cell">
+          <span class="contrast-swatch-mini" style="background:${colors[i].hex}"></span>
+          <span class="contrast-swatch-mini" style="background:${colors[j].hex}"></span>
+          <span class="contrast-pair-text">${colors[i].hex} / ${colors[j].hex}</span>
+        </td>
+        <td><strong>${result.ratioText}</strong></td>
+        <td>${badge(result.aaLarge)}</td>
+        <td>${badge(result.aa)}</td>
+        <td>${badge(result.aaaLarge)}</td>
+        <td>${badge(result.aaa)}</td>
+      `
+    }
+  }
 
-  exportRow.appendChild(copyHexBtn)
-  exportRow.appendChild(copyCssBtn)
-  container.appendChild(exportRow)
+  table.appendChild(tbody)
+  wrapper.appendChild(table)
+  return wrapper
 }
 
-// ---------------------------------------------------------------------------
-// Main UI factory
-// ---------------------------------------------------------------------------
-export function createColorPaletteUI(): HTMLElement {
-  const root = document.createElement('div')
-  root.className = 'cp-container section-card'
-  root.setAttribute('data-testid', 'color-palette-ui')
-
-  root.innerHTML = `
-    <div class="cp-header">
+export function setupColorPalette(container: HTMLElement): void {
+  container.innerHTML = `
+    <div class="color-palette-wrapper">
       <h2 class="section-title">🎨 Color Palette Generator</h2>
-      <p class="cp-description">
-        Pick a seed colour and a harmony rule to generate a beautiful colour palette.
-        Click any value to copy it to your clipboard.
+      <p class="color-palette-subtitle">
+        Generate harmonious color palettes from any base color and check WCAG 2.1 accessibility contrast ratios.
       </p>
-    </div>
-    <div class="cp-controls">
-      <div class="cp-control-group">
-        <label class="cp-label" for="cp-seed-color">Seed colour</label>
-        <div class="cp-color-row">
-          <input type="color" id="cp-seed-color" class="cp-color-input" value="#3498db" aria-label="Seed colour picker" />
-          <input type="text"  id="cp-hex-input"  class="cp-hex-input"   value="#3498db" placeholder="#rrggbb" maxlength="7" aria-label="Hex colour input" />
-          <button id="cp-random-btn" class="cp-btn cp-btn-secondary" title="Random colour">🎲 Random</button>
+
+      <div class="color-palette-controls">
+        <div class="palette-control-group">
+          <label class="palette-label" for="cp-color-picker">Base Color</label>
+          <div class="palette-picker-row">
+            <input type="color" id="cp-color-picker" value="#6366f1" class="cp-color-picker" />
+            <input type="text" id="cp-hex-input" value="#6366f1" class="cp-hex-input" maxlength="7" placeholder="#rrggbb" />
+          </div>
+        </div>
+
+        <div class="palette-control-group">
+          <label class="palette-label" for="cp-palette-type">Harmony Rule</label>
+          <select id="cp-palette-type" class="cp-palette-type">
+            ${PALETTE_TYPES.map(t => `<option value="${t.value}">${t.label} — ${t.desc}</option>`).join('\n')}
+          </select>
+        </div>
+
+        <div class="palette-control-group">
+          <label class="palette-label">Presets</label>
+          <div class="cp-presets">
+            ${PRESET_COLORS.map(p => `<button class="cp-preset" style="background:${p.hex}" data-hex="${p.hex}" title="${p.name}: ${p.hex}" aria-label="${p.name}"></button>`).join('\n')}
+          </div>
         </div>
       </div>
-      <div class="cp-control-group">
-        <label class="cp-label" for="cp-palette-type">Harmony</label>
-        <select id="cp-palette-type" class="cp-select" aria-label="Colour harmony type"></select>
-        <p id="cp-type-description" class="cp-type-description"></p>
-      </div>
-      <button id="cp-generate-btn" class="cp-btn cp-btn-primary">Generate Palette</button>
+
+      <div id="cp-palette-output" class="cp-palette-output"></div>
     </div>
-    <div id="cp-palette-output" class="cp-palette-output" aria-live="polite"></div>
   `
 
-  // Populate harmony selector
-  const select = root.querySelector<HTMLSelectElement>('#cp-palette-type')!
-  const typeDesc = root.querySelector<HTMLParagraphElement>('#cp-type-description')!
+  const picker = container.querySelector<HTMLInputElement>('#cp-color-picker')!
+  const hexInput = container.querySelector<HTMLInputElement>('#cp-hex-input')!
+  const typeSelect = container.querySelector<HTMLSelectElement>('#cp-palette-type')!
+  const output = container.querySelector<HTMLDivElement>('#cp-palette-output')!
 
-  for (const pt of PALETTE_TYPES) {
-    const opt = document.createElement('option')
-    opt.value = pt.value
-    opt.textContent = pt.label
-    select.appendChild(opt)
+  function renderPalette(hex: string, type: PaletteType) {
+    const palette = generatePalette(hex, type)
+    if (!palette) {
+      output.innerHTML = '<p class="cp-error">Invalid color. Please enter a valid hex value.</p>'
+      return
+    }
+
+    output.innerHTML = ''
+
+    const typeInfo = PALETTE_TYPES.find(t => t.value === type)!
+
+    const header = document.createElement('div')
+    header.className = 'cp-palette-header'
+    header.innerHTML = `
+      <span class="cp-palette-type-badge">${typeInfo.label}</span>
+      <span class="cp-palette-count">${palette.colors.length} color${palette.colors.length !== 1 ? 's' : ''}</span>
+    `
+    output.appendChild(header)
+
+    const grid = document.createElement('div')
+    grid.className = 'cp-colors-grid'
+    palette.colors.forEach(color => grid.appendChild(renderColorCard(color)))
+    output.appendChild(grid)
+
+    output.appendChild(renderContrastTable(palette.colors))
+
+    trackActivity('page_view', 'Generated color palette', `${typeInfo.label} from ${hex}`)
   }
 
-  const updateTypeDesc = () => {
-    const found = PALETTE_TYPES.find((p) => p.value === select.value)
-    typeDesc.textContent = found?.description ?? ''
+  function updateFromHex(hex: string) {
+    const color = colorFromHex(hex)
+    if (!color) return
+    picker.value = color.hex
+    hexInput.value = color.hex
+    renderPalette(color.hex, typeSelect.value as PaletteType)
   }
-  updateTypeDesc()
-  select.addEventListener('change', updateTypeDesc)
 
-  // Sync colour picker ↔ hex text field
-  const colorInput = root.querySelector<HTMLInputElement>('#cp-seed-color')!
-  const hexInput = root.querySelector<HTMLInputElement>('#cp-hex-input')!
-  const output = root.querySelector<HTMLElement>('#cp-palette-output')!
-
-  colorInput.addEventListener('input', () => {
-    hexInput.value = colorInput.value
+  picker.addEventListener('input', () => {
+    hexInput.value = picker.value
+    renderPalette(picker.value, typeSelect.value as PaletteType)
   })
 
   hexInput.addEventListener('input', () => {
     const val = hexInput.value.trim()
-    if (/^#[0-9a-fA-F]{6}$/.test(val)) {
-      colorInput.value = val
+    if (/^#?[0-9a-fA-F]{6}$/.test(val)) {
+      updateFromHex(val.startsWith('#') ? val : '#' + val)
     }
   })
 
-  // Random button
-  root.querySelector<HTMLButtonElement>('#cp-random-btn')!.addEventListener('click', () => {
-    const color = generateRandomColor()
-    colorInput.value = color
-    hexInput.value = color
+  typeSelect.addEventListener('change', () => {
+    renderPalette(picker.value, typeSelect.value as PaletteType)
   })
 
-  // Generate palette
-  const generate = () => {
-    const hex = hexInput.value.trim() || colorInput.value
-    const type = select.value as PaletteType
-    const result = generatePalette(hex, type)
-    if (!result) {
-      output.innerHTML = '<p class="cp-error">⚠ Invalid colour. Please enter a valid hex code.</p>'
-      return
-    }
-    renderPalette(output, result)
-  }
+  container.querySelectorAll<HTMLButtonElement>('.cp-preset').forEach(btn => {
+    btn.addEventListener('click', () => updateFromHex(btn.dataset.hex!))
+  })
 
-  root.querySelector<HTMLButtonElement>('#cp-generate-btn')!.addEventListener('click', generate)
-
-  // Auto-generate on load
-  generate()
-
-  return root
+  // Initial render
+  renderPalette('#6366f1', 'complementary')
 }
