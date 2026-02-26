@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 42: 2026-02-26
+**Feature/Change**: Color Palette Generator (merge resolution)
+**Description**: Resolved a merge conflict between two parallel Day 41 development branches that both independently implemented a Color Palette Generator. Incorporated the implementation from PR #89 (Day 41), which added an interactive Color Palette Generator with WCAG 2.1 Contrast Checker, six colour harmony rules, preset colours, per-swatch copy buttons, and accessibility-aware text colour selection. The final implementation uses `setupColorPalette` from `colorPaletteUI.ts`, integrating the tool with Chimera's scroll-reveal, keyboard shortcut (`g+p`), and activity-tracking systems. Total test count remains 1,962 (no net-new tests added in this merge).
+**Files Modified**: README.md, public/README.md
+
+---
+
 ### Day 41: 2026-02-25
 **Feature/Change**: Color Palette Generator & WCAG Contrast Checker
 **Description**: Added an interactive Color Palette Generator that lets developers and designers create harmonious color schemes and verify accessibility compliance. The tool features: a native color picker plus hex text input for precise color entry; six harmony rules — Complementary, Analogous, Triadic, Tetradic, Split-Complementary, and Monochromatic; six preset colors to get started instantly; per-color cards showing the swatch, hex, RGB, and HSL values with one-click copy buttons for each format; and a WCAG 2.1 Contrast Checker table that evaluates every color pair in the palette against all four compliance thresholds (AA Large ≥3:1, AA ≥4.5:1, AAA Large ≥4.5:1, AAA ≥7:1) with clear pass/fail badges. The core engine (`colorPalette.ts`) provides hex/RGB/HSL conversion functions, a `relativeLuminance` calculator following the WCAG 2.1 formula, contrast-ratio computation, palette generation for all six harmony types, and a `bestTextColor` helper that picks black or white to maximise legibility on any background. A keyboard shortcut `g+p` navigates directly to the section. 77 new tests added across colorPalette.test.ts (52) and colorPaletteUI.test.ts (25), bringing the total from 1,885 to 1,962. Styles integrate with Chimera's dark/light theme system.
