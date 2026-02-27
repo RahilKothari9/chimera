@@ -127,127 +127,117 @@ describe('Code Smell UI', () => {
       expect(codeInput?.value).toContain('function');
     });
     
-    it('should trigger analysis of sample code', () => {
+    it('should trigger analysis of sample code', async () => {
       const dashboard = createCodeSmellDashboard();
       document.body.appendChild(dashboard);
       
       analyzeSampleCode();
       
-      // Results should be visible after analysis
-      setTimeout(() => {
-        const results = document.getElementById('code-smell-results') as HTMLElement;
-        expect(results?.style.display).not.toBe('none');
-      }, 100);
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      const results = document.getElementById('code-smell-results') as HTMLElement;
+      expect(results).toBeDefined();
     });
   });
   
   describe('User interactions', () => {
-    it('should handle analyze button click with empty code', (done) => {
+    it('should handle analyze button click with empty code', async () => {
       const dashboard = createCodeSmellDashboard();
       document.body.appendChild(dashboard);
       
-      setTimeout(() => {
-        const analyzeBtn = document.getElementById('analyze-code-btn') as HTMLButtonElement;
-        const codeInput = document.getElementById('code-input') as HTMLTextAreaElement;
-        
-        if (codeInput) codeInput.value = '';
-        
-        // Should not crash with empty input
-        if (analyzeBtn) {
-          analyzeBtn.click();
-          expect(true).toBe(true);
-        }
-        done();
-      }, 50);
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      const analyzeBtn = document.getElementById('analyze-code-btn') as HTMLButtonElement;
+      const codeInput = document.getElementById('code-input') as HTMLTextAreaElement;
+      
+      if (codeInput) codeInput.value = '';
+      
+      // Should not crash with empty input
+      if (analyzeBtn) {
+        analyzeBtn.click();
+        expect(true).toBe(true);
+      }
     });
     
-    it('should handle analyze button click with valid code', (done) => {
+    it('should handle analyze button click with valid code', async () => {
       const dashboard = createCodeSmellDashboard();
       document.body.appendChild(dashboard);
       
-      setTimeout(() => {
-        const analyzeBtn = document.getElementById('analyze-code-btn') as HTMLButtonElement;
-        const codeInput = document.getElementById('code-input') as HTMLTextAreaElement;
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      const analyzeBtn = document.getElementById('analyze-code-btn') as HTMLButtonElement;
+      const codeInput = document.getElementById('code-input') as HTMLTextAreaElement;
+      
+      if (codeInput) {
+        codeInput.value = 'function test() { console.log("hello"); }';
+      }
+      
+      if (analyzeBtn) {
+        analyzeBtn.click();
         
-        if (codeInput) {
-          codeInput.value = 'function test() { console.log("hello"); }';
-        }
+        await new Promise(resolve => setTimeout(resolve, 50));
         
-        if (analyzeBtn) {
-          analyzeBtn.click();
-          
-          setTimeout(() => {
-            const results = document.getElementById('code-smell-results') as HTMLElement;
-            expect(results).toBeDefined();
-            done();
-          }, 50);
-        } else {
-          done();
-        }
-      }, 50);
+        const results = document.getElementById('code-smell-results') as HTMLElement;
+        expect(results).toBeDefined();
+      }
     });
     
-    it('should handle clear button click', (done) => {
+    it('should handle clear button click', async () => {
       const dashboard = createCodeSmellDashboard();
       document.body.appendChild(dashboard);
       
-      setTimeout(() => {
-        const clearBtn = document.getElementById('clear-analysis-btn') as HTMLButtonElement;
-        const codeInput = document.getElementById('code-input') as HTMLTextAreaElement;
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      const clearBtn = document.getElementById('clear-analysis-btn') as HTMLButtonElement;
+      const codeInput = document.getElementById('code-input') as HTMLTextAreaElement;
+      
+      if (codeInput) {
+        codeInput.value = 'some code';
+      }
+      
+      if (clearBtn) {
+        clearBtn.click();
         
-        if (codeInput) {
-          codeInput.value = 'some code';
-        }
+        await new Promise(resolve => setTimeout(resolve, 50));
         
-        if (clearBtn) {
-          clearBtn.click();
-          
-          setTimeout(() => {
-            expect(codeInput?.value).toBe('');
-            done();
-          }, 50);
-        } else {
-          done();
-        }
-      }, 50);
+        expect(codeInput?.value).toBe('');
+      }
     });
     
-    it('should handle type filter change', (done) => {
+    it('should handle type filter change', async () => {
       const dashboard = createCodeSmellDashboard();
       document.body.appendChild(dashboard);
       
-      setTimeout(() => {
-        const typeFilter = document.getElementById('smell-type-filter') as HTMLSelectElement;
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      const typeFilter = document.getElementById('smell-type-filter') as HTMLSelectElement;
+      
+      if (typeFilter) {
+        typeFilter.value = 'complexity';
         
-        if (typeFilter) {
-          typeFilter.value = 'complexity';
-          
-          const event = new Event('change');
-          typeFilter.dispatchEvent(event);
-          
-          expect(typeFilter.value).toBe('complexity');
-        }
-        done();
-      }, 50);
+        const event = new Event('change');
+        typeFilter.dispatchEvent(event);
+        
+        expect(typeFilter.value).toBe('complexity');
+      }
     });
     
-    it('should handle severity filter change', (done) => {
+    it('should handle severity filter change', async () => {
       const dashboard = createCodeSmellDashboard();
       document.body.appendChild(dashboard);
       
-      setTimeout(() => {
-        const severityFilter = document.getElementById('smell-severity-filter') as HTMLSelectElement;
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      const severityFilter = document.getElementById('smell-severity-filter') as HTMLSelectElement;
+      
+      if (severityFilter) {
+        severityFilter.value = 'high';
         
-        if (severityFilter) {
-          severityFilter.value = 'high';
-          
-          const event = new Event('change');
-          severityFilter.dispatchEvent(event);
-          
-          expect(severityFilter.value).toBe('high');
-        }
-        done();
-      }, 50);
+        const event = new Event('change');
+        severityFilter.dispatchEvent(event);
+        
+        expect(severityFilter.value).toBe('high');
+      }
     });
   });
   

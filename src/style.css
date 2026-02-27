@@ -10969,3 +10969,122 @@ body.keyboard-nav textarea:focus {
     width: 100%;
   }
 }
+
+/* Unit Converter */
+.unit-converter-container {
+  padding: 2rem;
+}
+
+.unit-converter-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.unit-converter-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.unit-converter-inputs {
+  align-items: flex-end;
+}
+
+.unit-input-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.unit-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary, #94a3b8);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.unit-input-pair {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.unit-input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color, #334155);
+  border-radius: 8px;
+  background: var(--card-bg, #1e293b);
+  color: var(--text-primary, #e2e8f0);
+  font-size: 1rem;
+  min-width: 0;
+}
+
+.unit-input:focus {
+  outline: none;
+  border-color: var(--accent, #6366f1);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+}
+
+.unit-output {
+  background: var(--bg-secondary, #0f172a);
+  color: var(--accent, #6366f1);
+  font-weight: 600;
+}
+
+.unit-select {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color, #334155);
+  border-radius: 8px;
+  background: var(--card-bg, #1e293b);
+  color: var(--text-primary, #e2e8f0);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.unit-select:focus {
+  outline: none;
+  border-color: var(--accent, #6366f1);
+}
+
+.unit-swap-btn {
+  flex-shrink: 0;
+  padding: 0.6rem 1rem;
+  background: var(--accent, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-bottom: 0.1rem;
+}
+
+.unit-swap-btn:hover {
+  background: var(--accent-hover, #4f46e5);
+  transform: scale(1.05);
+}
+
+.unit-result-display {
+  padding: 1rem 1.25rem;
+  background: var(--bg-secondary, #0f172a);
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent, #6366f1);
+  min-height: 2.8rem;
+  border: 1px solid var(--border-color, #334155);
+}
+
+@media (max-width: 640px) {
+  .unit-converter-inputs {
+    flex-direction: column;
+  }
+  .unit-swap-btn {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+}
