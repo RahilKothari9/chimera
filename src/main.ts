@@ -44,6 +44,7 @@ import { createWordCloudUI } from './wordCloudUI.ts'
 import { setupJsonFormatter } from './jsonFormatterUI.ts'
 import { setupMarkdownEditor } from './markdownEditorUI.ts'
 import { setupColorPalette } from './colorPaletteUI.ts'
+import { createUnitConverterUI } from './unitConverterUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -166,6 +167,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="color-palette-section">
       <p class="loading">Loading color palette generator...</p>
+    </div>
+
+    <div id="unit-converter-section">
+      <p class="loading">Loading unit converter...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -471,6 +476,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-unit-converter',
+    name: 'Go to Unit Converter',
+    description: 'Scroll to the unit converter tool',
+    keys: ['g+u'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#unit-converter-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Unit Converter', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -574,6 +591,7 @@ function setupScrollReveal(): void {
     '#json-formatter-section',
     '#markdown-editor-section',
     '#color-palette-section',
+    '#unit-converter-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -770,6 +788,12 @@ async function initializeApp() {
     const colorPaletteContainer = document.querySelector<HTMLDivElement>('#color-palette-section')!
     setupColorPalette(colorPaletteContainer)
     trackActivity('page_view', 'Loaded color palette generator', 'Color palette generator initialized')
+
+    // Setup unit converter
+    const unitConverterSection = document.querySelector<HTMLDivElement>('#unit-converter-section')!
+    unitConverterSection.innerHTML = ''
+    unitConverterSection.appendChild(createUnitConverterUI())
+    trackActivity('page_view', 'Loaded unit converter', 'Unit converter initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

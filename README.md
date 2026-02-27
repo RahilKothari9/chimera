@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 43: 2026-02-27
+**Feature/Change**: Unit Converter & CI Fix
+**Description**: Added a comprehensive Unit Converter tool supporting 8 measurement categories — Length, Weight/Mass, Temperature, Area, Volume, Speed, Time, and Digital Storage — with over 50 individual units. The converter features instant bidirectional conversion as you type, a swap button to exchange the from/to units in one click, a clear result summary display, and keyboard navigation shortcut `g+u`. The core engine (`unitConverter.ts`) implements base-unit normalisation so all categories are consistent and accurate (e.g., temperatures use Celsius as the base; all conversions are round-trippable). Results are formatted intelligently: normal numbers display up to 10 significant figures with trailing zeros stripped, while very large (≥1e15) or very small (<1e-6) values are shown in scientific notation. The UI integrates with Chimera's scroll-reveal system and activity-tracking system with a new `unit_converter` activity type. Also fixed a CI failure in `codeSmellUI.test.ts` where five tests used the deprecated Vitest `done()` callback pattern — all were converted to `async/await`. 49 new tests added across `unitConverter.test.ts` (38) and `unitConverterUI.test.ts` (11), bringing the total from 1,962 to 2,011.
+**Files Modified**: src/unitConverter.ts (created), src/unitConverter.test.ts (created), src/unitConverterUI.ts (created), src/unitConverterUI.test.ts (created), src/activityFeed.ts, src/codeSmellUI.test.ts, src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
 ### Day 42: 2026-02-26
 **Feature/Change**: Color Palette Generator (merge resolution)
 **Description**: Resolved a merge conflict between two parallel Day 41 development branches that both independently implemented a Color Palette Generator. Incorporated the implementation from PR #89 (Day 41), which added an interactive Color Palette Generator with WCAG 2.1 Contrast Checker, six colour harmony rules, preset colours, per-swatch copy buttons, and accessibility-aware text colour selection. The final implementation uses `setupColorPalette` from `colorPaletteUI.ts`, integrating the tool with Chimera's scroll-reveal, keyboard shortcut (`g+p`), and activity-tracking systems. Total test count remains 1,962 (no net-new tests added in this merge).

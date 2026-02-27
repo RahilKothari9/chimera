@@ -39,6 +39,7 @@ export type ActivityType =
   | 'regex_example'
   | 'regex_flags'
   | 'regex_test'
+  | 'unit_converter'
 
 export interface Activity {
   id: string
@@ -151,6 +152,7 @@ function getActivityIcon(type: ActivityType): string {
     regex_example: '🔍',
     regex_flags: '⚙️',
     regex_test: '🧪',
+    unit_converter: '🔄',
   }
   return icons[type] || '•'
 }
