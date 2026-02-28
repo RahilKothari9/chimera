@@ -45,6 +45,7 @@ import { setupJsonFormatter } from './jsonFormatterUI.ts'
 import { setupMarkdownEditor } from './markdownEditorUI.ts'
 import { setupColorPalette } from './colorPaletteUI.ts'
 import { createUnitConverterUI } from './unitConverterUI.ts'
+import { setupPasswordGenerator } from './passwordGeneratorUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -171,6 +172,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="unit-converter-section">
       <p class="loading">Loading unit converter...</p>
+    </div>
+
+    <div id="password-generator-section">
+      <p class="loading">Loading password generator...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -488,6 +493,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-password-generator',
+    name: 'Go to Password Generator',
+    description: 'Scroll to the password generator tool',
+    keys: ['g+0'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#password-generator-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Password Generator', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -794,6 +811,11 @@ async function initializeApp() {
     unitConverterSection.innerHTML = ''
     unitConverterSection.appendChild(createUnitConverterUI())
     trackActivity('page_view', 'Loaded unit converter', 'Unit converter initialized')
+
+    // Setup password generator
+    const passwordGeneratorSection = document.querySelector<HTMLDivElement>('#password-generator-section')!
+    setupPasswordGenerator(passwordGeneratorSection)
+    trackActivity('page_view', 'Loaded password generator', 'Password generator initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

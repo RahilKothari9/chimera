@@ -11088,3 +11088,223 @@ body.keyboard-nav textarea:focus {
     transform: rotate(90deg);
   }
 }
+
+/* ============================================================
+   Password Generator
+   ============================================================ */
+
+.password-generator-container {
+  padding: 1.5rem;
+}
+
+.pw-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .pw-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pw-options {
+  background: var(--card-bg, #1e293b);
+  border: 1px solid var(--border-color, #334155);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pw-panel-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary, #94a3b8);
+  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pw-option-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pw-option-label {
+  font-size: 0.9rem;
+  color: var(--text-primary, #e2e8f0);
+}
+
+.pw-length-slider {
+  width: 100%;
+  accent-color: var(--accent, #6366f1);
+  cursor: pointer;
+}
+
+.pw-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pw-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-primary, #e2e8f0);
+  cursor: pointer;
+}
+
+.pw-checkbox-label input[type="checkbox"] {
+  accent-color: var(--accent, #6366f1);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.pw-count-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pw-select {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border-color, #334155);
+  border-radius: 8px;
+  background: var(--card-bg, #1e293b);
+  color: var(--text-primary, #e2e8f0);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.pw-generate-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, var(--accent, #6366f1), #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.pw-generate-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.pw-generate-btn:active {
+  transform: translateY(0);
+}
+
+.pw-results-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pw-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pw-placeholder {
+  color: var(--text-secondary, #94a3b8);
+  font-style: italic;
+}
+
+.pw-error {
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
+.pw-result-card {
+  background: var(--card-bg, #1e293b);
+  border: 1px solid var(--border-color, #334155);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pw-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pw-result-password {
+  flex: 1;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  color: var(--accent, #6366f1);
+  word-break: break-all;
+  background: var(--bg-secondary, #0f172a);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #334155);
+}
+
+.pw-copy-btn {
+  padding: 0.4rem 0.8rem;
+  background: var(--accent, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.pw-copy-btn:hover {
+  background: var(--accent-hover, #4f46e5);
+}
+
+.pw-result-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pw-strength-bar-track {
+  flex: 1;
+  min-width: 80px;
+  height: 6px;
+  background: var(--bg-secondary, #0f172a);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pw-strength-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.pw-strength-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pw-entropy {
+  font-size: 0.78rem;
+  color: var(--text-secondary, #94a3b8);
+  white-space: nowrap;
+}
