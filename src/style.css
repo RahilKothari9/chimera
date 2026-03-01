@@ -11308,3 +11308,313 @@ body.keyboard-nav textarea:focus {
   color: var(--text-secondary, #94a3b8);
   white-space: nowrap;
 }
+
+/* ── Pomodoro Timer ─────────────────────────────────────────────────────── */
+
+.pomodoro-section {
+  max-width: 560px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--card-bg, rgba(30, 41, 59, 0.5));
+  border: 1px solid var(--border-color, rgba(148, 163, 184, 0.1));
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.pomodoro-header {
+  text-align: center;
+  width: 100%;
+}
+
+.pomodoro-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #94a3b8);
+  margin: 0.25rem 0 0;
+}
+
+/* Mode tabs */
+.pomodoro-mode-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--bg-secondary, rgba(15, 23, 42, 0.6));
+  padding: 0.25rem;
+  border-radius: 10px;
+}
+
+.pomodoro-mode-tab {
+  padding: 0.45rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-secondary, #94a3b8);
+  transition: background 0.2s, color 0.2s;
+}
+
+.pomodoro-mode-tab:hover {
+  background: var(--bg-tertiary, rgba(51, 65, 85, 0.6));
+  color: var(--text-primary, #f1f5f9);
+}
+
+.pomodoro-mode-tab.active {
+  background: var(--accent, #6366f1);
+  color: #fff;
+}
+
+/* Timer display */
+.pomodoro-timer-display {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 220px;
+}
+
+.pomodoro-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.pomodoro-ring-track {
+  stroke: var(--border-color, rgba(148, 163, 184, 0.15));
+}
+
+.pomodoro-ring-progress {
+  transition: stroke-dashoffset 0.6s ease, stroke 0.4s ease;
+}
+
+.pomodoro-ring-work {
+  stroke: #6366f1;
+}
+
+.pomodoro-ring-shortBreak {
+  stroke: #22c55e;
+}
+
+.pomodoro-ring-longBreak {
+  stroke: #f59e0b;
+}
+
+.pomodoro-time-label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  pointer-events: none;
+}
+
+.pomodoro-time-text {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #f1f5f9);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.pomodoro-mode-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Session dots */
+.pomodoro-session-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pomodoro-session-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pomodoro-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-color, rgba(148, 163, 184, 0.2));
+  transition: background 0.3s;
+}
+
+.pomodoro-dot.filled {
+  background: var(--accent, #6366f1);
+}
+
+.pomodoro-session-count {
+  font-size: 0.82rem;
+  color: var(--text-secondary, #94a3b8);
+}
+
+/* Controls */
+.pomodoro-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pomodoro-btn {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.pomodoro-btn:active {
+  transform: scale(0.96);
+}
+
+.pomodoro-btn-primary {
+  padding: 0.75rem 2.2rem;
+  background: var(--accent, #6366f1);
+  color: #fff;
+  font-size: 1rem;
+  min-width: 140px;
+}
+
+.pomodoro-btn-primary:hover {
+  background: var(--accent-hover, #4f46e5);
+}
+
+.pomodoro-btn-secondary {
+  padding: 0.75rem 1.1rem;
+  background: var(--bg-secondary, rgba(15, 23, 42, 0.6));
+  color: var(--text-primary, #f1f5f9);
+  border: 1px solid var(--border-color, rgba(148, 163, 184, 0.15));
+  font-size: 1.1rem;
+}
+
+.pomodoro-btn-secondary:hover {
+  background: var(--bg-tertiary, rgba(51, 65, 85, 0.6));
+}
+
+/* Settings */
+.pomodoro-settings-toggle {
+  background: none;
+  border: none;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+.pomodoro-settings-toggle:hover {
+  color: var(--text-primary, #f1f5f9);
+}
+
+.pomodoro-settings-panel {
+  width: 100%;
+  background: var(--bg-secondary, rgba(15, 23, 42, 0.6));
+  border: 1px solid var(--border-color, rgba(148, 163, 184, 0.1));
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pomodoro-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pomodoro-setting-row label {
+  font-size: 0.88rem;
+  color: var(--text-secondary, #94a3b8);
+  flex: 1;
+}
+
+.pomodoro-setting-input {
+  width: 72px;
+  padding: 0.35rem 0.6rem;
+  background: var(--input-bg, rgba(30, 41, 59, 0.8));
+  border: 1px solid var(--border-color, rgba(148, 163, 184, 0.2));
+  border-radius: 6px;
+  color: var(--text-primary, #f1f5f9);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.pomodoro-setting-input:focus {
+  outline: none;
+  border-color: var(--accent, #6366f1);
+}
+
+/* Stats */
+.pomodoro-stats {
+  display: flex;
+  gap: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-secondary, rgba(15, 23, 42, 0.4));
+  border-radius: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.pomodoro-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.pomodoro-stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary, #f1f5f9);
+}
+
+.pomodoro-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Light theme overrides */
+[data-theme="light"] .pomodoro-section {
+  background: rgba(248, 250, 252, 0.8);
+}
+
+[data-theme="light"] .pomodoro-ring-track {
+  stroke: rgba(100, 116, 139, 0.15);
+}
+
+[data-theme="light"] .pomodoro-mode-tabs {
+  background: rgba(226, 232, 240, 0.8);
+}
+
+[data-theme="light"] .pomodoro-btn-secondary {
+  background: rgba(241, 245, 249, 0.9);
+}
+
+[data-theme="light"] .pomodoro-settings-panel {
+  background: rgba(241, 245, 249, 0.9);
+}
+
+[data-theme="light"] .pomodoro-stats {
+  background: rgba(241, 245, 249, 0.6);
+}
+
+[data-theme="light"] .pomodoro-setting-input {
+  background: #fff;
+}

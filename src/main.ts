@@ -46,6 +46,7 @@ import { setupMarkdownEditor } from './markdownEditorUI.ts'
 import { setupColorPalette } from './colorPaletteUI.ts'
 import { createUnitConverterUI } from './unitConverterUI.ts'
 import { setupPasswordGenerator } from './passwordGeneratorUI.ts'
+import { createPomodoroTimerUI } from './pomodoroTimerUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -176,6 +177,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="password-generator-section">
       <p class="loading">Loading password generator...</p>
+    </div>
+
+    <div id="pomodoro-timer-section">
+      <p class="loading">Loading Pomodoro timer...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -505,6 +510,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-pomodoro-timer',
+    name: 'Go to Pomodoro Timer',
+    description: 'Scroll to the Pomodoro productivity timer',
+    keys: ['g+m'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#pomodoro-timer-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Pomodoro Timer', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -609,6 +626,8 @@ function setupScrollReveal(): void {
     '#markdown-editor-section',
     '#color-palette-section',
     '#unit-converter-section',
+    '#password-generator-section',
+    '#pomodoro-timer-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -816,6 +835,12 @@ async function initializeApp() {
     const passwordGeneratorSection = document.querySelector<HTMLDivElement>('#password-generator-section')!
     setupPasswordGenerator(passwordGeneratorSection)
     trackActivity('page_view', 'Loaded password generator', 'Password generator initialized')
+
+    // Setup Pomodoro Timer
+    const pomodoroTimerSection = document.querySelector<HTMLDivElement>('#pomodoro-timer-section')!
+    pomodoroTimerSection.innerHTML = ''
+    pomodoroTimerSection.appendChild(createPomodoroTimerUI())
+    trackActivity('page_view', 'Loaded Pomodoro timer', 'Pomodoro productivity timer initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
