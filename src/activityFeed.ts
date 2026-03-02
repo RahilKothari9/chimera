@@ -42,6 +42,7 @@ export type ActivityType =
   | 'unit_converter'
   | 'password_generate'
   | 'pomodoro'
+  | 'text_diff'
 
 export interface Activity {
   id: string
@@ -157,6 +158,7 @@ function getActivityIcon(type: ActivityType): string {
     unit_converter: '🔄',
     password_generate: '🔐',
     pomodoro: '🍅',
+    text_diff: '📄',
   }
   return icons[type] || '•'
 }
