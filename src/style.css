@@ -102,6 +102,21 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Global focus-visible styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 18%, transparent);
+  border-radius: 4px;
+  transition: outline var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+button:focus-visible,
+a:focus-visible {
+  border-radius: 8px;
+}
+
+
 /* Universal smooth transitions for theme switching */
 * {
   transition-property: background-color, border-color, color, box-shadow;
@@ -265,6 +280,35 @@ h1 {
   margin: var(--space-lg) 0;
   animation: fadeIn 0.8s var(--ease-out) 0.3s backwards;
 }
+
+/* Subtle gradient divider between content sections */
+.dashboard-section,
+.evolution-section,
+[id$="-section"],
+[id$="-container"] {
+  position: relative;
+}
+
+.dashboard-section + [id$="-section"]::before,
+[id$="-section"] + [id$="-section"]::before,
+[id$="-section"] + .evolution-section::before {
+  content: '';
+  display: block;
+  width: 40%;
+  max-width: 320px;
+  height: 1px;
+  margin: 0 auto var(--space-lg);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-accent) 40%,
+    var(--color-accent-secondary) 60%,
+    transparent 100%
+  );
+  opacity: 0.3;
+  border-radius: 1px;
+}
+
 
 @keyframes fadeIn {
   from {
@@ -619,6 +663,44 @@ h1 {
   animation: pulse 2s ease-in-out infinite;
 }
 
+/* Skeleton shimmer for loading states */
+.loading {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-background-secondary);
+  border-radius: 14px;
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--color-border);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-accent) 8%, transparent) 40%,
+    color-mix(in srgb, var(--color-accent-secondary) 14%, transparent) 50%,
+    color-mix(in srgb, var(--color-accent) 8%, transparent) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep 2s ease-in-out infinite;
+  border-radius: inherit;
+}
+
+@keyframes skeleton-sweep {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+
 @keyframes pulse {
   0%, 100% {
     opacity: 0.6;
@@ -627,6 +709,13 @@ h1 {
     opacity: 1;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .loading::after {
+    animation: none;
+  }
+}
+
 
 .error {
   color: var(--color-error);
