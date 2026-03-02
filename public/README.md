@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 48: 2026-03-02
+**Feature/Change**: Text Diff Tool
+**Description**: Added an interactive line-by-line Text Diff Tool that lets developers compare two blocks of text and see exactly what changed. The tool features: a side-by-side view showing original and modified columns with colour-coded rows (green for added, red for removed, neutral for unchanged); a unified view with `+`/`−` prefix symbols for a compact single-column diff; a live statistics badge bar showing counts of added, removed, and unchanged lines; one-click clipboard copy of the unified diff output; a Clear button to reset both editors; and a keyboard shortcut `g+i` to navigate directly to the section. The core engine (`textDiff.ts`) implements an O(m×n) Longest Common Subsequence algorithm that assigns 1-based left/right line numbers to every diff line, making it straightforward to drive any view mode. The `text_diff` activity type was added to Chimera's activity feed. 43 new tests added across `textDiff.test.ts` (21) and `textDiffUI.test.ts` (22), bringing the total from 2,149 to 2,192.
+**Files Modified**: src/textDiff.ts (created), src/textDiff.test.ts (created), src/textDiffUI.ts (created), src/textDiffUI.test.ts (created), src/activityFeed.ts, src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
 ### Day 47: 2026-03-01
 **Feature/Change**: Monthly Dependency Audit - 2026-03
 **Description**: Performed the monthly dependency audit. Ran `npm audit` and found 1 high severity vulnerability: Rollup 4 Arbitrary File Write via Path Traversal (GHSA-mw96-cpmx-2vgc). Fixed by running `npm audit fix`, which updated the bundled rollup transitive dependency to 4.59.0. Ran `npm outdated` — all direct dependencies are current within their semver ranges. Build and all 2,149 tests pass after the update.

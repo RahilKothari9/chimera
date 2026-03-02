@@ -47,6 +47,7 @@ import { setupColorPalette } from './colorPaletteUI.ts'
 import { createUnitConverterUI } from './unitConverterUI.ts'
 import { setupPasswordGenerator } from './passwordGeneratorUI.ts'
 import { createPomodoroTimerUI } from './pomodoroTimerUI.ts'
+import { createTextDiffUI } from './textDiffUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -181,6 +182,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="pomodoro-timer-section">
       <p class="loading">Loading Pomodoro timer...</p>
+    </div>
+
+    <div id="text-diff-section">
+      <p class="loading">Loading Text Diff Tool...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -522,6 +527,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-text-diff',
+    name: 'Go to Text Diff Tool',
+    description: 'Scroll to the text diff comparison tool',
+    keys: ['g+i'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#text-diff-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Text Diff Tool', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -628,6 +645,7 @@ function setupScrollReveal(): void {
     '#unit-converter-section',
     '#password-generator-section',
     '#pomodoro-timer-section',
+    '#text-diff-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -841,6 +859,12 @@ async function initializeApp() {
     pomodoroTimerSection.innerHTML = ''
     pomodoroTimerSection.appendChild(createPomodoroTimerUI())
     trackActivity('page_view', 'Loaded Pomodoro timer', 'Pomodoro productivity timer initialized')
+
+    // Setup Text Diff Tool
+    const textDiffSection = document.querySelector<HTMLDivElement>('#text-diff-section')!
+    textDiffSection.innerHTML = ''
+    textDiffSection.appendChild(createTextDiffUI())
+    trackActivity('page_view', 'Loaded Text Diff Tool', 'Text diff comparison tool initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
