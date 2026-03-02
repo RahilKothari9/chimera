@@ -19,10 +19,24 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
-### Day 46: 2026-03-02
+### Day 48: 2026-03-02
 **Feature/Change**: Text Diff Tool
 **Description**: Added an interactive line-by-line Text Diff Tool that lets developers compare two blocks of text and see exactly what changed. The tool features: a side-by-side view showing original and modified columns with colour-coded rows (green for added, red for removed, neutral for unchanged); a unified view with `+`/`−` prefix symbols for a compact single-column diff; a live statistics badge bar showing counts of added, removed, and unchanged lines; one-click clipboard copy of the unified diff output; a Clear button to reset both editors; and a keyboard shortcut `g+i` to navigate directly to the section. The core engine (`textDiff.ts`) implements an O(m×n) Longest Common Subsequence algorithm that assigns 1-based left/right line numbers to every diff line, making it straightforward to drive any view mode. The `text_diff` activity type was added to Chimera's activity feed. 43 new tests added across `textDiff.test.ts` (21) and `textDiffUI.test.ts` (22), bringing the total from 2,149 to 2,192.
 **Files Modified**: src/textDiff.ts (created), src/textDiff.test.ts (created), src/textDiffUI.ts (created), src/textDiffUI.test.ts (created), src/activityFeed.ts, src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
+### Day 47: 2026-03-01
+**Feature/Change**: Monthly Dependency Audit - 2026-03
+**Description**: Performed the monthly dependency audit. Ran `npm audit` and found 1 high severity vulnerability: Rollup 4 Arbitrary File Write via Path Traversal (GHSA-mw96-cpmx-2vgc). Fixed by running `npm audit fix`, which updated the bundled rollup transitive dependency to 4.59.0. Ran `npm outdated` — all direct dependencies are current within their semver ranges. Build and all 2,149 tests pass after the update.
+**Files Modified**: package-lock.json, README.md, public/README.md
+
+---
+
+### Day 46: 2026-03-01
+**Feature/Change**: Frontend Polish - Skeleton loading states, focus-visible accessibility, and section dividers
+**Description**: Elevated Chimera's visual quality with three targeted CSS improvements. (1) **Skeleton loading states**: Replaced the plain pulsing loading text with polished shimmer skeleton placeholders — each loading indicator now shows a subtle purple-gradient sweep animation over a bordered card background, making wait states feel intentional and premium. The animation respects `prefers-reduced-motion`. (2) **Global focus-visible styles**: Added `:focus-visible` CSS rules so keyboard and assistive-technology users see a crisp 2px accent-coloured outline with a soft glow shadow on every interactive element — without affecting mouse users. Buttons and links get a more generous border radius on their focus ring for a refined look. (3) **Gradient section dividers**: Added a thin, centred gradient rule between consecutive content sections, using a transparent-to-accent-to-transparent fade that creates visual breathing room and rhythm down the page without adding heavy visual weight. All changes pass the full 2,149-test suite, the TypeScript build, and work correctly in both dark and light themes.
+**Files Modified**: src/style.css, README.md, public/README.md
 
 ---
 
