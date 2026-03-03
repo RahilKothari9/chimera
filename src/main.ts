@@ -48,6 +48,7 @@ import { createUnitConverterUI } from './unitConverterUI.ts'
 import { setupPasswordGenerator } from './passwordGeneratorUI.ts'
 import { createPomodoroTimerUI } from './pomodoroTimerUI.ts'
 import { createTextDiffUI } from './textDiffUI.ts'
+import { createBase64ToolUI } from './base64ToolUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -186,6 +187,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="text-diff-section">
       <p class="loading">Loading Text Diff Tool...</p>
+    </div>
+    
+    <div id="base64-tool-section">
+      <p class="loading">Loading Base64 Tool...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -539,6 +544,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-base64-tool',
+    name: 'Go to Base64 Tool',
+    description: 'Scroll to the Base64 encoder/decoder section',
+    keys: ['g+k'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#base64-tool-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Base64 Tool', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -646,6 +663,7 @@ function setupScrollReveal(): void {
     '#password-generator-section',
     '#pomodoro-timer-section',
     '#text-diff-section',
+    '#base64-tool-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -865,6 +883,12 @@ async function initializeApp() {
     textDiffSection.innerHTML = ''
     textDiffSection.appendChild(createTextDiffUI())
     trackActivity('page_view', 'Loaded Text Diff Tool', 'Text diff comparison tool initialized')
+
+    // Setup Base64 Encoder / Decoder
+    const base64ToolSection = document.querySelector<HTMLDivElement>('#base64-tool-section')!
+    base64ToolSection.innerHTML = ''
+    base64ToolSection.appendChild(createBase64ToolUI())
+    trackActivity('page_view', 'Loaded Base64 Tool', 'Base64 encoder/decoder initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
