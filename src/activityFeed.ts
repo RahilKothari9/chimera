@@ -43,6 +43,7 @@ export type ActivityType =
   | 'password_generate'
   | 'pomodoro'
   | 'text_diff'
+  | 'base64'
 
 export interface Activity {
   id: string
@@ -159,6 +160,7 @@ function getActivityIcon(type: ActivityType): string {
     password_generate: '🔐',
     pomodoro: '🍅',
     text_diff: '📄',
+    base64: '🔤',
   }
   return icons[type] || '•'
 }
