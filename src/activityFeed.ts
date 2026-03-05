@@ -44,6 +44,7 @@ export type ActivityType =
   | 'pomodoro'
   | 'text_diff'
   | 'base64'
+  | 'number_base'
   | 'timestamp'
 
 export interface Activity {
@@ -162,6 +163,7 @@ function getActivityIcon(type: ActivityType): string {
     pomodoro: '🍅',
     text_diff: '📄',
     base64: '🔤',
+    number_base: '🔢',
     timestamp: '🕐',
   }
   return icons[type] || '•'

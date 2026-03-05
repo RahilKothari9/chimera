@@ -49,6 +49,7 @@ import { setupPasswordGenerator } from './passwordGeneratorUI.ts'
 import { createPomodoroTimerUI } from './pomodoroTimerUI.ts'
 import { createTextDiffUI } from './textDiffUI.ts'
 import { createBase64ToolUI } from './base64ToolUI.ts'
+import { createNumberBaseConverterUI } from './numberBaseConverterUI.ts'
 import { createTimestampConverterUI } from './timestampConverterUI.ts'
 
 // Initialize accessibility features
@@ -192,6 +193,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     
     <div id="base64-tool-section">
       <p class="loading">Loading Base64 Tool...</p>
+    </div>
+    <div id="number-base-converter-section">
+      <p class="loading">Loading Number Base Converter...</p>
     </div>
     
     <div id="timestamp-converter-section">
@@ -561,6 +565,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-number-base-converter',
+    name: 'Go to Number Base Converter',
+    description: 'Scroll to the number base converter (binary/octal/decimal/hex)',
+    keys: ['g+n'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#number-base-converter-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Number Base Converter', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timestamp-converter',
     name: 'Go to Timestamp Converter',
     description: 'Scroll to the timestamp converter section',
@@ -681,6 +697,7 @@ function setupScrollReveal(): void {
     '#pomodoro-timer-section',
     '#text-diff-section',
     '#base64-tool-section',
+    '#number-base-converter-section',
     '#timestamp-converter-section',
   ]
 
@@ -907,6 +924,12 @@ async function initializeApp() {
     base64ToolSection.innerHTML = ''
     base64ToolSection.appendChild(createBase64ToolUI())
     trackActivity('page_view', 'Loaded Base64 Tool', 'Base64 encoder/decoder initialized')
+
+    // Setup Number Base Converter
+    const numberBaseConverterSection = document.querySelector<HTMLDivElement>('#number-base-converter-section')!
+    numberBaseConverterSection.innerHTML = ''
+    numberBaseConverterSection.appendChild(createNumberBaseConverterUI())
+    trackActivity('page_view', 'Loaded Number Base Converter', 'Number base converter initialized')
 
     // Setup Timestamp Converter
     const timestampConverterSection = document.querySelector<HTMLDivElement>('#timestamp-converter-section')!
