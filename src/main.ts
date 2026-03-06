@@ -50,6 +50,7 @@ import { createPomodoroTimerUI } from './pomodoroTimerUI.ts'
 import { createTextDiffUI } from './textDiffUI.ts'
 import { createBase64ToolUI } from './base64ToolUI.ts'
 import { createNumberBaseConverterUI } from './numberBaseConverterUI.ts'
+import { createTimestampConverterUI } from './timestampConverterUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -196,6 +197,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="number-base-converter-section">
       <p class="loading">Loading Number Base Converter...</p>
+    </div>
+
+    <div id="timestamp-converter-section">
+      <p class="loading">Loading Timestamp Converter...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -573,6 +578,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-timestamp-converter',
+    name: 'Go to Timestamp Converter',
+    description: 'Scroll to the Unix timestamp converter section',
+    keys: ['g+y'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#timestamp-converter-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Timestamp Converter', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -682,6 +699,7 @@ function setupScrollReveal(): void {
     '#text-diff-section',
     '#base64-tool-section',
     '#number-base-converter-section',
+    '#timestamp-converter-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -753,9 +771,9 @@ async function initializeApp() {
     // Setup code quality dashboard
     // Note: These values are hardcoded because we don't have access to the file system
     // to dynamically count test files. Update these values manually as the codebase evolves.
-    const testFiles = 73 // Current count of test files (*.test.ts)
-    const sourceFiles = 75 // Current count of source files (non-test TypeScript files)
-    const totalTests = 1962 // Current test count (update after adding new tests)
+    const testFiles = 75 // Current count of test files (*.test.ts)
+    const sourceFiles = 77 // Current count of source files (non-test TypeScript files)
+    const totalTests = 2345 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
@@ -913,6 +931,12 @@ async function initializeApp() {
     numberBaseConverterSection.innerHTML = ''
     numberBaseConverterSection.appendChild(createNumberBaseConverterUI())
     trackActivity('page_view', 'Loaded Number Base Converter', 'Number base converter initialized')
+
+    // Setup Timestamp Converter
+    const timestampConverterSection = document.querySelector<HTMLDivElement>('#timestamp-converter-section')!
+    timestampConverterSection.innerHTML = ''
+    timestampConverterSection.appendChild(createTimestampConverterUI())
+    trackActivity('page_view', 'Loaded Timestamp Converter', 'Unix timestamp converter initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
