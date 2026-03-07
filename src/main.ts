@@ -51,6 +51,7 @@ import { createTextDiffUI } from './textDiffUI.ts'
 import { createBase64ToolUI } from './base64ToolUI.ts'
 import { createNumberBaseConverterUI } from './numberBaseConverterUI.ts'
 import { createTimestampConverterUI } from './timestampConverterUI.ts'
+import { createHashGeneratorUI } from './hashGeneratorUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -201,6 +202,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="timestamp-converter-section">
       <p class="loading">Loading Timestamp Converter...</p>
+    </div>
+
+    <div id="hash-generator-section">
+      <p class="loading">Loading Hash Generator...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -590,6 +595,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-hash-generator',
+    name: 'Go to Hash Generator',
+    description: 'Scroll to the cryptographic hash generator section',
+    keys: ['g+h'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#hash-generator-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Hash Generator', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -700,6 +717,7 @@ function setupScrollReveal(): void {
     '#base64-tool-section',
     '#number-base-converter-section',
     '#timestamp-converter-section',
+    '#hash-generator-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -937,6 +955,12 @@ async function initializeApp() {
     timestampConverterSection.innerHTML = ''
     timestampConverterSection.appendChild(createTimestampConverterUI())
     trackActivity('page_view', 'Loaded Timestamp Converter', 'Unix timestamp converter initialized')
+
+    // Setup Hash Generator
+    const hashGeneratorSection = document.querySelector<HTMLDivElement>('#hash-generator-section')!
+    hashGeneratorSection.innerHTML = ''
+    hashGeneratorSection.appendChild(createHashGeneratorUI())
+    trackActivity('page_view', 'Loaded Hash Generator', 'Cryptographic hash generator initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

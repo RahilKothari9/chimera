@@ -12423,3 +12423,221 @@ tr.diff-unchanged .diff-cell {
 [data-theme="light"] .tsc-results {
   background: #f9f9fb;
 }
+
+/* ===========================
+   Hash Generator
+   =========================== */
+
+.hash-gen-container {
+  padding: 1.5rem;
+}
+
+.hash-gen-container .section-description {
+  margin-bottom: 1.25rem;
+}
+
+.hash-gen-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.hash-gen-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary, #aaa);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hash-gen-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary, #1a1a2e);
+  color: var(--text-primary, #e0e0e0);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.hash-gen-textarea:focus {
+  outline: none;
+  border-color: var(--accent-color, #9c27b0);
+  box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.18);
+}
+
+.hash-gen-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.hash-gen-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+  background: var(--bg-secondary, #1a1a2e);
+  color: var(--text-primary, #e0e0e0);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.hash-gen-btn:hover {
+  background: rgba(156, 39, 176, 0.15);
+  border-color: var(--accent-color, #9c27b0);
+}
+
+.hash-gen-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hash-gen-btn-primary {
+  background: var(--accent-color, #9c27b0);
+  border-color: var(--accent-color, #9c27b0);
+  color: #fff;
+  font-weight: 600;
+}
+
+.hash-gen-btn-primary:hover {
+  background: #7b1fa2;
+  border-color: #7b1fa2;
+}
+
+.hash-gen-format-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #aaa);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.hash-gen-select {
+  padding: 0.35rem 0.6rem;
+  background: var(--bg-secondary, #1a1a2e);
+  color: var(--text-primary, #e0e0e0);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.hash-gen-results {
+  overflow-x: auto;
+}
+
+.hash-gen-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.hash-gen-th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #aaa);
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+.hash-gen-th-value {
+  width: 60%;
+}
+
+.hash-gen-row:not(:last-child) td {
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+}
+
+.hash-gen-td {
+  padding: 0.65rem 0.75rem;
+  vertical-align: middle;
+}
+
+.hash-gen-td-alg {
+  white-space: nowrap;
+}
+
+.hash-gen-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: rgba(156, 39, 176, 0.2);
+  border: 1px solid rgba(156, 39, 176, 0.4);
+  color: #ce93d8;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.hash-gen-td-bits {
+  white-space: nowrap;
+  font-size: 0.8rem;
+  color: var(--text-secondary, #aaa);
+}
+
+.hash-gen-td-value {
+  word-break: break-all;
+}
+
+.hash-gen-value {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.82rem;
+  color: var(--text-primary, #e0e0e0);
+  letter-spacing: 0.02em;
+}
+
+.hash-gen-td-copy {
+  white-space: nowrap;
+}
+
+.hash-gen-copy-btn {
+  padding: 0.3rem 0.65rem;
+  background: transparent;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.15));
+  color: var(--text-secondary, #aaa);
+  border-radius: 5px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.hash-gen-copy-btn:hover {
+  background: rgba(156, 39, 176, 0.15);
+  color: var(--text-primary, #e0e0e0);
+  border-color: var(--accent-color, #9c27b0);
+}
+
+.hash-gen-error {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(220, 53, 69, 0.12);
+  border: 1px solid rgba(220, 53, 69, 0.4);
+  border-radius: 6px;
+  color: #f48fb1;
+  font-size: 0.875rem;
+}
+
+[data-theme="light"] .hash-gen-textarea {
+  background: #fff;
+  color: #333;
+}
+
+[data-theme="light"] .hash-gen-select {
+  background: #fff;
+  color: #333;
+}
+
+[data-theme="light"] .hash-gen-value {
+  color: #333;
+}
