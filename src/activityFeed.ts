@@ -46,6 +46,7 @@ export type ActivityType =
   | 'base64'
   | 'number_base'
   | 'timestamp_converter'
+  | 'hash_generator'
 
 export interface Activity {
   id: string
@@ -165,6 +166,7 @@ function getActivityIcon(type: ActivityType): string {
     base64: '🔤',
     number_base: '🔢',
     timestamp_converter: '🕐',
+    hash_generator: '#️⃣',
   }
   return icons[type] || '•'
 }
