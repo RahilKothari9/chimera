@@ -52,6 +52,7 @@ import { createBase64ToolUI } from './base64ToolUI.ts'
 import { createNumberBaseConverterUI } from './numberBaseConverterUI.ts'
 import { createTimestampConverterUI } from './timestampConverterUI.ts'
 import { createHashGeneratorUI } from './hashGeneratorUI.ts'
+import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -206,6 +207,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="hash-generator-section">
       <p class="loading">Loading Hash Generator...</p>
+    </div>
+
+    <div id="jwt-decoder-section">
+      <p class="loading">Loading JWT Decoder...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -607,6 +612,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-jwt-decoder',
+    name: 'Go to JWT Decoder',
+    description: 'Scroll to the JWT decoder section',
+    keys: ['g+z'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#jwt-decoder-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to JWT Decoder', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -718,6 +735,7 @@ function setupScrollReveal(): void {
     '#number-base-converter-section',
     '#timestamp-converter-section',
     '#hash-generator-section',
+    '#jwt-decoder-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -961,6 +979,12 @@ async function initializeApp() {
     hashGeneratorSection.innerHTML = ''
     hashGeneratorSection.appendChild(createHashGeneratorUI())
     trackActivity('page_view', 'Loaded Hash Generator', 'Cryptographic hash generator initialized')
+
+    // Setup JWT Decoder
+    const jwtDecoderSection = document.querySelector<HTMLDivElement>('#jwt-decoder-section')!
+    jwtDecoderSection.innerHTML = ''
+    jwtDecoderSection.appendChild(createJwtDecoderUI())
+    trackActivity('page_view', 'Loaded JWT Decoder', 'JWT decoder and inspector initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
