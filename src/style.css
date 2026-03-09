@@ -1,6 +1,9 @@
+/* Inter font — significant typographic upgrade */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 /* Theme Variables - Dark Mode (Default) */
 :root {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
   font-weight: 400;
 
@@ -147,6 +150,10 @@ body {
               color var(--transition-slow) var(--ease-in-out);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -181,7 +188,8 @@ h1 {
 .chimera-title {
   font-size: 4.5em;
   margin: 0.5em 0 0.2em;
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 35%, #c084fc 60%, #7c3aed 100%);
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -190,7 +198,14 @@ h1 {
   line-height: 1;
   text-shadow: 0 0 80px rgba(124, 58, 237, 0.5);
   position: relative;
+  animation: gradient-shift 8s ease-in-out infinite;
 }
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 
 .chimera-subtitle {
   font-size: 1.4em;
@@ -375,7 +390,27 @@ h1 {
   overflow: hidden;
   cursor: pointer;
   backdrop-filter: blur(8px);
+  animation: fadeInUp 0.5s var(--ease-out) backwards;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-grid .stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stats-grid .stat-card:nth-child(2) { animation-delay: 0.12s; }
+.stats-grid .stat-card:nth-child(3) { animation-delay: 0.19s; }
+.stats-grid .stat-card:nth-child(4) { animation-delay: 0.26s; }
+.stats-grid .stat-card:nth-child(5) { animation-delay: 0.33s; }
+.stats-grid .stat-card:nth-child(6) { animation-delay: 0.40s; }
+
 
 .stat-card::before {
   content: '';
@@ -714,6 +749,12 @@ h1 {
   .loading::after {
     animation: none;
   }
+  .chimera-title {
+    animation: none;
+  }
+  .stat-card {
+    animation: none;
+  }
 }
 
 
@@ -958,12 +999,12 @@ h1 {
 
 .impact-graph-header h2 {
   font-size: 2em;
-  color: #fff;
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
 
 .impact-graph-subtitle {
-  color: #888;
+  color: var(--color-text-secondary);
   font-size: 1.1em;
   margin: 0.5rem 0;
 }
@@ -976,8 +1017,8 @@ h1 {
 }
 
 .metric-card {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.2);
   border-radius: 14px;
   padding: 1.75rem;
   display: flex;
@@ -990,8 +1031,8 @@ h1 {
 .metric-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-accent-hover);
-  border-color: rgba(102, 126, 234, 0.4);
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%);
+  border-color: rgba(124, 58, 237, 0.4);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, rgba(168, 85, 247, 0.12) 100%);
 }
 
 .metric-icon {
@@ -1006,13 +1047,13 @@ h1 {
 .metric-value {
   font-size: 2em;
   font-weight: bold;
-  color: #667eea;
+  color: var(--color-accent-secondary);
   line-height: 1;
 }
 
 .metric-label {
   font-size: 0.9em;
-  color: #aaa;
+  color: var(--color-text-secondary);
   margin-top: 0.3rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1020,7 +1061,7 @@ h1 {
 }
 
 .impact-chart-container {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-background-secondary);
   border-radius: 12px;
   padding: 2rem;
   margin-bottom: 1.5rem;
@@ -1035,16 +1076,16 @@ h1 {
 }
 
 .impact-explanation {
-  background: rgba(102, 126, 234, 0.1);
-  border-left: 4px solid #667eea;
+  background: rgba(124, 58, 237, 0.1);
+  border-left: 4px solid var(--color-accent);
   border-radius: 8px;
   padding: 1.5rem;
-  color: #ccc;
+  color: var(--color-text-secondary);
   line-height: 1.6;
 }
 
 .impact-explanation strong {
-  color: #fff;
+  color: var(--color-text);
 }
 
 @media (prefers-color-scheme: light) {
@@ -1093,9 +1134,9 @@ h1 {
 .prediction-section {
   margin: 3rem 0;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
   border-radius: 20px;
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(124, 58, 237, 0.2);
 }
 
 .prediction-header-section {
@@ -1105,7 +1146,7 @@ h1 {
 
 .prediction-subtitle {
   font-size: 1.1em;
-  color: #aaa;
+  color: var(--color-text-secondary);
   margin: 0.5em 0 1.5em;
 }
 
@@ -1117,24 +1158,24 @@ h1 {
 }
 
 .metadata-box {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
   text-align: left;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base) var(--ease-out);
 }
 
 .metadata-box:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(102, 126, 234, 0.3);
+  background: var(--color-background-hover);
+  border-color: rgba(124, 58, 237, 0.3);
   transform: translateY(-2px);
 }
 
 .metadata-label {
   display: block;
   font-size: 0.9em;
-  color: #888;
+  color: var(--color-text-tertiary);
   margin-bottom: 0.5rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -1144,7 +1185,7 @@ h1 {
 .metadata-value {
   display: block;
   font-size: 1.1em;
-  color: #fff;
+  color: var(--color-text);
   font-weight: 400;
   line-height: 1.4;
 }
@@ -1157,19 +1198,19 @@ h1 {
 }
 
 .prediction-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
   text-align: left;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base) var(--ease-out);
 }
 
 .prediction-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(102, 126, 234, 0.3);
+  background: var(--color-background-hover);
+  border-color: rgba(124, 58, 237, 0.3);
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+  box-shadow: var(--shadow-accent);
 }
 
 .prediction-header {
@@ -1185,7 +1226,7 @@ h1 {
 
 .prediction-category {
   font-size: 1.3em;
-  color: #fff;
+  color: var(--color-text);
   margin: 0;
   font-weight: 600;
 }
@@ -1193,8 +1234,8 @@ h1 {
 .prediction-probability {
   font-size: 1.8em;
   font-weight: 700;
-  color: #667eea; /* Fallback color for browsers that don't support background-clip */
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: var(--color-accent-secondary);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1231,7 +1272,7 @@ h1 {
 .probability-bar-container {
   width: 100%;
   height: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-border);
   border-radius: 10px;
   overflow: hidden;
   margin: 1rem 0;
@@ -1244,7 +1285,7 @@ h1 {
 }
 
 .prediction-reasoning {
-  color: #bbb;
+  color: var(--color-text-secondary);
   font-size: 0.95em;
   line-height: 1.6;
   margin: 0.5rem 0 0;
@@ -1252,7 +1293,7 @@ h1 {
 
 .empty-predictions {
   text-align: center;
-  color: #888;
+  color: var(--color-text-tertiary);
   font-size: 1.1em;
   padding: 3rem;
   grid-column: 1 / -1;
@@ -1276,18 +1317,18 @@ h1 {
 .export-section {
   margin: 3rem auto;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.2);
   border-radius: 16px;
   max-width: 800px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base) var(--ease-out);
 }
 
 .export-section:hover {
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(124, 58, 237, 0.3);
 }
 
 .export-header {
@@ -1297,14 +1338,14 @@ h1 {
 .export-header h2 {
   margin: 0 0 0.5rem 0;
   font-size: 2rem;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .export-description {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-secondary);
   margin: 0;
   font-size: 1rem;
 }
@@ -1322,23 +1363,23 @@ h1 {
   padding: 0.75rem 1rem;
   font-size: 1rem;
   border-radius: 8px;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.87);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  background: var(--color-background-secondary);
+  color: var(--color-text);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base) var(--ease-out);
   min-width: 240px;
 }
 
 .export-format-select:hover {
-  border-color: rgba(99, 102, 241, 0.5);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(124, 58, 237, 0.5);
+  background: var(--color-background-hover);
 }
 
 .export-format-select:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
 }
 
 .export-metadata-label {
@@ -1346,20 +1387,20 @@ h1 {
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-text-secondary);
   font-size: 0.95rem;
-  transition: color 0.2s ease;
+  transition: color var(--transition-fast) var(--ease-out);
 }
 
 .export-metadata-label:hover {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text);
 }
 
 .export-metadata-checkbox {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #6366f1;
+  accent-color: var(--color-accent);
 }
 
 .export-button {
