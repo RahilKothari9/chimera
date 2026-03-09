@@ -12682,3 +12682,317 @@ tr.diff-unchanged .diff-cell {
 [data-theme="light"] .hash-gen-value {
   color: #333;
 }
+
+/* ═══════════════════════════════════════════
+   JWT DECODER
+   ═══════════════════════════════════════════ */
+
+.jwt-decoder-container {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: var(--card-bg, rgba(255,255,255,0.05));
+  border: 1px solid var(--card-border, rgba(255,255,255,0.1));
+  margin-bottom: 2rem;
+}
+
+.jwt-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.jwt-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary, #aaa);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.jwt-textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.3);
+  color: var(--text-primary, #e0e0e0);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.jwt-textarea:focus {
+  outline: 2px solid var(--accent, #8b5cf6);
+  outline-offset: 1px;
+}
+
+.jwt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.jwt-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.07);
+  color: var(--text-primary, #e0e0e0);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.jwt-btn:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.jwt-btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+}
+
+.jwt-btn-primary:hover {
+  background: linear-gradient(135deg, #6d28d9, #4338ca);
+}
+
+.jwt-error {
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: #f87171;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.jwt-results {
+  margin-top: 0.5rem;
+}
+
+/* Status bar */
+.jwt-status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.jwt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.jwt-badge-alg {
+  background: rgba(139,92,246,0.2);
+  border-color: rgba(139,92,246,0.5);
+  color: #c4b5fd;
+}
+
+.jwt-badge-valid {
+  background: rgba(34,197,94,0.15);
+  border-color: rgba(34,197,94,0.4);
+  color: #86efac;
+}
+
+.jwt-badge-expired {
+  background: rgba(239,68,68,0.15);
+  border-color: rgba(239,68,68,0.4);
+  color: #fca5a5;
+}
+
+.jwt-badge-no-exp {
+  background: rgba(234,179,8,0.15);
+  border-color: rgba(234,179,8,0.4);
+  color: #fde047;
+}
+
+.jwt-badge-iat {
+  background: rgba(99,102,241,0.15);
+  border-color: rgba(99,102,241,0.4);
+  color: #a5b4fc;
+}
+
+/* Claims tables */
+.jwt-section-block {
+  margin-bottom: 1.5rem;
+}
+
+.jwt-section-block-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary, #e0e0e0);
+  margin: 0 0 0.75rem 0;
+}
+
+.jwt-claims-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.jwt-claims-th {
+  padding: 0.6rem 0.875rem;
+  text-align: left;
+  background: rgba(255,255,255,0.07);
+  color: var(--text-secondary, #aaa);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.jwt-claims-row:not(:last-child) td {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.jwt-claims-td {
+  padding: 0.6rem 0.875rem;
+  vertical-align: top;
+}
+
+.jwt-claims-key {
+  width: 35%;
+  white-space: nowrap;
+}
+
+.jwt-claims-key-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: #c4b5fd;
+  display: block;
+}
+
+.jwt-claim-desc {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-secondary, #888);
+  margin-top: 2px;
+}
+
+.jwt-claims-value-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-primary, #e0e0e0);
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* Encoded parts */
+.jwt-raw-section {
+  margin-top: 1.5rem;
+}
+
+.jwt-encoded-parts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.jwt-encoded-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 120px;
+}
+
+.jwt-encoded-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.jwt-encoded-header {
+  background: rgba(139,92,246,0.25);
+  color: #c4b5fd;
+}
+
+.jwt-encoded-payload {
+  background: rgba(59,130,246,0.25);
+  color: #93c5fd;
+}
+
+.jwt-encoded-signature {
+  background: rgba(236,72,153,0.25);
+  color: #f9a8d4;
+}
+
+.jwt-raw-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  word-break: break-all;
+  padding: 0.5rem;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-primary, #e0e0e0);
+  display: block;
+}
+
+.jwt-raw-header-code { border-left: 3px solid #8b5cf6; }
+.jwt-raw-payload-code { border-left: 3px solid #3b82f6; }
+.jwt-raw-signature-code { border-left: 3px solid #ec4899; }
+
+.jwt-dot {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.3);
+  padding-top: 1.5rem;
+  align-self: flex-start;
+}
+
+/* Light theme overrides */
+[data-theme="light"] .jwt-textarea {
+  background: #fff;
+  color: #333;
+  border-color: rgba(0,0,0,0.15);
+}
+
+[data-theme="light"] .jwt-claims-value-code {
+  color: #333;
+}
+
+[data-theme="light"] .jwt-raw-code {
+  background: rgba(0,0,0,0.05);
+  color: #333;
+}
+
+[data-theme="light"] .jwt-claims-table {
+  border-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .jwt-claims-th {
+  background: rgba(0,0,0,0.05);
+  border-bottom-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .jwt-claims-row:not(:last-child) td {
+  border-bottom-color: rgba(0,0,0,0.06);
+}
