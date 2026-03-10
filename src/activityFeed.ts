@@ -48,6 +48,7 @@ export type ActivityType =
   | 'timestamp_converter'
   | 'hash_generator'
   | 'jwt_decode'
+  | 'uuid_generator'
 
 export interface Activity {
   id: string
@@ -169,6 +170,7 @@ function getActivityIcon(type: ActivityType): string {
     timestamp_converter: '🕐',
     hash_generator: '#️⃣',
     jwt_decode: '🔐',
+    uuid_generator: '🔑',
   }
   return icons[type] || '•'
 }

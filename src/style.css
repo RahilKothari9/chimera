@@ -12996,3 +12996,213 @@ tr.diff-unchanged .diff-cell {
 [data-theme="light"] .jwt-claims-row:not(:last-child) td {
   border-bottom-color: rgba(0,0,0,0.06);
 }
+
+/* ── UUID Generator ─────────────────────────────────────────── */
+.uuid-generator-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.uuid-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.uuid-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #aaa);
+  white-space: nowrap;
+}
+
+.uuid-count-input {
+  width: 70px;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-primary, #e0e0e0);
+  font-size: 0.9rem;
+}
+
+.uuid-format-select {
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-primary, #e0e0e0);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.uuid-btn {
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.uuid-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.uuid-btn-primary {
+  background: var(--accent-primary, #7c3aed);
+  color: #fff;
+}
+
+.uuid-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover, #6d28d9);
+}
+
+.uuid-btn-secondary {
+  background: rgba(255,255,255,0.08);
+  color: var(--text-primary, #e0e0e0);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.uuid-btn-secondary:hover:not(:disabled) {
+  background: rgba(255,255,255,0.14);
+}
+
+.uuid-btn-icon {
+  padding: 0.3rem 0.5rem;
+  background: transparent;
+  color: var(--text-secondary, #aaa);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.uuid-btn-icon:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.uuid-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.uuid-output-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary, #aaa);
+}
+
+.uuid-output-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.uuid-output-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+
+.uuid-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.03);
+}
+
+.uuid-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.uuid-index {
+  font-size: 0.72rem;
+  color: var(--text-secondary, #aaa);
+  min-width: 1.8rem;
+  text-align: right;
+}
+
+.uuid-value {
+  flex: 1;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.82rem;
+  color: var(--accent-secondary, #a78bfa);
+  word-break: break-all;
+}
+
+.uuid-empty-state {
+  color: var(--text-secondary, #aaa);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1.5rem 0;
+  margin: 0;
+}
+
+.uuid-validate-section {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 0.75rem;
+}
+
+.uuid-validate-title {
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+  color: var(--text-secondary, #aaa);
+}
+
+.uuid-validate-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.uuid-validate-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.45rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-primary, #e0e0e0);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+}
+
+.uuid-validate-result {
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.uuid-valid { color: #4ade80; }
+.uuid-invalid { color: #f87171; }
+
+/* Light theme */
+[data-theme="light"] .uuid-count-input,
+[data-theme="light"] .uuid-format-select,
+[data-theme="light"] .uuid-validate-input {
+  background: #fff;
+  color: #333;
+  border-color: rgba(0,0,0,0.15);
+}
+
+[data-theme="light"] .uuid-output-list {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .uuid-btn-secondary {
+  background: rgba(0,0,0,0.05);
+  color: #333;
+  border-color: rgba(0,0,0,0.15);
+}
