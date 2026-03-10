@@ -53,6 +53,7 @@ import { createNumberBaseConverterUI } from './numberBaseConverterUI.ts'
 import { createTimestampConverterUI } from './timestampConverterUI.ts'
 import { createHashGeneratorUI } from './hashGeneratorUI.ts'
 import { createJwtDecoderUI } from './jwtDecoderUI.ts'
+import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -211,6 +212,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="jwt-decoder-section">
       <p class="loading">Loading JWT Decoder...</p>
+    </div>
+
+    <div id="uuid-generator-section">
+      <p class="loading">Loading UUID Generator...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -736,6 +741,7 @@ function setupScrollReveal(): void {
     '#timestamp-converter-section',
     '#hash-generator-section',
     '#jwt-decoder-section',
+    '#uuid-generator-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -985,6 +991,12 @@ async function initializeApp() {
     jwtDecoderSection.innerHTML = ''
     jwtDecoderSection.appendChild(createJwtDecoderUI())
     trackActivity('page_view', 'Loaded JWT Decoder', 'JWT decoder and inspector initialized')
+
+    // Setup UUID Generator
+    const uuidGeneratorSection = document.querySelector<HTMLDivElement>('#uuid-generator-section')!
+    uuidGeneratorSection.innerHTML = ''
+    uuidGeneratorSection.appendChild(createUuidGeneratorUI())
+    trackActivity('page_view', 'Loaded UUID Generator', 'UUID v4 generator and validator initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
