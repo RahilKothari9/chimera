@@ -49,6 +49,7 @@ export type ActivityType =
   | 'hash_generator'
   | 'jwt_decode'
   | 'uuid_generator'
+  | 'cron_parser'
 
 export interface Activity {
   id: string
@@ -171,6 +172,7 @@ function getActivityIcon(type: ActivityType): string {
     hash_generator: '#️⃣',
     jwt_decode: '🔐',
     uuid_generator: '🔑',
+    cron_parser: '⏰',
   }
   return icons[type] || '•'
 }
