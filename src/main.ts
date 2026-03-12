@@ -54,6 +54,7 @@ import { createTimestampConverterUI } from './timestampConverterUI.ts'
 import { createHashGeneratorUI } from './hashGeneratorUI.ts'
 import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
+import { createCronParserUI } from './cronParserUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -216,6 +217,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="uuid-generator-section">
       <p class="loading">Loading UUID Generator...</p>
+    </div>
+
+    <div id="cron-parser-section">
+      <p class="loading">Loading Cron Expression Parser...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -742,6 +747,7 @@ function setupScrollReveal(): void {
     '#hash-generator-section',
     '#jwt-decoder-section',
     '#uuid-generator-section',
+    '#cron-parser-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -997,6 +1003,12 @@ async function initializeApp() {
     uuidGeneratorSection.innerHTML = ''
     uuidGeneratorSection.appendChild(createUuidGeneratorUI())
     trackActivity('page_view', 'Loaded UUID Generator', 'UUID v4 generator and validator initialized')
+
+    // Setup Cron Expression Parser
+    const cronParserSection = document.querySelector<HTMLDivElement>('#cron-parser-section')!
+    cronParserSection.innerHTML = ''
+    cronParserSection.appendChild(createCronParserUI())
+    trackActivity('page_view', 'Loaded Cron Parser', 'Cron expression parser and scheduler initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
