@@ -54,6 +54,7 @@ import { createTimestampConverterUI } from './timestampConverterUI.ts'
 import { createHashGeneratorUI } from './hashGeneratorUI.ts'
 import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
+import { createCaseConverterUI } from './caseConverterUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -216,6 +217,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="uuid-generator-section">
       <p class="loading">Loading UUID Generator...</p>
+    </div>
+
+    <div id="case-converter-section">
+      <p class="loading">Loading String Case Converter...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -997,6 +1002,12 @@ async function initializeApp() {
     uuidGeneratorSection.innerHTML = ''
     uuidGeneratorSection.appendChild(createUuidGeneratorUI())
     trackActivity('page_view', 'Loaded UUID Generator', 'UUID v4 generator and validator initialized')
+
+    // Setup String Case Converter
+    const caseConverterSection = document.querySelector<HTMLDivElement>('#case-converter-section')!
+    caseConverterSection.innerHTML = ''
+    caseConverterSection.appendChild(createCaseConverterUI())
+    trackActivity('page_view', 'Loaded String Case Converter', 'String case converter initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

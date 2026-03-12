@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 56: 2026-03-12
+
+**Feature/Change**: String Case Converter
+**Description**: Added an interactive String Case Converter — a practical developer tool for instantly converting text between all common naming conventions used across programming languages and frameworks. Key features include: a live-updating text input that converts as you type with no button press needed; 11 output formats displayed simultaneously — camelCase, PascalCase, snake_case, kebab-case, SCREAMING_SNAKE_CASE, Title Case, Sentence case, dot.case, path/case, lowercase, and UPPERCASE; a one-click 📋 copy button on every row for immediate clipboard access; a Clear button that resets the input and results; and a `case_converter` activity type added to the activity feed (icon 🔤). The core engine (`caseConverter.ts`) uses a single `splitIntoWords` function that handles all input formats: it normalises separators (spaces, underscores, hyphens, dots, slashes), inserts word boundaries at camelCase and acronym transitions using regex, then delegates to 11 dedicated converter functions. BigInt-safe and emoji-friendly. The UI (`caseConverterUI.ts`) renders a compact row-per-format layout with monospaced values for easy visual scanning. 56 new tests added across `caseConverter.test.ts` (43) and `caseConverterUI.test.ts` (13), bringing the total from 2,492 to 2,548.
+**Files Modified**: src/caseConverter.ts (created), src/caseConverter.test.ts (created), src/caseConverterUI.ts (created), src/caseConverterUI.test.ts (created), src/activityFeed.ts, src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
 ### Day 55: 2026-03-10
 
 **Feature/Change**: UUID Generator
