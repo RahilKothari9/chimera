@@ -13505,3 +13505,220 @@ tr.diff-unchanged .diff-cell {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ============================================
+   HTTP STATUS CODE REFERENCE
+   ============================================ */
+
+.http-status-container {
+  padding: 1.5rem;
+}
+
+.http-status-subtitle {
+  color: var(--color-text-secondary, #a0a0b0);
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.http-status-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.http-status-search {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: var(--color-text, #e0e0e0);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.http-status-search:focus {
+  border-color: rgba(124, 106, 247, 0.6);
+  box-shadow: 0 0 0 3px rgba(124, 106, 247, 0.15);
+}
+
+.http-status-category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.http-cat-btn {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: var(--color-text, #e0e0e0);
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.http-cat-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.http-cat-btn.active {
+  background: var(--cat-color, rgba(124,106,247,0.25));
+  border-color: var(--cat-color, rgba(124,106,247,0.6));
+  color: #fff;
+  font-weight: 600;
+}
+
+.http-status-stats {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #a0a0b0);
+  margin-bottom: 1rem;
+}
+
+.http-status-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.http-status-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.http-status-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.http-status-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.http-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.http-status-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.http-status-copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+  flex-shrink: 0;
+  color: var(--color-text, #e0e0e0);
+}
+
+.http-status-copy-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.http-status-description {
+  font-size: 0.83rem;
+  color: var(--color-text-secondary, #a0a0b0);
+  margin: 0 0 0.5rem;
+  line-height: 1.45;
+}
+
+.http-status-detail-toggle {
+  margin-top: 0.25rem;
+}
+
+.http-status-detail-summary {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary, #a0a0b0);
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.8;
+}
+
+.http-status-detail-summary:hover {
+  opacity: 1;
+  color: var(--color-text, #e0e0e0);
+}
+
+.http-status-detail-text {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary, #a0a0b0);
+  line-height: 1.5;
+  margin: 0.4rem 0 0;
+  padding: 0.5rem 0.6rem;
+  background: rgba(0,0,0,0.15);
+  border-radius: 6px;
+  border-left: 2px solid rgba(124,106,247,0.4);
+}
+
+.http-status-empty {
+  text-align: center;
+  color: var(--color-text-secondary, #a0a0b0);
+  padding: 2rem;
+  grid-column: 1 / -1;
+}
+
+/* Light theme */
+[data-theme="light"] .http-status-search {
+  background: #fff;
+  color: #333;
+  border-color: rgba(0,0,0,0.15);
+}
+
+[data-theme="light"] .http-cat-btn {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.12);
+  color: #333;
+}
+
+[data-theme="light"] .http-cat-btn:hover {
+  background: rgba(0,0,0,0.08);
+}
+
+[data-theme="light"] .http-status-card {
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .http-status-copy-btn {
+  color: #444;
+}
+
+[data-theme="light"] .http-status-detail-text {
+  background: rgba(0,0,0,0.04);
+}
+
+@media (max-width: 600px) {
+  .http-status-list {
+    grid-template-columns: 1fr;
+  }
+}

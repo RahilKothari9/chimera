@@ -55,6 +55,7 @@ import { createHashGeneratorUI } from './hashGeneratorUI.ts'
 import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
 import { createCronParserUI } from './cronParserUI.ts'
+import { createHttpStatusCodesUI } from './httpStatusCodesUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -221,6 +222,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="cron-parser-section">
       <p class="loading">Loading Cron Expression Parser...</p>
+    </div>
+
+    <div id="http-status-section">
+      <p class="loading">Loading HTTP Status Code Reference...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -634,6 +639,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-http-status',
+    name: 'Go to HTTP Status Codes',
+    description: 'Scroll to the HTTP status code reference section',
+    keys: ['g+q'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#http-status-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to HTTP Status Codes', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -748,6 +765,7 @@ function setupScrollReveal(): void {
     '#jwt-decoder-section',
     '#uuid-generator-section',
     '#cron-parser-section',
+    '#http-status-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -1009,6 +1027,12 @@ async function initializeApp() {
     cronParserSection.innerHTML = ''
     cronParserSection.appendChild(createCronParserUI())
     trackActivity('page_view', 'Loaded Cron Parser', 'Cron expression parser and scheduler initialized')
+
+    // Setup HTTP Status Code Reference
+    const httpStatusSection = document.querySelector<HTMLDivElement>('#http-status-section')!
+    httpStatusSection.innerHTML = ''
+    httpStatusSection.appendChild(createHttpStatusCodesUI())
+    trackActivity('page_view', 'Loaded HTTP Status Codes', 'HTTP status code reference initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

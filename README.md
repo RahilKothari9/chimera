@@ -19,6 +19,12 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 57: 2026-03-14
+
+**Feature/Change**: HTTP Status Code Reference
+**Description**: Added a comprehensive, searchable HTTP Status Code Reference tool — an indispensable quick-lookup resource for web developers. The tool presents all 57 standard HTTP response codes (1xx through 5xx) in a responsive card grid with three layers of information per code: a **colour-coded badge** showing the numeric code (grey for 1xx, green for 2xx, blue for 3xx, orange for 4xx, red for 5xx); a **short description** for at-a-glance understanding; and an expandable **"More details"** panel with deeper context, RFC references, and real-world usage examples. A **live search box** filters cards instantly by code number, name, or any keyword in the description. Five **category filter buttons** (All / 1xx Informational / 2xx Success / 3xx Redirection / 4xx Client Error / 5xx Server Error) let developers focus on the exact group they need. A running **result count** updates with every filter action. Each card has a **📋 Copy button** that writes the numeric code to the clipboard for quick pasting into code or documentation. The tool includes the famously whimsical `418 I'm a Teapot`, the newly-renamed `422 Unprocessable Content`, and modern additions like `103 Early Hints` and `425 Too Early`. The keyboard shortcut `g+q` navigates directly to the section. 47 new tests added across `httpStatusCodes.test.ts` (29) and `httpStatusCodesUI.test.ts` (18), bringing the total from 2,553 to 2,600.
+**Files Modified**: src/httpStatusCodes.ts (created), src/httpStatusCodes.test.ts (created), src/httpStatusCodesUI.ts (created), src/httpStatusCodesUI.test.ts (created), src/activityFeed.ts, src/main.ts, src/style.css, README.md, public/README.md
+
 ### Day 56: 2026-03-11
 
 **Feature/Change**: Cron Expression Parser
