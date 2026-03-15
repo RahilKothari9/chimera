@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 58: 2026-03-15
+
+**Feature/Change**: Frontend Polish - CSS Design-Token Consistency & Micro-interaction Upgrades
+**Description**: Resolved a widespread visual regression where 450+ CSS property declarations across the stylesheet were referencing undefined design-token variables (e.g. `--text-primary`, `--border-color`, `--surface-color`, `--accent-color`, `--card-bg`, `--primary-color`, etc.) that were never defined in `:root` or `[data-theme]`. Every such occurrence has been remapped to the established `--color-*` token vocabulary (`--color-text`, `--color-border`, `--color-background-secondary`, `--color-accent`, etc.), restoring correct theming across all developer tools in both dark and light mode. On top of this, a dedicated polish block has been appended to `style.css` with: **(1) Unified tool-button upgrades** — all secondary buttons (`b64-btn`, `nbc-btn`, `hash-gen-btn`, `jwt-btn`, `url-btn`, `cron-btn`) now have consistent `border-radius: 10px`, `font-weight: 600`, and a `translateY(-1px)` hover-lift with `--shadow-md`; primary buttons gain the proper `--shadow-accent` / `--shadow-accent-hover` glow; **(2) Unified focus rings** — all tool textareas and inputs share a coherent `0 0 0 3px rgba(124,58,237,0.18)` focus shadow tied to `--transition-fast`; **(3) Polished mode/tab selectors** — `.b64-mode-btn`, `.nbc-base-btn`, `.jwt-tab`, `.url-mode-btn` now have matching sizing, weight, and `box-shadow: var(--shadow-accent)` on the active state; **(4) Scroll-reveal animation** — `[id$="-section"]` elements fade in with a `slideInUp` keyframe (suppressed by `prefers-reduced-motion`); **(5) Error-banner consistency** — all `*-error` classes share one cohesive style with rounded corners, red tint, and an entry animation; **(6) Scrollbar polish** — slim 6px custom scrollbars with accent-purple thumb on hover. All 2,601 tests pass and the TypeScript build succeeds.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 57: 2026-03-15
 
 **Feature/Change**: URL Encoder / Decoder
