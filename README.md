@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 57: 2026-03-15
+
+**Feature/Change**: URL Encoder / Decoder
+**Description**: Added an interactive URL Encoder / Decoder — a practical developer utility for working with URL encoding, decoding, and parsing. The tool offers two modes: **Component** mode uses `encodeURIComponent` / `decodeURIComponent` (encodes everything except unreserved characters, ideal for query values) and **Full URL** mode uses `encodeURI` / `decodeURI` (preserves protocol separators, slashes, and query delimiters). Key features include: a multi-line input textarea and read-only output area; **Encode** and **Decode** buttons to process the input in the selected mode; a **Swap** button to flip input and output; a **Clear** button to reset all fields; a **Copy** button to copy the output to clipboard; an **auto-detect hint** that inspects the input for percent-sequences and labels it as "looks encoded" or "looks plain text"; an **error banner** that surfaces malformed percent-encoding errors (e.g. `%GG`) clearly; and a dedicated **URL Parser** panel that accepts any full URL and breaks it down into its constituent parts — protocol, hostname, port, path, query string, hash/fragment, and a formatted table of individual query parameters. The core module (`urlEncoderDecoder.ts`) exposes typed helper functions: `encodeUrlComponent`, `decodeUrlComponent`, `encodeUrl`, `decodeUrl`, `detectEncoding`, `parseUrl`, and `processUrl`. The `url_encoder_decoder` activity type (icon 🔗) was added to the activity feed. 48 new tests added across `urlEncoderDecoder.test.ts` (32) and `urlEncoderDecoderUI.test.ts` (16), bringing the total from 2,553 to 2,601.
+**Files Modified**: src/urlEncoderDecoder.ts (created), src/urlEncoderDecoder.test.ts (created), src/urlEncoderDecoderUI.ts (created), src/urlEncoderDecoderUI.test.ts (created), src/activityFeed.ts, src/main.ts, README.md, public/README.md
+
+---
+
 ### Day 56: 2026-03-11
 
 **Feature/Change**: Cron Expression Parser
