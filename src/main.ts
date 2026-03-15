@@ -55,6 +55,7 @@ import { createHashGeneratorUI } from './hashGeneratorUI.ts'
 import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
 import { createCronParserUI } from './cronParserUI.ts'
+import { createUrlEncoderDecoderUI } from './urlEncoderDecoderUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -221,6 +222,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="cron-parser-section">
       <p class="loading">Loading Cron Expression Parser...</p>
+    </div>
+
+    <div id="url-encoder-decoder-section">
+      <p class="loading">Loading URL Encoder / Decoder...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -634,6 +639,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-url-encoder-decoder',
+    name: 'Go to URL Encoder/Decoder',
+    description: 'Scroll to the URL encoder, decoder, and parser section',
+    keys: ['g+u'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#url-encoder-decoder-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to URL Encoder/Decoder', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -748,6 +765,7 @@ function setupScrollReveal(): void {
     '#jwt-decoder-section',
     '#uuid-generator-section',
     '#cron-parser-section',
+    '#url-encoder-decoder-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -819,9 +837,9 @@ async function initializeApp() {
     // Setup code quality dashboard
     // Note: These values are hardcoded because we don't have access to the file system
     // to dynamically count test files. Update these values manually as the codebase evolves.
-    const testFiles = 75 // Current count of test files (*.test.ts)
-    const sourceFiles = 77 // Current count of source files (non-test TypeScript files)
-    const totalTests = 2345 // Current test count (update after adding new tests)
+    const testFiles = 77 // Current count of test files (*.test.ts)
+    const sourceFiles = 79 // Current count of source files (non-test TypeScript files)
+    const totalTests = 2601 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
@@ -1009,6 +1027,12 @@ async function initializeApp() {
     cronParserSection.innerHTML = ''
     cronParserSection.appendChild(createCronParserUI())
     trackActivity('page_view', 'Loaded Cron Parser', 'Cron expression parser and scheduler initialized')
+
+    // Setup URL Encoder / Decoder
+    const urlEncoderDecoderSection = document.querySelector<HTMLDivElement>('#url-encoder-decoder-section')!
+    urlEncoderDecoderSection.innerHTML = ''
+    urlEncoderDecoderSection.appendChild(createUrlEncoderDecoderUI())
+    trackActivity('page_view', 'Loaded URL Encoder/Decoder', 'URL encoding, decoding, and parsing tool initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
