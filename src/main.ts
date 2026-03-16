@@ -56,6 +56,7 @@ import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
 import { createCronParserUI } from './cronParserUI.ts'
 import { createUrlEncoderDecoderUI } from './urlEncoderDecoderUI.ts'
+import { createColorConverterUI } from './colorConverterUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -226,6 +227,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="url-encoder-decoder-section">
       <p class="loading">Loading URL Encoder / Decoder...</p>
+    </div>
+
+    <div id="color-converter-section">
+      <p class="loading">Loading Color Converter...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -651,6 +656,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-color-converter',
+    name: 'Go to Color Converter',
+    description: 'Scroll to the color format converter (HEX/RGB/HSL/HSV)',
+    keys: ['g+o'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#color-converter-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Color Converter', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -766,6 +783,7 @@ function setupScrollReveal(): void {
     '#uuid-generator-section',
     '#cron-parser-section',
     '#url-encoder-decoder-section',
+    '#color-converter-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -837,9 +855,9 @@ async function initializeApp() {
     // Setup code quality dashboard
     // Note: These values are hardcoded because we don't have access to the file system
     // to dynamically count test files. Update these values manually as the codebase evolves.
-    const testFiles = 77 // Current count of test files (*.test.ts)
-    const sourceFiles = 79 // Current count of source files (non-test TypeScript files)
-    const totalTests = 2601 // Current test count (update after adding new tests)
+    const testFiles = 79 // Current count of test files (*.test.ts)
+    const sourceFiles = 81 // Current count of source files (non-test TypeScript files)
+    const totalTests = 2659 // Current test count (update after adding new tests)
     codeQualityContainer.innerHTML = ''
     setupCodeQualityDashboard(totalTests, testFiles, sourceFiles, allEntries.length)
     
@@ -1033,6 +1051,12 @@ async function initializeApp() {
     urlEncoderDecoderSection.innerHTML = ''
     urlEncoderDecoderSection.appendChild(createUrlEncoderDecoderUI())
     trackActivity('page_view', 'Loaded URL Encoder/Decoder', 'URL encoding, decoding, and parsing tool initialized')
+
+    // Setup Color Converter
+    const colorConverterSection = document.querySelector<HTMLDivElement>('#color-converter-section')!
+    colorConverterSection.innerHTML = ''
+    colorConverterSection.appendChild(createColorConverterUI())
+    trackActivity('page_view', 'Loaded Color Converter', 'Color format converter (HEX/RGB/HSL/HSV) initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 58: 2026-03-16
+
+**Feature/Change**: Color Converter
+**Description**: Added an interactive **Color Converter** — a practical developer and designer utility for translating colors between HEX, RGB, HSL, and HSV formats in real time. The tool features: a **native color-picker** input that provides a visual color-selection dialog; a free-form **text input** that accepts any supported format (`#rrggbb`, `#rgb`, `rgb(r,g,b)`, `hsl(h,s%,l%)`, `hsv(h,s%,v%)`), with the two inputs staying in sync; a **live preview swatch** that updates instantly to reflect the current color; a **results grid** showing all four formats at once (HEX, RGB, HSL, HSV) each with a one-click **Copy** button that writes the CSS-ready string to the clipboard; and clear **error feedback** when the text input cannot be parsed. The core module (`colorConverter.ts`) exposes a clean, testable API: `normalizeHex`, `hexToRgb`, `rgbToHex`, `rgbToHsl`, `hslToRgb`, `rgbToHsv`, `hsvToRgb`, `parseColorInput`, and `convertColor`. The `color_converter` activity type (icon 🎨) was added to the activity feed. The keyboard shortcut `g+o` navigates directly to the section. 58 new tests added across `colorConverter.test.ts` (44) and `colorConverterUI.test.ts` (14), bringing the total from 2,601 to 2,659.
+**Files Modified**: src/colorConverter.ts (created), src/colorConverter.test.ts (created), src/colorConverterUI.ts (created), src/colorConverterUI.test.ts (created), src/activityFeed.ts, src/main.ts, README.md, public/README.md
+
+---
+
 ### Day 57: 2026-03-15
 
 **Feature/Change**: URL Encoder / Decoder

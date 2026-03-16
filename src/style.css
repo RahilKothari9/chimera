@@ -13505,3 +13505,113 @@ tr.diff-unchanged .diff-cell {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ── Color Converter ──────────────────────────────────────────────────── */
+
+.color-converter-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.color-converter-input-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.color-native-picker {
+  width: 3rem;
+  height: 2.5rem;
+  border: 2px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.1rem;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.color-text-input {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.9rem;
+  border: 2px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color 0.15s;
+}
+
+.color-text-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.color-preview-swatch {
+  width: 100%;
+  height: 80px;
+  border-radius: 0.75rem;
+  border: 2px solid var(--color-border);
+  transition: background-color 0.2s;
+}
+
+.color-converter-error {
+  font-size: 0.85rem;
+  color: #e05252;
+  background: rgba(224, 82, 82, 0.08);
+  border: 1px solid rgba(224, 82, 82, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+}
+
+.color-converter-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.color-result-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.color-result-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.color-result-value {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+.color-copy-btn {
+  font-size: 0.78rem;
+  padding: 0.3rem 0.7rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .color-result-row {
+    grid-template-columns: 2.5rem 1fr;
+  }
+  .color-copy-btn {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
+}
