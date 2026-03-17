@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 58: 2026-03-17
+
+**Feature/Change**: Text Case Converter
+**Description**: Added an interactive **Text Case Converter** — a developer utility for instantly converting text between ten common naming conventions: `camelCase`, `PascalCase`, `snake_case`, `kebab-case`, `SCREAMING_SNAKE_CASE`, `Title Case`, `Sentence case`, `dot.case`, `lowercase`, and `UPPERCASE`. The tool accepts any input format (space-separated words, existing camelCase, PascalCase, snake_case, kebab-case, SCREAMING_SNAKE_CASE, dot.case, or any mixed combination) and simultaneously displays all ten conversions in a clean result grid. Each row has a one-click copy button. The core module (`textCaseConverter.ts`) exposes a `splitWords` helper that handles all separator styles and camelCase/PascalCase word-boundary splitting, individual converter functions (`toCamelCase`, `toPascalCase`, `toSnakeCase`, `toKebabCase`, `toScreamingSnakeCase`, `toTitleCase`, `toSentenceCase`, `toDotCase`, `toLowerCaseText`, `toUpperCaseText`), a `convertCase` dispatcher, a `convertAllCases` bulk converter, and a `CASE_LABELS` map. 113 new tests added across `textCaseConverter.test.ts` (97) and `textCaseConverterUI.test.ts` (16), bringing the total from 2,601 to 2,714.
+**Files Modified**: `src/textCaseConverter.ts`, `src/textCaseConverterUI.ts`, `src/textCaseConverter.test.ts`, `src/textCaseConverterUI.test.ts`, `src/main.ts`, `src/style.css`, `README.md`, `public/README.md`
+
+---
+
 ### Day 57: 2026-03-15
 
 **Feature/Change**: URL Encoder / Decoder

@@ -56,6 +56,7 @@ import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
 import { createCronParserUI } from './cronParserUI.ts'
 import { createUrlEncoderDecoderUI } from './urlEncoderDecoderUI.ts'
+import { createTextCaseConverterUI } from './textCaseConverterUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -226,6 +227,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="url-encoder-decoder-section">
       <p class="loading">Loading URL Encoder / Decoder...</p>
+    </div>
+
+    <div id="text-case-converter-section">
+      <p class="loading">Loading Text Case Converter...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -651,6 +656,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-text-case-converter',
+    name: 'Go to Text Case Converter',
+    description: 'Scroll to the text case conversion tool section',
+    keys: ['g+k'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#text-case-converter-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to Text Case Converter', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -766,6 +783,7 @@ function setupScrollReveal(): void {
     '#uuid-generator-section',
     '#cron-parser-section',
     '#url-encoder-decoder-section',
+    '#text-case-converter-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -1033,6 +1051,11 @@ async function initializeApp() {
     urlEncoderDecoderSection.innerHTML = ''
     urlEncoderDecoderSection.appendChild(createUrlEncoderDecoderUI())
     trackActivity('page_view', 'Loaded URL Encoder/Decoder', 'URL encoding, decoding, and parsing tool initialized')
+
+    const textCaseConverterSection = document.querySelector<HTMLDivElement>('#text-case-converter-section')!
+    textCaseConverterSection.innerHTML = ''
+    textCaseConverterSection.appendChild(createTextCaseConverterUI())
+    trackActivity('page_view', 'Loaded Text Case Converter', 'Text case conversion tool initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {
