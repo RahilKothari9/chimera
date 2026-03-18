@@ -56,6 +56,7 @@ import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
 import { createCronParserUI } from './cronParserUI.ts'
 import { createUrlEncoderDecoderUI } from './urlEncoderDecoderUI.ts'
+import { createHttpStatusCodesUI } from './httpStatusCodesUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -226,6 +227,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="url-encoder-decoder-section">
       <p class="loading">Loading URL Encoder / Decoder...</p>
+    </div>
+
+    <div id="http-status-codes-section">
+      <p class="loading">Loading HTTP Status Code Reference...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -651,6 +656,18 @@ function registerKeyboardShortcuts(searchUI: HTMLElement) {
   })
 
   registry.addShortcut({
+    id: 'nav-http-status-codes',
+    name: 'Go to HTTP Status Code Reference',
+    description: 'Scroll to the HTTP status code reference section',
+    keys: ['g+s'],
+    category: 'navigation',
+    handler: () => {
+      document.querySelector('#http-status-codes-section')?.scrollIntoView({ behavior: 'smooth' })
+      trackActivity('navigation', 'Navigated to HTTP Status Codes', 'Used keyboard shortcut')
+    },
+  })
+
+  registry.addShortcut({
     id: 'nav-timeline',
     name: 'Go to Timeline',
     description: 'Scroll to the evolution timeline',
@@ -766,6 +783,7 @@ function setupScrollReveal(): void {
     '#uuid-generator-section',
     '#cron-parser-section',
     '#url-encoder-decoder-section',
+    '#http-status-codes-section',
   ]
 
   const observer = new IntersectionObserver(
@@ -1033,6 +1051,12 @@ async function initializeApp() {
     urlEncoderDecoderSection.innerHTML = ''
     urlEncoderDecoderSection.appendChild(createUrlEncoderDecoderUI())
     trackActivity('page_view', 'Loaded URL Encoder/Decoder', 'URL encoding, decoding, and parsing tool initialized')
+
+    // Setup HTTP Status Code Reference
+    const httpStatusCodesSection = document.querySelector<HTMLDivElement>('#http-status-codes-section')!
+    httpStatusCodesSection.innerHTML = ''
+    httpStatusCodesSection.appendChild(createHttpStatusCodesUI())
+    trackActivity('page_view', 'Loaded HTTP Status Code Reference', 'HTTP status code reference initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

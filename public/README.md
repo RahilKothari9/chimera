@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 59: 2026-03-18
+
+**Feature/Change**: HTTP Status Code Reference
+**Description**: Added a comprehensive, searchable HTTP Status Code Reference — a developer utility covering all 63 standard HTTP status codes across the five categories (1xx Informational, 2xx Success, 3xx Redirection, 4xx Client Error, 5xx Server Error). Each entry shows the numeric code, status name, category badge, a plain-English description, and a "Common usage" note explaining real-world contexts. Key features include: a live search input that filters by code number, name, description, or usage text as you type; category filter buttons (All / 1xx / 2xx / 3xx / 4xx / 5xx) that narrow results with a single click; a result count badge that updates in real time; colour-coded code badges and category pills for instant visual classification; a per-row 📋 Copy button that writes "CODE Name" (e.g. `404 Not Found`) to the clipboard; and a keyboard shortcut `g+s` to navigate directly to the section. The core engine (`httpStatusCodes.ts`) exports typed functions: `getAllStatusCodes`, `getStatusByCode`, `searchStatusCodes`, `filterByCategory`, `getCategoryLabel`, `getCategoryClass`, and `getCategoryFromCode`. The `http_status` activity type (icon 🌐) was added to the activity feed. CSS styles for the tool were appended to `style.css`. 45 new tests added across `httpStatusCodes.test.ts` (31) and `httpStatusCodesUI.test.ts` (14), bringing the total from 2,601 to 2,646.
+**Files Modified**: src/httpStatusCodes.ts (created), src/httpStatusCodes.test.ts (created), src/httpStatusCodesUI.ts (created), src/httpStatusCodesUI.test.ts (created), src/activityFeed.ts, src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
 ### Day 58: 2026-03-15
 
 **Feature/Change**: Frontend Polish - CSS Design-Token Consistency & Micro-interaction Upgrades
