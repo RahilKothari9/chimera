@@ -56,6 +56,7 @@ import { createJwtDecoderUI } from './jwtDecoderUI.ts'
 import { createUuidGeneratorUI } from './uuidGeneratorUI.ts'
 import { createCronParserUI } from './cronParserUI.ts'
 import { createUrlEncoderDecoderUI } from './urlEncoderDecoderUI.ts'
+import { createColorContrastUI } from './colorContrastUI.ts'
 
 // Initialize accessibility features
 accessibilityManager.initialize()
@@ -226,6 +227,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div id="url-encoder-decoder-section">
       <p class="loading">Loading URL Encoder / Decoder...</p>
+    </div>
+
+    <div id="color-contrast-section">
+      <p class="loading">Loading Color Contrast Checker...</p>
     </div>
     
     <div class="evolution-section" id="main-content" tabindex="-1">
@@ -1033,6 +1038,12 @@ async function initializeApp() {
     urlEncoderDecoderSection.innerHTML = ''
     urlEncoderDecoderSection.appendChild(createUrlEncoderDecoderUI())
     trackActivity('page_view', 'Loaded URL Encoder/Decoder', 'URL encoding, decoding, and parsing tool initialized')
+
+    // Setup Color Contrast Checker
+    const colorContrastSection = document.querySelector<HTMLDivElement>('#color-contrast-section')!
+    colorContrastSection.innerHTML = ''
+    colorContrastSection.appendChild(createColorContrastUI())
+    trackActivity('page_view', 'Loaded Color Contrast Checker', 'WCAG color contrast checker initialized')
     
     // Setup search UI with URL state integration
     const initialFilters: SearchFilters = {

@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 59: 2026-03-19
+
+**Feature/Change**: Color Contrast Checker
+**Description**: Added a WCAG 2.1 Color Contrast Checker — an accessibility-focused developer tool for ensuring text and UI element color combinations meet international readability standards. The tool provides: a **foreground/background color picker** with dual input — a native browser `<input type="color">` swatch for quick visual selection alongside a text field accepting any CSS color format (`#RGB`, `#RRGGBB`, `rgb()`, `rgba()`); a **live preview box** showing sample normal and large text rendered with the chosen colors so developers can see the result immediately; a **contrast ratio display** in the form `X.XX:1` — the industry-standard notation; a **WCAG 2.1 compliance table** with five rows covering all standard criteria: Normal text AA (≥ 4.5:1), Normal text AAA (≥ 7:1), Large text AA (≥ 3:1), Large text AAA (≥ 4.5:1), and UI Components AA (≥ 3:1), each with a green ✅ Pass or red ❌ Fail badge; an **overall level badge** (AAA / AA / AA Large / Fail) color-coded in green, blue, amber, or red; an **accessible-color suggestion panel** that activates when the combination fails AA, algorithmically finding a nearby foreground hue that meets the 4.5:1 threshold with a one-click Apply button; a **⇄ Swap** button that exchanges foreground and background colors instantly; and **8 quick preset pairs** (Black/White, White/Black, Blue/Light, Red/Light, Green/Light, Purple/Light, Amber/Light, Gray/White) for common accessibility audit scenarios. The core engine (`colorContrast.ts`) implements the full WCAG 2.1 color-science pipeline: `parseColor` handles `#RGB`, `#RRGGBB`, `rgb()`, and `rgba()` formats; `srgbToLinear` applies the IEC 61966-2-1 piecewise gamma formula; `relativeLuminance` computes the weighted linear-RGB luminance per the WCAG 2.1 specification; `contrastRatio` divides the lighter luminance by the darker with the mandated +0.05 offset; `evaluateContrast` maps the ratio to all five WCAG criteria; `suggestAccessibleColor` steps through darkened and blended variants of the foreground until one meets the target ratio; and `getComplianceSummary` returns human-readable labels and semantic colors for each level. The `color_contrast` activity type (icon 🎨) was added to the activity feed. 52 new tests added across `colorContrast.test.ts` (33) and `colorContrastUI.test.ts` (19), bringing the total from 2,601 to 2,653.
+**Files Modified**: src/colorContrast.ts (created), src/colorContrast.test.ts (created), src/colorContrastUI.ts (created), src/colorContrastUI.test.ts (created), src/activityFeed.ts, src/main.ts, src/style.css, README.md, public/README.md
+
+---
+
 ### Day 58: 2026-03-15
 
 **Feature/Change**: Frontend Polish - CSS Design-Token Consistency & Micro-interaction Upgrades

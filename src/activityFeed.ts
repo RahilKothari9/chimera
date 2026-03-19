@@ -51,6 +51,7 @@ export type ActivityType =
   | 'uuid_generator'
   | 'cron_parser'
   | 'url_encoder_decoder'
+  | 'color_contrast'
 
 export interface Activity {
   id: string
@@ -175,6 +176,7 @@ function getActivityIcon(type: ActivityType): string {
     uuid_generator: '🔑',
     cron_parser: '⏰',
     url_encoder_decoder: '🔗',
+    color_contrast: '🎨',
   }
   return icons[type] || '•'
 }
