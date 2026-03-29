@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 60: 2026-03-29
+
+**Feature/Change**: Frontend Polish — Ambient Glow, Press Feedback & Entrance Animations
+**Description**: Applied five focused, high-impact visual improvements to elevate the UI from functional to polished. **(1) Ambient background glow**: Added a fixed `body::before` pseudo-element with a subtle radial gradient (`rgba(124, 58, 237, 0.09)`) anchored to the top of the viewport, giving the dark theme warm depth and a premium "ambient light" feel without distracting from content. The light theme gets a softer variant (`0.05` opacity). The effect is suppressed for users who prefer reduced motion. **(2) Button press depth**: Added a generic `button:active { transform: scale(0.96); transition-duration: 80ms; }` rule that makes every button feel physical and responsive on click. More specific class-based active rules (e.g., `.theme-toggle-button:active`) continue to take precedence via CSS specificity. **(3) Input placeholder fade**: Placeholders now start at 65% opacity and gracefully fade to 35% when the field is focused, reducing visual noise and guiding attention to the cursor. **(4) Section title underline entrance**: The accent underline beneath each `.section-title` now animates in from left using a `scaleX(0→1)` keyframe (`underline-grow`) with a 0.5s ease-out curve, making section headings feel more alive on load. Also raised `#app` to `position: relative; z-index: 1` to correctly layer it above the ambient glow layer, and added a smooth CSS transition to scrollbar thumb color changes. All 2,653 tests continue to pass and the TypeScript/Vite build succeeds.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 59: 2026-03-19
 
 **Feature/Change**: Color Contrast Checker

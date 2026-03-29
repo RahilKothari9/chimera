@@ -166,6 +166,8 @@ h1 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 /* Chimera Header Styles - Enhanced */
@@ -14023,4 +14025,78 @@ tr.diff-unchanged .diff-cell {
   border-color: var(--color-accent);
   background: rgba(124, 58, 237, 0.08);
   transform: translateY(-1px);
+}
+
+/* ================================
+   Day 60: Frontend Polish — Ambient Glow, Press Feedback & Entrance Animations
+   ================================ */
+
+/* Ambient top glow — adds warm depth to the dark theme background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 70vh;
+  background: radial-gradient(ellipse 70% 55% at 50% -5%, rgba(124, 58, 237, 0.09) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] body::before {
+  background: radial-gradient(ellipse 70% 55% at 50% -5%, rgba(124, 58, 237, 0.05) 0%, transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    display: none;
+  }
+}
+
+/* Satisfying press depth — buttons feel physical */
+button:active {
+  transform: scale(0.96);
+  transition-duration: 80ms;
+}
+
+/* Input & textarea placeholder polish — fade on focus for a cleaner feel */
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-tertiary);
+  opacity: 0.65;
+  transition: opacity var(--transition-base) var(--ease-out);
+}
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+  opacity: 0.35;
+}
+
+/* Section title underline entrance animation */
+@keyframes underline-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.section-title::after {
+  transform-origin: left center;
+  animation: underline-grow 0.5s var(--ease-out) 0.1s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-title::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+
+  button:active {
+    transform: none;
+  }
+}
+
+/* Scrollbar thumb smooth color transition */
+::-webkit-scrollbar-thumb {
+  transition: background-color 0.25s ease;
 }
