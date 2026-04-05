@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 61: 2026-04-05
+
+**Feature/Change**: Frontend Polish — Card Glint Sweep, Gradient Scrollbar & Responsive Typography
+**Description**: Three focused visual improvements that elevate the UI polish across all viewport sizes and themes. **(1) Card glint sweep**: Secondary stat cards (`.activity-stat-card`, `.challenge-stat-card`, `.snippet-stat-card`) now display a diagonal light-sheen sweep on hover — a `::before` pseudo-element animates from left to right in 0.55s creating a "glass reflection" effect. Dark mode uses a subtle white-tint sheen, while light mode uses a brighter version. The animation is suppressed for users who prefer reduced motion. **(2) Gradient scrollbar thumb**: The global scrollbar thumb is upgraded from a flat `--color-border` colour to a rich two-stop accent gradient (`--color-accent → --color-accent-secondary`) that matches the brand palette, with a lighter gradient on hover. **(3) Responsive title typography with `clamp()`**: `.chimera-title` now uses `font-size: clamp(2.4rem, 8vw, 5rem)` so the headline scales gracefully from mobile (≥ 384px) through tablet and desktop without overflow. **(4) Challenge card accent stripe**: `.challenge-stat-card` gains a top accent stripe on hover (mirroring the `.stat-card` treatment), adding visual cohesion to the card system. All 2,653 tests continue to pass and the TypeScript/Vite build succeeds.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 60: 2026-03-29
 
 **Feature/Change**: Frontend Polish — Ambient Glow, Press Feedback & Entrance Animations

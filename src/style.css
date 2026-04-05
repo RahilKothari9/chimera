@@ -14100,3 +14100,122 @@ textarea:focus::placeholder {
 ::-webkit-scrollbar-thumb {
   transition: background-color 0.25s ease;
 }
+
+/* ================================
+   Day 61: Frontend Polish — Card Glint Sweep, Gradient Scrollbar & Responsive Typography
+   ================================ */
+
+/* ── 1. Responsive title typography with clamp() ── */
+/* Prevents overflow on small screens while scaling up elegantly on large ones */
+.chimera-title {
+  font-size: clamp(2.4rem, 8vw, 5rem);
+}
+
+/* ── 2. Card glint sweep — diagonal light reflection on hover ──
+   Adds a "glass sheen" sweep to secondary stat cards that lack the elaborate
+   hover treatment of the main .stat-card. Uses a ::before pseudo-element that
+   slides diagonally across the card surface in 0.55s on hover.
+   Both dark and light themes benefit: dark gets a white-tint sheen,
+   light gets a subtler version via opacity scaling in the light theme rule. */
+
+.activity-stat-card,
+.challenge-stat-card,
+.snippet-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-stat-card::before,
+.challenge-stat-card::before,
+.snippet-stat-card::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -75%;
+  width: 50%;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
+  );
+  transform: skewX(-15deg);
+  pointer-events: none;
+}
+
+.activity-stat-card:hover::before,
+.challenge-stat-card:hover::before,
+.snippet-stat-card:hover::before {
+  animation: card-glint 0.55s var(--ease-out) forwards;
+}
+
+@keyframes card-glint {
+  0%   { left: -75%; }
+  100% { left: 130%; }
+}
+
+[data-theme="light"] .activity-stat-card::before,
+[data-theme="light"] .challenge-stat-card::before,
+[data-theme="light"] .snippet-stat-card::before {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.20) 30%,
+    rgba(255, 255, 255, 0.40) 50%,
+    rgba(255, 255, 255, 0.20) 70%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .activity-stat-card:hover::before,
+  .challenge-stat-card:hover::before,
+  .snippet-stat-card:hover::before {
+    animation: none;
+  }
+}
+
+/* ── 3. Gradient scrollbar thumb ──
+   Upgrade global scrollbar from flat border colour to a rich
+   accent gradient, matching the purple brand palette. */
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--color-accent) 0%,
+    var(--color-accent-secondary) 100%
+  );
+  opacity: 0.55;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    var(--color-accent-secondary) 0%,
+    var(--color-accent-light) 100%
+  );
+  opacity: 1;
+}
+
+/* ── 4. Challenge-stat-card accent border-top stripe on hover ──
+   Mirrors the top accent stripe seen on .stat-card for visual cohesion. */
+
+.challenge-stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+  border-radius: 3px 3px 0 0;
+  opacity: 0;
+  transition: opacity var(--transition-base) var(--ease-out);
+}
+
+.challenge-stat-card:hover::after {
+  opacity: 1;
+}
