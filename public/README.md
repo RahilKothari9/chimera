@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 62: 2026-04-12
+**Feature/Change**: Frontend Polish — Unified Card Elevation, Timeline Stagger & Missing Design Tokens
+**Description**: Six focused visual improvements that bring consistency and polish across the full card and animation system. **(1) Undefined CSS variables fixed**: Three design tokens referenced throughout the codebase — `--color-bg`, `--color-bg-light`, and `--color-accent-hover` — were never defined in `:root` or `[data-theme="light"]`, causing voting, evolution-tree stat, and comparison-mode elements to render with transparent or incorrect backgrounds in both themes. They are now properly defined with theme-appropriate values that match the established `--color-background-*` palette. **(2) Activity-stat-card glint sweep**: Day 61 applied the diagonal glass-sheen hover animation to `challenge-stat-card` and `snippet-stat-card` but missed `activity-stat-card`. This is now corrected, completing the glint treatment across all three secondary card types. **(3) Accent stripe on activity and snippet stat cards**: The top accent stripe on hover (introduced for `.stat-card` and `.challenge-stat-card`) is extended to `.activity-stat-card` and `.snippet-stat-card`, completing the cohesive top-border accent system across the entire card family. Both cards also receive the stronger `--shadow-accent-hover` glow and a more vivid `border-color` on hover. **(4) Metric card radius and elevation**: `.metric-card` corner radius upgraded from 14px to 16px for consistency with the 16/20px system; hover state upgraded to `--shadow-accent-hover` with a more vivid border. **(5) Timeline entry staggered entrance animations**: Individual `.timeline-entry` elements now slide in from the left (translateX -12px → 0) with 50 ms delays between each of the first eight entries, making the changelog feel alive and intentional on page load. Suppressed for `prefers-reduced-motion`. **(6) Evolution tree stat card elevation**: `.evolution-tree-stat:hover` gains the `--shadow-accent` glow and a deeper accent border for visual harmony with other hoverable cards. All 2,653 tests continue to pass and the TypeScript/Vite build succeeds.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 61: 2026-04-05
 
 **Feature/Change**: Frontend Polish — Card Glint Sweep, Gradient Scrollbar & Responsive Typography

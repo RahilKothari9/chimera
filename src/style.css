@@ -53,6 +53,11 @@
   --space-xl: 3rem;    /* 48px */
   --space-2xl: 4rem;   /* 64px */
   
+  /* Backward-compatible aliases for legacy component references */
+  --color-bg: rgba(255, 255, 255, 0.04);
+  --color-bg-light: rgba(255, 255, 255, 0.08);
+  --color-accent-hover: #6d28d9;
+
   color-scheme: dark;
   color: var(--color-text);
   background-color: var(--color-background);
@@ -80,6 +85,11 @@
   --color-white: #18181b;
   --color-error: #dc2626;
   --color-success: #059669;
+  
+  /* Backward-compatible aliases for legacy component references */
+  --color-bg: rgba(124, 58, 237, 0.04);
+  --color-bg-light: rgba(124, 58, 237, 0.08);
+  --color-accent-hover: #6d28d9;
   
   /* Enhanced shadow system for light mode */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.08), 0 2px 6px 0 rgba(0, 0, 0, 0.12);
@@ -14219,3 +14229,157 @@ textarea:focus::placeholder {
 .challenge-stat-card:hover::after {
   opacity: 1;
 }
+
+/* ================================
+   Day 62: Frontend Polish — Unified Card Elevation, Timeline Stagger & Metric Cards
+   ================================ */
+
+/* ── 1. Glint sweep extended to activity-stat-card ──
+   Day 61 applied the glint to challenge/snippet cards but missed activity cards.
+   Extend the same treatment for full consistency across the card system. */
+
+.activity-stat-card::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -75%;
+  width: 50%;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 30%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent 100%
+  );
+  transform: skewX(-15deg);
+  pointer-events: none;
+}
+
+.activity-stat-card:hover::before {
+  animation: card-glint 0.55s var(--ease-out) forwards;
+}
+
+[data-theme="light"] .activity-stat-card::before {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.20) 30%,
+    rgba(255, 255, 255, 0.40) 50%,
+    rgba(255, 255, 255, 0.20) 70%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .activity-stat-card:hover::before {
+    animation: none;
+  }
+}
+
+/* ── 2. Accent stripe on hover for secondary stat cards ──
+   Extends the top accent stripe (from .stat-card) to activity, snippet, and roadmap
+   stat cards for visual cohesion across the whole design system. */
+
+.activity-stat-card,
+.snippet-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-stat-card::after,
+.snippet-stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+  border-radius: 3px 3px 0 0;
+  opacity: 0;
+  transition: opacity var(--transition-base) var(--ease-out);
+}
+
+.activity-stat-card:hover::after,
+.snippet-stat-card:hover::after {
+  opacity: 1;
+}
+
+/* Upgrade hover elevation on secondary stat cards to match .stat-card polish */
+.activity-stat-card:hover {
+  box-shadow: var(--shadow-accent-hover);
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+.snippet-stat-card:hover {
+  box-shadow: var(--shadow-accent-hover);
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+/* ── 3. Metric card elevation enhancement ──
+   Metric cards in the impact graph section gain the accent-glow shadow on hover
+   and a gradient border treatment for stronger visual hierarchy. */
+
+.metric-card {
+  border-radius: 16px;
+}
+
+.metric-card:hover {
+  box-shadow: var(--shadow-accent-hover);
+  border-color: rgba(124, 58, 237, 0.5);
+}
+
+/* ── 4. Timeline entry staggered entrance animations ──
+   Individual timeline entries now animate in with a staggered delay, making
+   the page load feel more alive and intentional. Delay caps at 8 entries
+   to avoid long waits on large changelogs. */
+
+@keyframes timeline-entry-in {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.timeline-entry {
+  animation: timeline-entry-in 0.45s var(--ease-out) both;
+}
+
+.timeline-entry:nth-child(1)  { animation-delay: 0.05s; }
+.timeline-entry:nth-child(2)  { animation-delay: 0.10s; }
+.timeline-entry:nth-child(3)  { animation-delay: 0.15s; }
+.timeline-entry:nth-child(4)  { animation-delay: 0.20s; }
+.timeline-entry:nth-child(5)  { animation-delay: 0.25s; }
+.timeline-entry:nth-child(6)  { animation-delay: 0.30s; }
+.timeline-entry:nth-child(7)  { animation-delay: 0.35s; }
+.timeline-entry:nth-child(8)  { animation-delay: 0.40s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-entry {
+    animation: none;
+  }
+}
+
+/* ── 5. Evolution tree stat and roadmap stat card polish ──
+   These cards previously had basic hover styles. Elevate them with
+   the accent-shadow treatment to match the broader card system. */
+
+.evolution-tree-stat:hover {
+  box-shadow: var(--shadow-accent);
+  border-color: rgba(124, 58, 237, 0.4);
+}
+
+/* ── 6. Footer visual upgrade ──
+   Increase breathing room and add a subtle gradient text treatment to footer text. */
+
+.chimera-footer {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-lg);
+}
+
