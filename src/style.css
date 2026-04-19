@@ -14219,3 +14219,66 @@ textarea:focus::placeholder {
 .challenge-stat-card:hover::after {
   opacity: 1;
 }
+
+/* ================================
+   Day 62: Frontend Polish — Hero Surface, Heading Rhythm & Timeline Card Refinement
+   ================================ */
+
+.chimera-header {
+  max-width: 920px;
+  margin: 0 auto var(--space-xl);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 28%, transparent);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 15% 5%, color-mix(in srgb, var(--color-accent) 18%, transparent) 0%, transparent 55%),
+    linear-gradient(140deg, color-mix(in srgb, var(--color-background-secondary) 85%, transparent) 0%, transparent 100%);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(6px);
+}
+
+[data-theme="light"] .chimera-header {
+  border-color: color-mix(in srgb, var(--color-accent) 20%, rgba(255, 255, 255, 0.7));
+  background:
+    radial-gradient(circle at 15% 5%, rgba(124, 58, 237, 0.11) 0%, transparent 55%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.58) 100%);
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.3vw, 2.35rem);
+  margin-bottom: calc(var(--space-lg) + 0.25rem);
+}
+
+.timeline-entry {
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 50%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--color-border) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, #000 12%, transparent),
+    0 10px 22px -12px color-mix(in srgb, #000 38%, transparent);
+}
+
+.timeline-entry:hover {
+  transform: translateX(8px) translateY(-2px);
+  box-shadow:
+    0 2px 4px color-mix(in srgb, #000 14%, transparent),
+    0 18px 30px -14px color-mix(in srgb, var(--color-accent) 42%, transparent);
+}
+
+.timeline-entry:focus-within {
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-border));
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent),
+    0 14px 26px -14px color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+@media (max-width: 768px) {
+  .chimera-header {
+    border-radius: 22px;
+  }
+
+  .timeline-entry:hover,
+  .timeline-entry:active {
+    transform: translateY(-2px);
+  }
+}

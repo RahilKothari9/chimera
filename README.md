@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 62: 2026-04-19
+
+**Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
+**Description**: Applied three focused UI refinements to elevate visual quality without changing behavior. The hero/header now sits inside a premium glass-like surface with subtle accent lighting and theme-tuned backgrounds for stronger first-impression hierarchy in both dark and light mode. Section headings were rebalanced with responsive `clamp()` sizing and spacing for cleaner rhythm across mobile-to-desktop breakpoints. Timeline cards gained softer layered borders/shadows plus improved hover/focus depth so interactions feel more intentional while preserving readability and accessibility.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 61: 2026-04-05
 
 **Feature/Change**: Frontend Polish — Card Glint Sweep, Gradient Scrollbar & Responsive Typography
