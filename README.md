@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-04-26
+
+**Feature/Change**: Frontend Polish — Progress Shimmer Unification, Tag Micro-interactions & Section Container Elevation
+**Description**: Three focused visual improvements that raise the consistency and premium feel of the entire UI. **(1) Progress bar shimmer unification**: The `.category-bar` shimmer sweep was previously the only animated progress bar; `.milestone-progress-fill` and `.tutorial-progress-bar` now receive the same treatment — a sliding `rgba` highlight running on a 2.5s loop — and both are updated from hard-coded hex colours to the design-token variables (`--color-accent → --color-accent-secondary → --color-accent-light`), keeping them in sync with the brand palette across both themes. Suppressed for `prefers-reduced-motion`. **(2) Tag hover micro-interaction**: The `.tag` chip elements throughout the roadmap and tool sections previously had no hover state. They now respond with a smooth `150ms ease-out` transition: accent-tinted background, accent border, a 1px upward lift, and a subtle `box-shadow` glow — making them feel interactive without being distracting. **(3) Section container elevation**: Six tool-section containers (`.achievement-section`, `.comparison-container`, `.dependency-legend`, `.dependency-graph-container`, `.dependency-insights`, `.impact-chart-container`) were using flat page-background colours with a simple 1px border. They are now elevated to the glass-card standard used by stat cards: `border-radius: 20px`, `backdrop-filter: blur(8px)`, `box-shadow: var(--shadow-md)`, a 1.5px accent-tinted border on hover, and a gentle `translateY(-2px)` lift. Light theme gets a crisp `rgba(255,255,255,0.72)` background for contrast. Mobile touch devices suppress the hover lift via a `max-width: 768px` override. All 2,653 tests continue to pass and the TypeScript/Vite build succeeds.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement

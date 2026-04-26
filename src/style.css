@@ -14445,3 +14445,151 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Progress Shimmer Unification,
+            Tag Micro-interactions & Section Container Elevation
+   ================================ */
+
+/* ── 1. Progress bar shimmer unification ──
+   The .category-bar already has a shimmer sweep; extend the same treatment
+   to milestone, tutorial, and comparison progress fills for visual cohesion.
+   Old hard-coded hex colours are replaced with design-token variables. */
+
+.milestone-progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    var(--color-accent-secondary) 50%,
+    var(--color-accent-light) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.milestone-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
+.tutorial-progress-bar {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) 0%,
+    var(--color-accent-secondary) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.tutorial-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone-progress-fill::after,
+  .tutorial-progress-bar::after {
+    animation: none;
+  }
+}
+
+/* ── 2. Tag hover micro-interaction ──
+   Tags are informational but feel more alive with a gentle hover lift,
+   accent tint, and smooth transition. Both themes benefit from the
+   same treatment since it uses CSS variables. */
+
+.tag {
+  transition:
+    color var(--transition-fast) var(--ease-out),
+    background var(--transition-fast) var(--ease-out),
+    border-color var(--transition-fast) var(--ease-out),
+    transform var(--transition-fast) var(--ease-out),
+    box-shadow var(--transition-fast) var(--ease-out);
+}
+
+.tag:hover {
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+/* ── 3. Section container elevation ──
+   Several tool-section containers use flat page-background colours and a
+   simple 1px border. Elevating them to the glass-card treatment makes the
+   layout feel layered and intentional, matching the stat-card standard. */
+
+.achievement-section,
+.comparison-container,
+.dependency-legend,
+.dependency-graph-container,
+.dependency-insights,
+.impact-chart-container {
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-md);
+  border: 1.5px solid var(--color-border);
+  transition:
+    box-shadow var(--transition-base) var(--ease-out),
+    border-color var(--transition-base) var(--ease-out),
+    transform var(--transition-base) var(--ease-out);
+}
+
+.achievement-section:hover,
+.comparison-container:hover,
+.dependency-legend:hover,
+.dependency-graph-container:hover,
+.dependency-insights:hover,
+.impact-chart-container:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+  transform: translateY(-2px);
+}
+
+/* Light theme refinement for elevated containers */
+[data-theme="light"] .achievement-section,
+[data-theme="light"] .comparison-container,
+[data-theme="light"] .dependency-legend,
+[data-theme="light"] .dependency-graph-container,
+[data-theme="light"] .dependency-insights,
+[data-theme="light"] .impact-chart-container {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: color-mix(in srgb, var(--color-accent) 18%, rgba(0,0,0,0.08));
+}
+
+/* Mobile: suppress hover lift to avoid sticky transforms on touch */
+@media (max-width: 768px) {
+  .achievement-section:hover,
+  .comparison-container:hover,
+  .dependency-legend:hover,
+  .dependency-graph-container:hover,
+  .dependency-insights:hover,
+  .impact-chart-container:hover {
+    transform: none;
+  }
+}
