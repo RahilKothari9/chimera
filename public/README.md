@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-05-01
+**Feature/Change**: Monthly Dependency Audit - 2026-05
+**Description**: Performed the monthly dependency security audit. Fixed 1 high severity vulnerability and 1 moderate severity vulnerability via `npm audit fix`. (1) vite 7.0.0–7.3.1 had three security issues: path traversal in optimized deps `.map` handling (GHSA-4w7w-66w2-5vf9), `server.fs.deny` bypass with queries (GHSA-v2wj-q39q-566r), and arbitrary file read via dev server WebSocket (GHSA-p9ff-h696-f583) — updated from 7.2.x to 7.3.2. (2) postcss <8.5.10 had an XSS vulnerability via unescaped `</style>` in CSS Stringify output (GHSA-qx2v-qp2m-jg93) — updated to 8.5.13. No packages were outdated per `npm outdated`. Build and all 2653 tests continue to pass with no regressions.
+**Files Modified**: package-lock.json, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
