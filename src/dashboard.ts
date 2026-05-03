@@ -151,7 +151,14 @@ function createCategoryItem(name: string, count: number, maxCount: number): HTML
   bar.className = 'category-bar';
   // Safety check to prevent division by zero
   const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
-  bar.style.width = `${percentage}%`;
+  // Store the target width as a CSS custom property for the CSS animation,
+  // and start the bar at 0 width so it can animate in.
+  bar.style.setProperty('--bar-target-width', `${percentage}%`);
+  bar.style.width = '0%';
+  // Trigger the fill animation on the next paint so the CSS transition fires
+  requestAnimationFrame(() => {
+    bar.classList.add('animate');
+  });
 
   barContainer.appendChild(bar);
 

@@ -251,6 +251,32 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 const themeToggle = createThemeToggle()
 document.body.appendChild(themeToggle)
 
+// Add back-to-top button
+const backToTopBtn = document.createElement('button')
+backToTopBtn.className = 'back-to-top'
+backToTopBtn.setAttribute('aria-label', 'Back to top')
+backToTopBtn.innerHTML = '&#8679;'
+document.body.appendChild(backToTopBtn)
+
+let scrollTicking = false
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      if (window.scrollY > 400) {
+        backToTopBtn.classList.add('is-visible')
+      } else {
+        backToTopBtn.classList.remove('is-visible')
+      }
+      scrollTicking = false
+    })
+    scrollTicking = true
+  }
+}, { passive: true })
+
+backToTopBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+})
+
 // Add tutorial launcher button to the page
 const tutorialLauncher = createTutorialLauncher()
 document.body.appendChild(tutorialLauncher)
