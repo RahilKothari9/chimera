@@ -14445,3 +14445,120 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Back-to-Top Button & Animated Progress Bars
+   ================================ */
+
+/* ── 1. Back-to-top floating button ── */
+
+/*
+ * --back-to-top-clearance: vertical gap above the theme-toggle button (56px
+ * button + 8px gap = 64px; align to spacing grid → 72px desktop, 68px mobile).
+ */
+:root {
+  --back-to-top-clearance: 72px;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --back-to-top-clearance: 68px;
+  }
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: calc(var(--space-lg) + var(--back-to-top-clearance));
+  right: var(--space-lg);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: var(--shadow-accent);
+  z-index: 999;
+
+  /* Hidden by default */
+  opacity: 0;
+  transform: translateY(16px) scale(0.85);
+  pointer-events: none;
+  transition:
+    opacity 0.3s var(--ease-out),
+    transform 0.3s var(--ease-bounce),
+    box-shadow 0.2s var(--ease-out);
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: var(--shadow-accent-hover);
+}
+
+.back-to-top:active {
+  transform: translateY(-1px) scale(0.96);
+  transition-duration: 80ms;
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+[data-theme="light"] .back-to-top {
+  border-color: rgba(124, 58, 237, 0.2);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .back-to-top {
+    bottom: calc(var(--space-md) + var(--back-to-top-clearance));
+    right: var(--space-md);
+    width: 44px;
+    height: 44px;
+    font-size: 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    transition: opacity 0.15s ease;
+    transform: none !important;
+  }
+  .back-to-top.is-visible {
+    transform: none;
+  }
+}
+
+/* ── 2. Category bar entrance animation ── */
+/*
+   Bars start at width 0 and expand to their data-target-width value
+   via a CSS animation triggered by the .animate class added in JS.
+*/
+@keyframes bar-fill {
+  from { width: 0; }
+  to   { width: var(--bar-target-width, 100%); }
+}
+
+.category-bar.animate {
+  animation: bar-fill 1s var(--ease-out) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-bar.animate {
+    animation: none;
+    width: var(--bar-target-width, 100%);
+  }
+}

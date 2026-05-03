@@ -19,6 +19,13 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-05-03
+**Feature/Change**: Frontend Polish — Back-to-Top Button & Animated Progress Bars
+**Description**: Two focused, high-impact visual improvements. **(1) Back-to-top floating button**: A polished fixed-position button appears with a spring animation (`ease-bounce`) after the user scrolls more than 400 px, making navigation effortless on the long single-page app. The button uses the brand gradient (`--color-accent → --color-accent-secondary`), has a soft accent glow (`--shadow-accent`) and a satisfying hover-lift/scale effect. Clicking it smoothly scrolls back to the top. The button is fully accessible (ARIA label, focus-visible ring) and is suppressed for users who prefer reduced motion. It adapts cleanly to both dark and light themes and scales down on mobile. **(2) Animated category progress bars**: The "Evolution Categories" breakdown bars previously snapped to their final width immediately because the inline `style.width` was set before the browser had painted, making the CSS `transition: width 1s` a no-op. The dashboard now sets each bar's target width as a `--bar-target-width` CSS custom property and starts the bar at `0%`, then triggers the fill via a CSS `@keyframes bar-fill` animation on the next paint using `requestAnimationFrame`. The result is a smooth, sequenced bar-fill on every page load — giving the statistics section a living, premium feel. The animation is suppressed for `prefers-reduced-motion`. All 2,653 tests continue to pass and the TypeScript/Vite build succeeds.
+**Files Modified**: src/style.css, src/main.ts, src/dashboard.ts, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
