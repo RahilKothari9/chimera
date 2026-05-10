@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-05-10
+
+**Feature/Change**: Frontend Polish - CTA Harmony, Comparison Surface & Input Rhythm
+**Description**: Delivered three focused visual refinements to make interactions feel more intentional without changing functionality. Primary action buttons (`Export`, `Compare`, `Share`, and `Analyze`) now share a tighter motion language with smoother lift/press feedback and consistent accent elevation, reducing the previously inconsistent hover intensity across modules. The comparison tool received a premium surface pass (theme-aware ambient gradient, refined radius, and layered card elevation) so period/difference cards read with clearer hierarchy in both dark and light themes. High-traffic controls (search/filter/select inputs) were unified with consistent corner geometry and focus-ring behavior for a cleaner rhythm across desktop and mobile breakpoints while preserving accessibility and reduced-motion handling.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement

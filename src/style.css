@@ -14445,3 +14445,127 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — CTA Harmony, Comparison Surface & Input Rhythm
+   ================================ */
+
+/* 1) Cohesive call-to-action button motion across primary actions */
+.export-button,
+.comparison-button,
+.share-button,
+.analyze-button {
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), filter 220ms var(--ease-out);
+  box-shadow: var(--shadow-accent);
+}
+
+.export-button:hover,
+.comparison-button:hover,
+.share-button:hover,
+.analyze-button:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: var(--shadow-accent-hover);
+  filter: brightness(1.06);
+}
+
+.export-button:active,
+.comparison-button:active,
+.share-button:active,
+.analyze-button:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.clear-button {
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), border-color 220ms var(--ease-out), background-color 220ms var(--ease-out);
+}
+
+.clear-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 2) Premium surface treatment for comparison area cards */
+.comparison-container {
+  border-radius: 20px;
+  border-color: color-mix(in srgb, var(--color-accent) 24%, var(--color-border));
+  background:
+    radial-gradient(circle at 90% 0%, color-mix(in srgb, var(--color-accent) 12%, transparent) 0%, transparent 45%),
+    var(--color-background);
+  box-shadow: var(--shadow-sm);
+}
+
+.period-card,
+.entry-card,
+.differences-card,
+.entry-differences-card {
+  border-radius: 14px;
+  border-color: color-mix(in srgb, var(--color-accent) 18%, var(--color-border));
+  box-shadow: 0 1px 2px color-mix(in srgb, #000 10%, transparent), 0 10px 22px -16px color-mix(in srgb, #000 35%, transparent);
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), border-color 220ms var(--ease-out);
+}
+
+.period-card:hover,
+.entry-card:hover,
+.differences-card:hover,
+.entry-differences-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-accent) 36%, var(--color-border));
+  box-shadow: 0 2px 6px color-mix(in srgb, #000 12%, transparent), 0 16px 32px -18px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+/* 3) Input rhythm and focus consistency for high-traffic controls */
+.search-input,
+.category-select,
+.export-format-select,
+.comparison-mode-select,
+.period-select,
+.entry-select {
+  border-radius: 14px;
+  border-color: color-mix(in srgb, var(--color-accent) 22%, var(--color-border));
+  background: color-mix(in srgb, var(--color-background-secondary) 86%, transparent);
+}
+
+.search-input:focus,
+.category-select:focus,
+.export-format-select:focus,
+.comparison-mode-select:focus,
+.period-select:focus,
+.entry-select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 16%, transparent), var(--shadow-sm);
+}
+
+[data-theme="light"] .comparison-container {
+  background:
+    radial-gradient(circle at 90% 0%, rgba(124, 58, 237, 0.09) 0%, transparent 45%),
+    rgba(255, 255, 255, 0.78);
+}
+
+[data-theme="light"] .search-input,
+[data-theme="light"] .category-select,
+[data-theme="light"] .export-format-select,
+[data-theme="light"] .comparison-mode-select,
+[data-theme="light"] .period-select,
+[data-theme="light"] .entry-select {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 768px) {
+  .comparison-container {
+    border-radius: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .export-button:hover,
+  .comparison-button:hover,
+  .share-button:hover,
+  .analyze-button:hover,
+  .clear-button:hover,
+  .period-card:hover,
+  .entry-card:hover,
+  .differences-card:hover,
+  .entry-differences-card:hover {
+    transform: none;
+  }
+}
