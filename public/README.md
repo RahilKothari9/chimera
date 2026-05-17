@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-05-17
+
+**Feature/Change**: Frontend Polish - Search Surface, CTA Motion Harmony & Timeline Readability
+**Description**: Applied three focused visual refinements to elevate overall polish without changing behavior. The search/filter zone now sits on a distinct glass-like surface with subtle accent lighting and theme-tuned borders, improving visual hierarchy in both dark and light mode. Primary action buttons (`Export` and comparison CTA) now share tighter motion/shape behavior and stronger focus-visible feedback, creating more intentional micro-interactions while preserving accessibility. Timeline metadata was also rebalanced with improved date tracking and description/file readability for cleaner scanning across desktop and mobile.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
