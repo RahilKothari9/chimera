@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-05-24
+
+**Feature/Change**: Frontend Polish - Search Surface, Timeline Metadata & Theme Toggle Refinement
+**Description**: Applied three cohesive visual upgrades focused on premium feel without changing behavior. Search/filter controls now sit inside a glass-like surface with stronger hierarchy and theme-tuned depth; timeline date metadata is styled as a compact chip with better scannability and improved title rhythm; and the floating theme toggle now uses a softer halo-based hover interaction with reduced-motion fallbacks for more intentional micro-interactions across dark and light themes.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
