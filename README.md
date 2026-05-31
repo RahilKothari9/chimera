@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-05-31
+
+**Feature/Change**: Frontend Polish - Section Surfaces, Theme Toggle Motion & Hero Type Rhythm
+**Description**: Applied three cohesive visual refinements focused on polish without altering functionality. Primary page sections now use elevated, theme-aware surface containers with smoother hover/focus depth and consistent spacing rhythm, improving scanability across mobile and desktop. Hero subtitle/description typography was tightened with responsive sizing and spacing for cleaner hierarchy. Theme toggle interactions were tuned to feel more deliberate (reduced hover spin, clearer press feedback), while preserving reduced-motion accessibility behavior in both dark and light themes.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement

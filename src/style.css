@@ -14445,3 +14445,78 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Section Surfaces, Theme Toggle Motion & Hero Type Rhythm
+   ================================ */
+
+:root {
+  --section-surface-bg: color-mix(in srgb, var(--color-background-secondary) 86%, transparent);
+  --section-surface-border: color-mix(in srgb, var(--color-accent) 20%, var(--color-border));
+  --section-surface-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 16px 32px -24px rgba(0, 0, 0, 0.26);
+  --section-surface-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.12), 0 22px 42px -24px color-mix(in srgb, var(--color-accent) 34%, #000);
+}
+
+[data-theme="light"] {
+  --section-surface-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 245, 255, 0.8) 100%);
+  --section-surface-border: rgba(124, 58, 237, 0.2);
+  --section-surface-shadow: 0 1px 2px rgba(24, 24, 27, 0.06), 0 14px 30px -24px rgba(24, 24, 27, 0.3);
+  --section-surface-shadow-hover: 0 2px 8px rgba(24, 24, 27, 0.08), 0 20px 36px -22px rgba(124, 58, 237, 0.28);
+}
+
+#app > div > :is(.dashboard-section, .evolution-section, [id$="-section"]) {
+  margin-bottom: calc(var(--space-xl) + 0.5rem);
+  padding: clamp(1rem, 2vw, 1.75rem);
+  border-radius: 24px;
+  border: 1px solid var(--section-surface-border);
+  background: var(--section-surface-bg);
+  box-shadow: var(--section-surface-shadow);
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), border-color 220ms var(--ease-out);
+}
+
+#app > div > :is(.dashboard-section, .evolution-section, [id$="-section"]):hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-accent) 34%, var(--section-surface-border));
+  box-shadow: var(--section-surface-shadow-hover);
+}
+
+#app > div > :is(.dashboard-section, .evolution-section, [id$="-section"]):focus-within {
+  border-color: color-mix(in srgb, var(--color-accent) 42%, var(--section-surface-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 14%, transparent), var(--section-surface-shadow-hover);
+}
+
+.chimera-subtitle {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  letter-spacing: 0.075em;
+  margin: 0.6em 0 0.95em;
+}
+
+.chimera-description {
+  max-width: 64ch;
+  font-size: clamp(1rem, 1.35vw, 1.14rem);
+  color: var(--color-description);
+}
+
+.theme-toggle-button:hover {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.theme-toggle-button:active {
+  transform: translateY(0) scale(0.96) rotate(0deg);
+}
+
+@media (max-width: 768px) {
+  #app > div > :is(.dashboard-section, .evolution-section, [id$="-section"]) {
+    border-radius: 18px;
+    padding: var(--space-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #app > div > :is(.dashboard-section, .evolution-section, [id$="-section"]),
+  #app > div > :is(.dashboard-section, .evolution-section, [id$="-section"]):hover,
+  .theme-toggle-button:hover,
+  .theme-toggle-button:active {
+    transform: none;
+  }
+}
