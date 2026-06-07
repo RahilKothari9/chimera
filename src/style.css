@@ -14445,3 +14445,80 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Interaction Tuning, Theme Toggle Refinement & Light-Surface Harmony
+   ================================ */
+
+/* ── 1. Typography and spacing rhythm ── */
+.chimera-description {
+  font-size: clamp(1rem, 1.35vw, 1.15rem);
+  max-width: 68ch;
+}
+
+#app {
+  padding: clamp(1rem, 2.6vw, 2.25rem);
+}
+
+/* ── 2. Micro-interaction tuning for cards and timeline ── */
+.stat-card,
+.timeline-entry,
+.categories-section {
+  transition:
+    transform 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    background-color 220ms var(--ease-out);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px) scale(1.015);
+}
+
+.timeline-entry:hover {
+  transform: translateX(6px) translateY(-2px);
+}
+
+@media (hover: none) {
+  .stat-card:hover,
+  .timeline-entry:hover,
+  .categories-section:hover {
+    transform: none;
+  }
+}
+
+/* ── 3. Theme toggle polish + stronger light theme surface depth ── */
+.theme-toggle-button {
+  border-width: 1.5px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 8px 20px -10px color-mix(in srgb, var(--color-accent) 50%, transparent);
+}
+
+.theme-toggle-button:hover {
+  transform: translateY(-2px) scale(1.06) rotate(0deg);
+}
+
+.theme-toggle-button:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.theme-toggle-button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 75%, white);
+  outline-offset: 4px;
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--color-accent) 18%, transparent),
+    0 10px 24px -12px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+[data-theme="light"] .stat-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(124, 58, 237, 0.07) 100%);
+  border-color: rgba(124, 58, 237, 0.22);
+}
+
+[data-theme="light"] .timeline-entry {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95) 0%, rgba(124, 58, 237, 0.05) 100%);
+  box-shadow:
+    0 1px 2px rgba(39, 39, 42, 0.08),
+    0 12px 26px -18px rgba(124, 58, 237, 0.35);
+}
