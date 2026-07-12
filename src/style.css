@@ -14445,3 +14445,85 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Unified Primary Actions, Input Surface Refinement & Hero Type Rhythm
+   ================================ */
+
+.chimera-subtitle {
+  font-size: clamp(1.02rem, 1.2vw + 0.7rem, 1.22rem);
+  letter-spacing: 0.11em;
+  line-height: 1.4;
+}
+
+.chimera-description {
+  max-width: 62ch;
+  font-size: clamp(1rem, 0.45vw + 0.92rem, 1.14rem);
+  line-height: 1.75;
+}
+
+.export-button,
+.comparison-button,
+.share-button {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent) 0%,
+    color-mix(in srgb, var(--color-accent-secondary) 82%, var(--color-accent-light) 18%) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--color-accent) 50%, transparent);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, #000 12%, transparent),
+    0 10px 26px -12px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  transition:
+    transform 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    filter 220ms var(--ease-out);
+}
+
+.export-button:hover,
+.comparison-button:hover,
+.share-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: color-mix(in srgb, var(--color-accent-light) 72%, transparent);
+  box-shadow:
+    0 2px 6px color-mix(in srgb, #000 14%, transparent),
+    0 18px 32px -14px color-mix(in srgb, var(--color-accent) 70%, transparent);
+  filter: saturate(1.08) brightness(1.06);
+}
+
+.export-button:active,
+.comparison-button:active,
+.share-button:active {
+  transform: translateY(-1px) scale(1.005);
+  box-shadow:
+    0 1px 3px color-mix(in srgb, #000 14%, transparent),
+    0 10px 20px -14px color-mix(in srgb, var(--color-accent) 58%, transparent);
+}
+
+.search-input,
+.category-select,
+.share-url-input,
+.command-palette-input {
+  background: color-mix(in srgb, var(--color-background-secondary) 88%, transparent);
+  border-color: color-mix(in srgb, var(--color-border) 82%, transparent);
+}
+
+.search-input:focus,
+.category-select:focus,
+.share-url-input:focus,
+.command-palette-input:focus {
+  border-color: color-mix(in srgb, var(--color-accent) 78%, var(--color-accent-light));
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--color-accent) 16%, transparent),
+    0 12px 26px -18px color-mix(in srgb, var(--color-accent) 50%, transparent);
+  background: color-mix(in srgb, var(--color-background-hover) 90%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .export-button,
+  .comparison-button,
+  .share-button {
+    transition: none;
+  }
+}
