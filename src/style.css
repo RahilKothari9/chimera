@@ -14445,3 +14445,47 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Section Rhythm, Timeline Clarity & Loading Surfaces
+   ================================ */
+
+#app > div > .dashboard-section,
+#app > div > [id$="-section"],
+#app > div > .evolution-section {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+
+.section-title {
+  text-wrap: balance;
+}
+
+.timeline-entry {
+  border-radius: 18px 22px 22px 18px;
+}
+
+.timeline-feature {
+  transition: color var(--transition-fast) var(--ease-out);
+}
+
+.timeline-entry:hover .timeline-feature {
+  color: color-mix(in srgb, var(--color-accent-light) 72%, var(--color-white));
+}
+
+.loading {
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--color-background-secondary) 92%, transparent) 0%,
+    color-mix(in srgb, var(--color-background-hover) 70%, transparent) 100%
+  );
+  box-shadow:
+    0 1px 2px color-mix(in srgb, #000 10%, transparent),
+    0 12px 24px -20px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+[data-theme="light"] .loading {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.96) 0%, rgba(124, 58, 237, 0.07) 100%);
+}
