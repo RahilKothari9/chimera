@@ -14445,3 +14445,97 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Hero Atmosphere, Heading Anchors & Timeline Readability
+   ================================ */
+
+:root {
+  --hero-ambient-glow: rgba(192, 132, 252, 0.2);
+  --hero-ambient-glow-secondary: rgba(59, 130, 246, 0.12);
+}
+
+[data-theme="light"] {
+  --hero-ambient-glow: rgba(124, 58, 237, 0.2);
+  --hero-ambient-glow-secondary: rgba(14, 116, 144, 0.12);
+}
+
+.chimera-header {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.chimera-header::before {
+  content: '';
+  position: absolute;
+  inset: -35% -10% auto;
+  height: 72%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 25% 30%, var(--hero-ambient-glow) 0%, transparent 56%),
+    radial-gradient(circle at 78% 18%, var(--hero-ambient-glow-secondary) 0%, transparent 54%);
+  filter: blur(2px);
+  animation: hero-ambient-shift 14s var(--ease-in-out) infinite alternate;
+}
+
+.chimera-title {
+  font-size: clamp(2.75rem, 7.6vw, 5.3rem);
+  letter-spacing: -0.045em;
+}
+
+.section-title {
+  text-wrap: balance;
+}
+
+.section-title::after {
+  left: 50%;
+  width: min(150px, 68%);
+  transform: translateX(-50%);
+}
+
+.timeline-entry {
+  border-radius: 18px;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--color-background-secondary) 92%, transparent) 0%, transparent 85%);
+}
+
+[data-theme="light"] .timeline-entry {
+  background:
+    linear-gradient(160deg, color-mix(in srgb, #fff 74%, var(--color-accent) 5%) 0%, rgba(255, 255, 255, 0.76) 100%);
+}
+
+.timeline-date {
+  font-size: 0.84rem;
+  letter-spacing: 0.11em;
+}
+
+.timeline-description {
+  font-size: 1.02rem;
+}
+
+@keyframes hero-ambient-shift {
+  from {
+    transform: translate3d(-6px, -3px, 0);
+  }
+  to {
+    transform: translate3d(8px, 4px, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title::after {
+    width: min(124px, 72%);
+  }
+
+  .timeline-description {
+    font-size: 0.98rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chimera-header::before {
+    animation: none;
+  }
+}

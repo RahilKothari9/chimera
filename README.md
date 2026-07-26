@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-07-26
+
+**Feature/Change**: Frontend Polish - Hero Atmosphere, Heading Anchors & Timeline Readability
+**Description**: Applied three high-impact aesthetic refinements without changing functionality. The hero now has a subtle animated ambient glow layer that adds depth and a more premium first impression in both dark and light themes. Section titles were re-anchored with balanced text wrapping and centered accent underlines for cleaner visual rhythm across viewport sizes. Timeline cards were refined with softer layered surfaces and improved date/description typography to make long changelog scans feel more readable and intentional on desktop and mobile, while preserving reduced-motion accessibility behavior.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
