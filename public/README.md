@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-08-01
+
+**Feature/Change**: Monthly Dependency Audit - 2026-08
+**Description**: Completed the monthly dependency audit by running `npm audit` and `npm outdated`, then applying safe updates within existing semver ranges. Security advisories were fully resolved (critical: 1 fixed, high: 3 fixed) by updating dependencies in the lockfile, including `vitest` (4.0.17 → 4.1.10), `vite` (7.3.1 → 7.3.6), `postcss` (8.5.6 → 8.5.25), `ws` (8.19.0 → 8.21.1), `happy-dom` (20.8.9 → 20.11.1), and `@types/node` (25.2.3 → 25.9.5). Major-version updates were reviewed but not applied (`@types/node` 26.x, `typescript` 7.x, `vite` 8.x) to avoid potential breaking changes in this maintenance pass. Build and test verification both passed.
+**Files Modified**: package-lock.json, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
