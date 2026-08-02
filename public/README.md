@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-08-02
+
+**Feature/Change**: Frontend Polish - Section Surfaces, Motion Accessibility & Link Clarity
+**Description**: Delivered three focused refinements to make the interface feel more intentional without adding features. (1) Added a cohesive premium "surface" treatment to top-level content sections using soft gradient panels, consistent border radius, and tuned elevation so the long single-page layout has clearer visual rhythm across mobile and desktop. (2) Upgraded link affordance by restoring visible underlines with refined thickness/offset and accent-tinted decoration colors, improving scannability and accessibility for non-hover users in both themes. (3) Strengthened reduced-motion support with a global motion fallback that disables smooth scrolling and collapses decorative animations/transitions for users with `prefers-reduced-motion`, while preserving content readability and layout integrity.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
