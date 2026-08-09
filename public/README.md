@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-08-09
+
+**Feature/Change**: Frontend Polish - Section Surfaces, Theme-Tuned Hero Contrast & Motion Harmony
+**Description**: Applied three focused visual refinements to make the UI feel more intentional without changing functionality. The main dashboard and timeline containers now use elevated, theme-aware surface treatments (subtle gradient, border, and depth) to improve hierarchy and framing. Hero typography was tuned for better balance and light-theme contrast by refining subtitle wrapping/line-height and softening the title glow in light mode. Motion was harmonized by reducing card hover intensity and adding a stronger reduced-motion fallback that disables non-essential animated transforms.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement

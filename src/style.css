@@ -14445,3 +14445,68 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Section Surfaces, Theme-Tuned Hero Contrast & Motion Harmony
+   ================================ */
+
+/* 1) Section surface refinement for clearer hierarchy */
+.dashboard-container,
+.timeline-container {
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+  border: 1px solid color-mix(in srgb, var(--color-border) 75%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--color-accent) 10%, transparent) 0%, transparent 60%),
+    color-mix(in srgb, var(--color-background-secondary) 82%, transparent);
+  box-shadow: 0 1px 2px color-mix(in srgb, #000 14%, transparent), 0 14px 28px -20px color-mix(in srgb, #000 42%, transparent);
+}
+
+[data-theme="light"] .dashboard-container,
+[data-theme="light"] .timeline-container {
+  background:
+    radial-gradient(circle at top right, rgba(124, 58, 237, 0.08) 0%, transparent 62%),
+    rgba(255, 255, 255, 0.9);
+  border-color: color-mix(in srgb, var(--color-accent) 18%, rgba(255, 255, 255, 0.7));
+  box-shadow: 0 1px 2px rgba(24, 24, 27, 0.08), 0 16px 30px -24px rgba(124, 58, 237, 0.35);
+}
+
+/* 2) Theme-tuned typography contrast in the hero */
+.chimera-subtitle {
+  text-wrap: balance;
+  line-height: 1.45;
+}
+
+[data-theme="light"] .chimera-title {
+  text-shadow: 0 0 48px rgba(124, 58, 237, 0.22);
+}
+
+[data-theme="light"] .chimera-subtitle {
+  color: color-mix(in srgb, var(--color-subtitle) 90%, #312e81 10%);
+}
+
+/* 3) Motion harmony and reduced-motion fallback */
+.stat-card,
+.timeline-entry {
+  will-change: transform, box-shadow;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px) scale(1.018);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chimera-title,
+  .stat-card,
+  .timeline-entry,
+  .theme-toggle-button {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .stat-card:hover,
+  .timeline-entry:hover,
+  .theme-toggle-button:hover {
+    transform: none !important;
+  }
+}
