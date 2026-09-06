@@ -14445,3 +14445,73 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Section Surfaces, Interaction Hierarchy & Mobile Rhythm
+   ================================ */
+
+:is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container) {
+  max-width: min(1040px, 100%);
+  margin-inline: auto;
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--color-background-secondary) 90%, transparent) 0%,
+      color-mix(in srgb, var(--color-background-secondary) 55%, transparent) 100%
+    );
+  box-shadow:
+    0 1px 2px color-mix(in srgb, #000 10%, transparent),
+    0 12px 28px -20px color-mix(in srgb, #000 40%, transparent);
+  transition:
+    transform var(--transition-base) var(--ease-out),
+    border-color var(--transition-base) var(--ease-out),
+    box-shadow var(--transition-base) var(--ease-out),
+    background var(--transition-base) var(--ease-out);
+}
+
+:is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container):hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-accent) 34%, var(--color-border));
+  box-shadow:
+    0 2px 6px color-mix(in srgb, #000 14%, transparent),
+    0 18px 34px -18px color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+:is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container):focus-within {
+  border-color: color-mix(in srgb, var(--color-accent) 52%, var(--color-border));
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-accent) 16%, transparent),
+    0 16px 30px -16px color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+[data-theme="light"] :is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container) {
+  background:
+    linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(248, 246, 255, 0.88) 100%
+    );
+  border-color: color-mix(in srgb, var(--color-accent) 16%, rgba(124, 58, 237, 0.04));
+}
+
+@media (max-width: 768px) {
+  :is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container) {
+    border-radius: 18px;
+    padding: 1rem;
+  }
+
+  :is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container):hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container),
+  :is(.dashboard-section, .evolution-section, [id$="-section"], #accessibility-section-container):hover {
+    transform: none;
+    transition: none;
+  }
+}
