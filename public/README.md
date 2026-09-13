@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-09-13
+
+**Feature/Change**: Frontend Polish - Ambient Canvas, Unified Section Surfaces & Loading Refinement
+**Description**: Applied three focused visual refinements to make the interface feel more premium without changing behavior. Added a theme-aware ambient gradient canvas behind the app for richer depth in both dark and light mode. Introduced consistent top-level section surfaces (subtle borders, glass-like backgrounds, and restrained hover lift) so the long single-page layout feels cohesive and intentionally composed across viewports. Refined loading placeholders with cleaner typography and a compact luminous bar accent so in-between states feel polished rather than plain.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
