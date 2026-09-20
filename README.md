@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-09-20
+
+**Feature/Change**: Frontend Polish - Hero Typography, Interaction Feedback & Timeline Depth
+**Description**: Applied three focused visual refinements to make the interface feel more intentional and premium without changing behavior. Hero copy hierarchy was tuned with tighter title rhythm, cleaner subtitle tracking, and more readable description sizing. Interactive controls gained smoother button hover lift and clearer input focus treatment for stronger action feedback. Timeline cards now have richer layered surfaces and more composed hover depth in both dark and light themes, with reduced-motion safeguards and responsive adjustments retained.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
