@@ -14445,3 +14445,105 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Hero Hierarchy, Control Feedback & Timeline Depth
+   ================================ */
+
+/* ── 1. Hero typography and hierarchy refinements ── */
+.chimera-title {
+  line-height: 0.92;
+  letter-spacing: clamp(-0.055em, -0.6vw, -0.038em);
+  text-wrap: balance;
+  text-shadow:
+    0 10px 30px color-mix(in srgb, var(--color-accent) 24%, transparent),
+    0 0 60px color-mix(in srgb, var(--color-accent-secondary) 26%, transparent);
+}
+
+[data-theme="light"] .chimera-title {
+  text-shadow:
+    0 8px 20px rgba(124, 58, 237, 0.2),
+    0 0 40px rgba(168, 85, 247, 0.16);
+}
+
+.chimera-subtitle {
+  font-size: clamp(0.82rem, 1.8vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  margin-top: 0.9rem;
+}
+
+.chimera-description {
+  max-width: 68ch;
+  font-size: clamp(1rem, 1.55vw, 1.14rem);
+  line-height: 1.72;
+  margin-top: 1rem;
+}
+
+/* ── 2. Input/button feedback polish ── */
+button:not(.theme-toggle-button):not(.tutorial-launcher-button) {
+  transition:
+    transform 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out),
+    border-color var(--transition-fast) var(--ease-out),
+    background-color var(--transition-fast) var(--ease-out);
+}
+
+button:not(.theme-toggle-button):not(.tutorial-launcher-button):hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+input,
+textarea,
+select {
+  transition:
+    border-color var(--transition-fast) var(--ease-out),
+    box-shadow var(--transition-fast) var(--ease-out),
+    background-color var(--transition-fast) var(--ease-out);
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--color-accent) 20%, transparent),
+    0 8px 20px -12px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+/* ── 3. Timeline depth and hover compositing ── */
+.timeline-entry {
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      150deg,
+      color-mix(in srgb, var(--color-accent) 9%, transparent) 0%,
+      transparent 64%
+    ),
+    var(--color-background-secondary);
+}
+
+[data-theme="light"] .timeline-entry {
+  background:
+    linear-gradient(150deg, rgba(124, 58, 237, 0.08) 0%, transparent 64%),
+    var(--color-background-secondary);
+}
+
+.timeline-entry:hover {
+  transform: translateX(10px) translateY(-3px) scale(1.006);
+}
+
+@media (max-width: 768px) {
+  .timeline-entry:hover,
+  .timeline-entry:active {
+    transform: translateY(-2px) scale(1.003);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button:not(.theme-toggle-button):not(.tutorial-launcher-button):hover,
+  .timeline-entry:hover,
+  .timeline-entry:active {
+    transform: none;
+  }
+}
