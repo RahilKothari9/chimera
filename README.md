@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-10-04
+
+**Feature/Change**: Frontend Polish - Search Control Refinement, Timeline Date Badges & Hover Depth
+**Description**: Applied three focused visual refinements to make the core browsing experience feel more intentional without changing behavior. Search controls now have richer hover/focus feedback with clearer accent contrast and depth, timeline dates are styled as compact badges to strengthen hierarchy and scannability, and timeline card hover states were tuned for cleaner elevation and accent emphasis in both themes while preserving reduced-motion behavior.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
