@@ -14445,3 +14445,85 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Section Surfaces, Hero Typography & Timeline Readability
+   ================================ */
+
+#app > div > .dashboard-section,
+#app > div > [id$="-section"],
+#app > div > .evolution-section {
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: clamp(1rem, 2vw, 1.6rem);
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--color-accent) 12%, transparent) 0%, transparent 46%),
+    linear-gradient(150deg, color-mix(in srgb, var(--color-background-secondary) 92%, transparent) 0%, transparent 100%);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, #000 10%, transparent),
+    0 18px 32px -28px color-mix(in srgb, #000 58%, transparent);
+}
+
+[data-theme="light"] #app > div > .dashboard-section,
+[data-theme="light"] #app > div > [id$="-section"],
+[data-theme="light"] #app > div > .evolution-section {
+  border-color: color-mix(in srgb, var(--color-accent) 16%, rgba(255, 255, 255, 0.75));
+  background:
+    radial-gradient(circle at 92% 8%, rgba(124, 58, 237, 0.08) 0%, transparent 46%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.6) 100%);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, #000 8%, transparent),
+    0 16px 28px -24px color-mix(in srgb, #000 28%, transparent);
+}
+
+.chimera-subtitle {
+  font-size: clamp(0.94rem, 1.3vw, 1.05rem);
+  letter-spacing: 0.14em;
+  opacity: 0.92;
+}
+
+.chimera-description {
+  max-width: 58ch;
+  line-height: 1.78;
+}
+
+.timeline-entry {
+  isolation: isolate;
+}
+
+.timeline-entry::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 16%, transparent);
+  opacity: 0;
+  transition: opacity var(--transition-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.timeline-entry:hover::after,
+.timeline-entry:focus-within::after {
+  opacity: 1;
+}
+
+.timeline-feature {
+  text-wrap: balance;
+  line-height: 1.35;
+}
+
+.timeline-description {
+  line-height: 1.75;
+}
+
+@media (max-width: 768px) {
+  #app > div > .dashboard-section,
+  #app > div > [id$="-section"],
+  #app > div > .evolution-section {
+    border-radius: 20px;
+    padding: 1rem;
+  }
+}
