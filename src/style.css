@@ -14445,3 +14445,123 @@ textarea:focus::placeholder {
     transform: translateY(-2px);
   }
 }
+
+/* ================================
+   Day 64: Frontend Polish — Section Surfaces, Header Typography & Input Focus Harmony
+   ================================ */
+
+/* ── 1. Section surface framing ──
+   Wrap each major section in a subtle elevated surface to improve visual rhythm
+   and make the long single-page layout feel intentionally segmented. */
+.dashboard-section,
+.evolution-section,
+[id$="-section"],
+#accessibility-section-container {
+  border: 1px solid color-mix(in srgb, var(--color-border) 82%, transparent);
+  border-radius: 22px;
+  padding: clamp(1.15rem, 2.2vw, 1.7rem);
+  margin-bottom: var(--space-lg);
+  background:
+    radial-gradient(circle at 88% 0%, color-mix(in srgb, var(--color-accent) 10%, transparent) 0%, transparent 46%),
+    color-mix(in srgb, var(--color-background-secondary) 90%, transparent);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, #000 14%, transparent),
+    0 12px 26px -20px color-mix(in srgb, #000 55%, transparent);
+}
+
+.dashboard-section:hover,
+.evolution-section:hover,
+[id$="-section"]:hover,
+#accessibility-section-container:hover,
+.dashboard-section:focus-within,
+.evolution-section:focus-within,
+[id$="-section"]:focus-within,
+#accessibility-section-container:focus-within {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-accent) 44%, var(--color-border));
+  box-shadow:
+    0 2px 4px color-mix(in srgb, #000 16%, transparent),
+    0 18px 34px -22px color-mix(in srgb, var(--color-accent) 48%, transparent);
+}
+
+/* ── 2. Hero typography hierarchy ──
+   Give the subtitle a crafted badge treatment and tighten body rhythm. */
+.chimera-subtitle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 38%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  font-size: clamp(0.82rem, 1.5vw, 0.92rem);
+  letter-spacing: 0.14em;
+}
+
+.chimera-description {
+  max-width: 66ch;
+  line-height: 1.78;
+  text-wrap: balance;
+}
+
+/* ── 3. Input focus harmony ──
+   A cohesive and higher-contrast focus ring for text controls across tools. */
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  transition: border-color var(--transition-base) var(--ease-out),
+              box-shadow var(--transition-base) var(--ease-out),
+              background-color var(--transition-base) var(--ease-out);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+textarea:focus,
+select:focus {
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent),
+    0 8px 22px -16px color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+
+[data-theme="light"] .dashboard-section,
+[data-theme="light"] .evolution-section,
+[data-theme="light"] [id$="-section"],
+[data-theme="light"] #accessibility-section-container {
+  border-color: color-mix(in srgb, var(--color-accent) 20%, rgba(255, 255, 255, 0.85));
+  background:
+    radial-gradient(circle at 88% 0%, rgba(124, 58, 237, 0.09) 0%, transparent 46%),
+    rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 1px 2px rgba(24, 24, 27, 0.08),
+    0 14px 28px -20px rgba(24, 24, 27, 0.22);
+}
+
+[data-theme="light"] .chimera-subtitle {
+  border-color: color-mix(in srgb, var(--color-accent) 30%, rgba(24, 24, 27, 0.12));
+  background: color-mix(in srgb, var(--color-accent) 10%, white);
+  color: color-mix(in srgb, var(--color-accent) 44%, #312e81);
+}
+
+@media (max-width: 768px) {
+  .dashboard-section,
+  .evolution-section,
+  [id$="-section"],
+  #accessibility-section-container {
+    border-radius: 18px;
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-section:hover,
+  .evolution-section:hover,
+  [id$="-section"]:hover,
+  #accessibility-section-container:hover,
+  .dashboard-section:focus-within,
+  .evolution-section:focus-within,
+  [id$="-section"]:focus-within,
+  #accessibility-section-container:focus-within {
+    transform: none;
+  }
+}
