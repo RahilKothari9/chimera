@@ -1817,7 +1817,7 @@ h1 {
 .metric-card:hover {
   transform: translateY(-2px);
   background: var(--color-background-hover);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  box-shadow: var(--shadow-accent);
 }
 
 .metric-icon {
@@ -1908,7 +1908,11 @@ h1 {
 
 .metrics-insights {
   margin: 3rem 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 16%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent-secondary) 14%, transparent) 100%
+  );
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 2rem;
@@ -1984,7 +1988,7 @@ h1 {
 .dependency-graph-header h2 {
   font-size: 2.5em;
   margin: 0.5em 0 0.3em;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -2013,7 +2017,7 @@ h1 {
 
 .dependency-stats .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  box-shadow: var(--shadow-accent);
 }
 
 .dependency-stats .stat-value {
@@ -2118,7 +2122,11 @@ h1 {
 .dependency-insights {
   margin: 2rem 0;
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 16%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent-secondary) 14%, transparent) 100%
+  );
   border-radius: 8px;
   border: 1px solid var(--color-border);
   text-align: left;
@@ -2205,7 +2213,7 @@ h1 {
 .comparison-mode-select:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent);
 }
 
 .period-selectors,
@@ -2254,14 +2262,14 @@ h1 {
 .entry-select:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 22%, transparent);
 }
 
 .comparison-button {
   width: 100%;
   margin: 1.5rem 0;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -2454,7 +2462,7 @@ h1 {
 }
 
 .category-bar.period1 {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
 }
 
 .category-bar.period2 {
@@ -2524,7 +2532,7 @@ h1 {
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-secondary));
   color: white;
   border: none;
   border-radius: 50px;
@@ -2549,7 +2557,7 @@ h1 {
 
 .share-button:hover {
   transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4), 0 6px 16px rgba(102, 126, 234, 0.3);
+  box-shadow: var(--shadow-accent-hover);
   filter: brightness(1.12);
 }
 
