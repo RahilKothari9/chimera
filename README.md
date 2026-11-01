@@ -19,6 +19,14 @@ This is the living history of Chimera's evolution. Each entry represents a day o
 
 ---
 
+### Day 64: 2026-11-01
+
+**Feature/Change**: Frontend Polish - Accent Harmony & Interaction Refinement
+**Description**: Delivered a focused visual polish pass across high-visibility UI surfaces without changing functionality. Primary gradients in comparison/share controls and dependency-graph headings were unified to design tokens (`--color-accent` / `--color-accent-secondary`) for stronger brand cohesion in both dark and light themes. Metrics/dependency insight panels and hover elevations now use token-driven accent depth for a more premium, consistent feel. Focus rings in comparison selectors were upgraded to token-based accent rings for clearer accessible keyboard feedback while matching the global visual system.
+**Files Modified**: src/style.css, README.md, public/README.md
+
+---
+
 ### Day 63: 2026-04-19
 
 **Feature/Change**: Frontend Polish - Hero Surface, Heading Rhythm & Timeline Card Refinement
